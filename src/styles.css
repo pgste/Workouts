@@ -372,8 +372,14 @@ button { appearance: none; }
   background: linear-gradient(180deg, rgba(0, 163, 255, .09), rgba(255, 255, 255, .02));
   border-color: rgba(0, 163, 255, .3);
 }
+/* The genuinely-next block gets a brighter, dashed accent so it reads as next
+   rather than a second copy of the current one. */
+.block--next {
+  border-color: rgba(0, 163, 255, .45);
+  background: linear-gradient(180deg, rgba(0, 163, 255, .05), rgba(255, 255, 255, .02));
+}
 
-.block__top { display: flex; align-items: center; gap: 10px; }
+.block__top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .block__tag {
   font-size: 10.5px;
   font-family: var(--display);
@@ -386,7 +392,19 @@ button { appearance: none; }
   background: rgba(255, 255, 255, .05);
   border: 1px solid rgba(255, 255, 255, .1);
 }
-.block--live .block__tag { color: var(--ink); background: var(--blue); border-color: var(--blue); }
+/* Status pill carries the accent, so the identity tag stays neutral even on the
+   live/current block — one accent per card, not two competing blue chips. */
+.block__status {
+  font-size: 10px;
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 7px;
+}
+.block__status--current { color: var(--ink); background: var(--blue); border: 1px solid var(--blue); }
+.block__status--next { color: var(--blue-lt); background: rgba(0, 163, 255, .1); border: 1px dashed rgba(0, 163, 255, .6); }
 .block__dates { font-size: 12px; color: var(--t-6); margin-left: auto; font-family: var(--display); }
 .block__body { display: flex; flex-direction: column; gap: 5px; }
 .block__title { font-family: var(--display); font-size: 21px; font-weight: 700; letter-spacing: -.015em; line-height: 1.15; }

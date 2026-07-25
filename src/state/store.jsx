@@ -132,6 +132,36 @@ export function TrackerProvider({ children }) {
 
   useEffect(() => () => clearTimeout(exportTimer.current), []);
 
+  // Browser back / forward. The nav-relevant slice of state is mirrored into the
+  // history stack as opaque entries; the visible URL is left untouched so a
+  // refresh and the Pages sub-path keep working. Back/forward pop an entry and
+  // restore it. `popping` stops the restore from pushing a fresh entry back.
+  const popping = useRef(false);
+  const navKey = JSON.stringify({
+    athlete: state.athlete, tab: state.tab, block: state.block, day: state.day,
+    session: state.session, overlay: state.overlay, complete: state.complete,
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (popping.current) { popping.current = false; return; }
+    const entry = { __nav: JSON.parse(navKey) };
+    if (window.history.state && window.history.state.__nav) {
+      window.history.pushState(entry, '');
+    } else {
+      window.history.replaceState(entry, '');
+    }
+  }, [navKey]);
+  useEffect(() => {
+    const onPop = (e) => {
+      const nav = e.state && e.state.__nav;
+      if (!nav) return;
+      popping.current = true;
+      dispatch({ type: 'set', patch: nav });
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
   const actions = useMemo(() => {
     const set = (patch) => dispatch({ type: 'set', patch });
     return {
