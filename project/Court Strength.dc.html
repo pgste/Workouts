@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#05070b; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:#38bdf8; text-decoration:none; }
+  a:hover { color:#7dd3fc; }
+  input, button { font-family:inherit; }
+  input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  @keyframes pulseGlow { 0%,100% { box-shadow:0 0 0 0 rgba(0,163,255,.45);} 50% { box-shadow:0 0 0 10px rgba(0,163,255,0);} }
+  @keyframes riseIn { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:none;} }
+</style>
+</helmet>
+
+<div style="min-height:100vh; background:radial-gradient(120% 60% at 50% 0%, #0b1622 0%, #05070b 60%); color:#e9eef6; font-family:Sora, system-ui, sans-serif; display:flex; justify-content:center;">
+<div style="width:100%; max-width:440px; min-height:100vh; position:relative; display:flex; flex-direction:column; border-left:1px solid rgba(255,255,255,.04); border-right:1px solid rgba(255,255,255,.04);">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div style="padding:56px 22px 40px; display:flex; flex-direction:column; gap:34px; animation:riseIn .35s ease both;">
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:10px; height:10px; border-radius:50%; background:#00a3ff; box-shadow:0 0 12px #00a3ff; animation:pulseGlow 2.4s ease-in-out infinite;"></div>
+        <div style="font-family:Saira, sans-serif; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:#00a3ff; font-weight:600;">Court Strength</div>
+      </div>
+      <div style="font-family:Saira, sans-serif; font-size:36px; line-height:1.06; font-weight:700; letter-spacing:-.02em;">Who's training<br>today?</div>
+      <div style="font-size:15px; color:#7d8a9e; max-width:300px; text-wrap:pretty;">Pick your name. Your blocks, your log, saved on this device.</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <sc-for list="{{ athletes }}" as="a" hint-placeholder-count="3">
+        <button onClick="{{ a.open }}" style="appearance:none; text-align:left; cursor:pointer; background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:16px 18px; display:flex; align-items:center; gap:14px; color:#e9eef6; transition:border-color .18s, transform .18s;" style-hover="border-color:rgba(0,163,255,.55); transform:translateY(-1px);">
+          <div style="width:46px; height:46px; flex:none; border-radius:14px; background:#0d1926; border:1px solid rgba(0,163,255,.35); display:flex; align-items:center; justify-content:center; font-family:Saira, sans-serif; font-weight:700; font-size:17px; color:#00a3ff;">{{ a.initials }}</div>
+          <div style="flex:1; display:flex; flex-direction:column; gap:3px;">
+            <div style="font-family:Saira, sans-serif; font-size:19px; font-weight:600;">{{ a.name }}</div>
+            <div style="font-size:13px; color:#7d8a9e;">{{ a.sub }}</div>
+          </div>
+          <div style="font-size:12px; font-family:Saira, sans-serif; color:#00a3ff; letter-spacing:.06em;">{{ a.pct }}</div>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,.06); padding-top:18px; font-size:12.5px; color:#5f6b7d; line-height:1.6; text-wrap:pretty;">Progress is stored in this browser. Use <span style="color:#8fa0b6;">Export</span> on the Progress tab to send a snapshot to your coach.</div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isBlocks }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; padding:26px 20px 110px; display:flex; flex-direction:column; gap:22px; animation:riseIn .3s ease both;">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+      <div>
+        <div style="font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#00a3ff; font-family:Saira, sans-serif; font-weight:600;">{{ athleteName }}</div>
+        <div style="font-family:Saira, sans-serif; font-size:28px; font-weight:700; letter-spacing:-.02em; margin-top:2px;">Training blocks</div>
+        <div style="font-size:13.5px; color:#7d8a9e; margin-top:4px;">{{ countdown }}</div>
+      </div>
+      <div style="display:flex; gap:8px; flex:none;">
+        <button onClick="{{ openSettings }}" style="appearance:none; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#8fa0b6; border-radius:12px; width:38px; height:38px; font-size:15px;" style-hover="color:#e9eef6; border-color:rgba(0,163,255,.5);">⚙</button>
+        <button onClick="{{ goHome }}" style="appearance:none; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#8fa0b6; border-radius:12px; padding:9px 12px; font-size:12.5px; font-weight:600;" style-hover="color:#e9eef6; border-color:rgba(0,163,255,.5);">Switch</button>
+      </div>
+    </div>
+
+    <sc-if value="{{ isCoach }}" hint-placeholder-val="{{ false }}">
+      <div style="background:rgba(245,165,36,.08); border:1px solid rgba(245,165,36,.26); border-radius:14px; padding:11px 14px; font-size:12.5px; color:#e0bd8b; line-height:1.5;">Coach view — you're reading someone else's plan. Anything you tick here is saved to this device only.</div>
+    </sc-if>
+
+    <button onClick="{{ openToday }}" style="appearance:none; text-align:left; cursor:pointer; background:linear-gradient(135deg, rgba(0,163,255,.16), rgba(0,163,255,.03)); border:1px solid rgba(0,163,255,.32); border-radius:20px; padding:17px 18px; display:flex; align-items:center; gap:14px; color:#e9eef6;" style-hover="border-color:rgba(0,163,255,.6);">
+      <div style="flex:1; display:flex; flex-direction:column; gap:5px;">
+        <div style="font-size:10.5px; font-family:Saira, sans-serif; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:#5ad1ff;">{{ todayKicker }}</div>
+        <div style="font-family:Saira, sans-serif; font-size:21px; font-weight:700; letter-spacing:-.015em;">{{ todayTitle }}</div>
+        <div style="font-size:12.5px; color:#8b9ab0;">{{ todaySub }}</div>
+      </div>
+      <div style="font-size:20px; color:#5ad1ff; flex:none;">→</div>
+    </button>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="4">
+        <button onClick="{{ b.open }}" style="appearance:none; text-align:left; cursor:pointer; background:{{ b.bg }}; border:1px solid {{ b.bd }}; border-radius:20px; padding:17px 18px; display:flex; flex-direction:column; gap:13px; color:#e9eef6; transition:transform .18s, border-color .18s;" style-hover="transform:translateY(-1px); border-color:rgba(0,163,255,.5);">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:10.5px; font-family:Saira, sans-serif; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:{{ b.tagFg }}; background:{{ b.tagBg }}; border:1px solid {{ b.tagBd }}; padding:4px 8px; border-radius:7px;">{{ b.tag }}</span>
+            <span style="font-size:12px; color:#6f7d90; margin-left:auto; font-family:Saira, sans-serif;">{{ b.dates }}</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:5px;">
+            <div style="font-family:Saira, sans-serif; font-size:21px; font-weight:700; letter-spacing:-.015em; line-height:1.15;">{{ b.title }}</div>
+            <div style="font-size:13px; color:#8b9ab0; line-height:1.5; text-wrap:pretty;">{{ b.purpose }}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="flex:1; height:5px; border-radius:99px; background:rgba(255,255,255,.08); overflow:hidden;">
+              <div style="height:100%; width:{{ b.pct }}; background:linear-gradient(90deg,#00a3ff,#5ad1ff); border-radius:99px;"></div>
+            </div>
+            <div style="font-size:11.5px; color:#7d8a9e; font-family:Saira, sans-serif; font-weight:600;">{{ b.progress }}</div>
+          </div>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isWeek }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; padding:22px 20px 110px; display:flex; flex-direction:column; gap:20px; animation:riseIn .3s ease both;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <button onClick="{{ backToBlocks }}" style="appearance:none; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#8fa0b6; width:36px; height:36px; border-radius:11px; font-size:16px; line-height:1; flex:none;" style-hover="color:#e9eef6;">←</button>
+      <div style="font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#6f7d90; font-family:Saira, sans-serif; font-weight:600;">{{ blockTag }}</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="font-family:Saira, sans-serif; font-size:29px; font-weight:700; letter-spacing:-.02em; line-height:1.08; text-wrap:balance;">{{ weekTitle }}</div>
+      <div style="font-size:13px; color:#6f7d90; font-family:Saira, sans-serif; letter-spacing:.02em;">{{ weekDates }}</div>
+      <div style="border-left:2px solid #00a3ff; padding:2px 0 2px 13px; color:#9fb0c4; font-size:14.5px; line-height:1.55; margin-top:6px; text-wrap:pretty;">{{ weekPurpose }}</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:9px;">
+      <sc-for list="{{ meta }}" as="m" hint-placeholder-count="4">
+        <div style="background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:12px 13px; display:flex; flex-direction:column; gap:4px;">
+          <div style="font-size:10.5px; letter-spacing:.11em; text-transform:uppercase; color:#5f6b7d; line-height:1.3;">{{ m.label }}</div>
+          <div style="font-family:Saira, sans-serif; font-size:16px; font-weight:700; color:#5ad1ff;">{{ m.value }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:16px 17px; display:flex; flex-direction:column; gap:14px;">
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#34d399; font-family:Saira, sans-serif; font-weight:700;">Do</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <sc-for list="{{ ruleDo }}" as="r" hint-placeholder-count="5">
+            <span style="font-size:12px; color:#c8f3e0; background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.25); padding:5px 10px; border-radius:8px;">{{ r }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#ff5470; font-family:Saira, sans-serif; font-weight:700;">Do not</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <sc-for list="{{ ruleDont }}" as="r" hint-placeholder-count="8">
+            <span style="font-size:12px; color:#ffc4ce; background:rgba(255,84,112,.09); border:1px solid rgba(255,84,112,.22); padding:5px 10px; border-radius:8px;">{{ r }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="font-size:13px; color:#8b9ab0; line-height:1.55; border-top:1px solid rgba(255,255,255,.06); padding-top:12px; text-wrap:pretty;">{{ ruleNote }}</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:11px;">
+      <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#5f6b7d; font-family:Saira, sans-serif; font-weight:700;">The week</div>
+      <sc-for list="{{ days }}" as="d" hint-placeholder-count="6">
+        <button onClick="{{ d.open }}" style="appearance:none; text-align:left; cursor:pointer; background:{{ d.bg }}; border:1px solid {{ d.bd }}; border-radius:18px; padding:15px 16px; display:flex; align-items:center; gap:13px; color:#e9eef6; transition:transform .18s, border-color .18s;" style-hover="transform:translateY(-1px); border-color:rgba(0,163,255,.5);">
+          <div style="width:34px; height:34px; flex:none; border-radius:11px; border:1px solid {{ d.markBd }}; background:{{ d.markBg }}; display:flex; align-items:center; justify-content:center; font-size:14px; color:{{ d.markFg }}; font-family:Saira, sans-serif; font-weight:700;">{{ d.mark }}</div>
+          <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:3px;">
+            <div style="font-size:11.5px; color:#6f7d90; font-family:Saira, sans-serif; letter-spacing:.06em; text-transform:uppercase;">{{ d.label }}</div>
+            <div style="font-family:Saira, sans-serif; font-size:18px; font-weight:600; letter-spacing:-.01em; color:{{ d.titleFg }};">{{ d.title }}</div>
+            <div style="font-size:12px; color:#6f7d90;">{{ d.meta }}</div>
+          </div>
+          <div style="font-size:11px; color:#5f6b7d; font-family:Saira, sans-serif; text-align:right; line-height:1.3;">{{ d.out }}<br>days out</div>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="background:rgba(0,163,255,.07); border:1px solid rgba(0,163,255,.25); border-radius:18px; padding:16px 17px; display:flex; flex-direction:column; gap:9px;">
+      <div style="display:flex; align-items:baseline; gap:9px;">
+        <div style="font-family:Saira, sans-serif; font-size:17px; font-weight:700;">{{ dailyName }}</div>
+        <div style="font-size:12px; color:#5ad1ff;">{{ dailyMins }} · every day</div>
+      </div>
+      <div style="font-size:13px; color:#9fb0c4; line-height:1.6; text-wrap:pretty;">{{ dailySteps }}</div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isDay }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; display:flex; flex-direction:column; animation:riseIn .25s ease both;">
+    <div style="padding:20px 20px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(255,255,255,.06);">
+      <button onClick="{{ closeDay }}" style="appearance:none; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#8fa0b6; width:36px; height:36px; border-radius:11px; font-size:16px; line-height:1;" style-hover="color:#e9eef6;">←</button>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#00a3ff; font-family:Saira, sans-serif; font-weight:600;">{{ dayLabel }}</div>
+        <div style="font-size:12.5px; color:#6f7d90;">{{ dayMeta }}</div>
+      </div>
+    </div>
+
+    <div style="flex:1; padding:22px 20px 40px; display:flex; flex-direction:column; gap:20px;">
+      <div style="font-family:Saira, sans-serif; font-size:32px; line-height:1.08; font-weight:700; letter-spacing:-.025em; text-wrap:balance;">{{ dayTitle }}</div>
+
+      <sc-if value="{{ hasSummary }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:15px; color:#a8b7c9; line-height:1.6; text-wrap:pretty;">{{ daySummary }}</div>
+      </sc-if>
+
+      <sc-if value="{{ hasChecklist }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; gap:9px;">
+          <sc-for list="{{ checklist }}" as="c" hint-placeholder-count="5">
+            <button onClick="{{ c.toggle }}" style="appearance:none; text-align:left; cursor:pointer; display:flex; align-items:center; gap:13px; background:{{ c.bg }}; border:1px solid {{ c.bd }}; border-radius:15px; padding:13px 14px; color:#e9eef6; min-height:56px;">
+              <span style="width:26px; height:26px; flex:none; border-radius:9px; border:1px solid {{ c.boxBd }}; background:{{ c.boxBg }}; color:{{ c.boxFg }}; display:flex; align-items:center; justify-content:center; font-size:14px;">✓</span>
+              <span style="flex:1; min-width:0; display:flex; flex-direction:column; gap:2px;">
+                <span style="font-size:15px; font-weight:600; color:{{ c.fg }};">{{ c.name }}</span>
+                <span style="font-size:12.5px; color:#6f7d90;">{{ c.detail }}</span>
+              </span>
+              <span style="font-family:Saira, sans-serif; font-size:13px; color:#5ad1ff; flex:none;">{{ c.when }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hasExercises }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; gap:9px;">
+          <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#5f6b7d; font-family:Saira, sans-serif; font-weight:700;">{{ exCountLabel }}</div>
+          <sc-for list="{{ exList }}" as="e" hint-placeholder-count="6">
+            <button onClick="{{ e.open }}" style="appearance:none; text-align:left; cursor:pointer; display:flex; align-items:center; gap:12px; background:{{ e.bg }}; border:1px solid {{ e.bd }}; border-radius:15px; padding:13px 14px; color:#e9eef6; min-height:60px;" style-hover="border-color:rgba(0,163,255,.5);">
+              <span style="width:26px; height:26px; flex:none; border-radius:9px; border:1px solid {{ e.boxBd }}; background:{{ e.boxBg }}; color:{{ e.boxFg }}; display:flex; align-items:center; justify-content:center; font-family:Saira, sans-serif; font-size:12px; font-weight:700;">{{ e.mark }}</span>
+              <span style="flex:1; min-width:0; display:flex; flex-direction:column; gap:3px;">
+                <span style="font-size:15px; font-weight:600; line-height:1.3;">{{ e.name }}</span>
+                <span style="font-size:12.5px; color:#7d8a9e;">{{ e.load }}</span>
+              </span>
+              <span style="font-family:Saira, sans-serif; font-size:14px; font-weight:700; color:#5ad1ff; flex:none;">{{ e.scheme }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hasOptional }}" hint-placeholder-val="{{ false }}">
+        <div style="background:rgba(245,165,36,.08); border:1px solid rgba(245,165,36,.28); border-radius:18px; padding:15px 16px; display:flex; flex-direction:column; gap:7px;">
+          <div style="display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;">
+            <div style="font-family:Saira, sans-serif; font-size:16px; font-weight:700; color:#ffd79a;">{{ optTitle }}</div>
+            <div style="font-size:11px; font-family:Saira, sans-serif; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#f5a524;">{{ optLimit }}</div>
+          </div>
+          <div style="font-size:13.5px; color:#cfae7f; line-height:1.55; text-wrap:pretty;">{{ optBody }}</div>
+        </div>
+      </sc-if>
+
+      <sc-for list="{{ dayNotes }}" as="n" hint-placeholder-count="1">
+        <div style="border-left:2px solid rgba(0,163,255,.6); padding:2px 0 2px 13px; color:#8b9ab0; font-size:13.5px; line-height:1.6; text-wrap:pretty;">{{ n }}</div>
+      </sc-for>
+
+      <div style="display:flex; flex-direction:column; gap:10px; border-top:1px solid rgba(255,255,255,.06); padding-top:18px;">
+        <div style="display:flex; align-items:baseline; gap:9px;">
+          <div style="font-family:Saira, sans-serif; font-size:16px; font-weight:700;">{{ dailyName }}</div>
+          <div style="font-size:12px; color:#5ad1ff;">{{ dailyMins }}</div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <sc-for list="{{ dailyChips }}" as="s" hint-placeholder-count="6">
+            <button onClick="{{ s.toggle }}" style="appearance:none; cursor:pointer; font-size:12.5px; color:{{ s.fg }}; background:{{ s.bg }}; border:1px solid {{ s.bd }}; padding:9px 12px; min-height:44px; border-radius:11px; font-weight:500;">{{ s.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-if value="{{ hasExercises }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ startSession }}" style="appearance:none; cursor:pointer; height:56px; border-radius:16px; background:linear-gradient(180deg,#0ab0ff,#0077d6); border:none; color:#00131f; font-family:Saira, sans-serif; font-size:16.5px; font-weight:700; box-shadow:0 8px 24px rgba(0,163,255,.3);">{{ startLabel }}</button>
+      </sc-if>
+
+      <button onClick="{{ toggleDayDone }}" style="appearance:none; cursor:pointer; height:52px; border-radius:16px; background:{{ doneBg }}; border:1px solid {{ doneBd }}; color:{{ doneFg }}; font-family:Saira, sans-serif; font-size:15px; font-weight:700;">{{ doneLabel }}</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isSession }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; display:flex; flex-direction:column; animation:riseIn .25s ease both;">
+    <div style="padding:20px 20px 14px; display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(255,255,255,.06);">
+      <button onClick="{{ closeSession }}" style="appearance:none; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#8fa0b6; width:36px; height:36px; border-radius:11px; font-size:16px; line-height:1;" style-hover="color:#e9eef6;">←</button>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#00a3ff; font-family:Saira, sans-serif; font-weight:600;">{{ dayTitle }}</div>
+        <div style="font-size:12.5px; color:#6f7d90;">Exercise {{ exPos }} of {{ exTotal }}</div>
+      </div>
+      <div style="font-family:Saira, sans-serif; font-size:13px; color:#8fa0b6;">{{ sessionDoneCount }} done</div>
+    </div>
+
+    <div style="display:flex; gap:4px; padding:12px 20px 0;">
+      <sc-for list="{{ exDots }}" as="p" hint-placeholder-count="6">
+        <div style="flex:1; height:3px; border-radius:2px; background:{{ p.bg }};"></div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1; padding:20px 20px 130px; display:flex; flex-direction:column; gap:19px;">
+      <div style="display:flex; flex-direction:column; gap:9px;">
+        <sc-if value="{{ hasPair }}" hint-placeholder-val="{{ false }}">
+          <div style="font-family:Saira, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#f5a524; background:rgba(245,165,36,.1); border:1px solid rgba(245,165,36,.28); padding:5px 9px; border-radius:7px; align-self:flex-start;">Superset {{ exPair }} · {{ pairWith }}</div>
+        </sc-if>
+        <div style="font-family:Saira, sans-serif; font-size:31px; line-height:1.08; font-weight:700; letter-spacing:-.025em; text-wrap:balance;">{{ exName }}</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-family:Saira, sans-serif; font-size:13.5px; font-weight:700; color:#00a3ff; background:rgba(0,163,255,.12); border:1px solid rgba(0,163,255,.3); padding:5px 11px; border-radius:9px;">{{ exScheme }}</span>
+          <span style="font-size:13px; color:#a8b7c9; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.07); padding:5px 11px; border-radius:9px;">{{ exLoad }}</span>
+          <span style="font-size:13px; color:#a8b7c9; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.07); padding:5px 11px; border-radius:9px;">Rest {{ exRest }}</span>
+        </div>
+      </div>
+
+      <sc-if value="{{ hasCue }}" hint-placeholder-val="{{ false }}">
+        <div style="border-left:2px solid #00a3ff; padding:2px 0 2px 13px; color:#9fb0c4; font-size:14.5px; line-height:1.55; text-wrap:pretty;">{{ exCue }}</div>
+      </sc-if>
+
+      <div style="display:flex; flex-direction:column; gap:9px;">
+        <div style="display:grid; grid-template-columns:34px 1fr 1fr 44px; gap:9px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#5f6b7d; padding:0 4px;">
+          <div>Set</div><div>Load</div><div>{{ repHeader }}</div><div></div>
+        </div>
+        <sc-for list="{{ sets }}" as="s" hint-placeholder-count="4">
+          <div style="display:grid; grid-template-columns:34px 1fr 1fr 44px; gap:9px; align-items:center; background:{{ s.bg }}; border:1px solid {{ s.bd }}; border-radius:14px; padding:9px 10px; transition:background .2s;">
+            <div style="font-family:Saira, sans-serif; font-weight:700; font-size:15px; color:{{ s.numFg }}; text-align:center;">{{ s.n }}</div>
+            <input type="number" inputmode="decimal" placeholder="{{ s.loadHint }}" value="{{ s.weight }}" onChange="{{ s.onWeight }}" style="width:100%; height:44px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); border-radius:11px; color:#e9eef6; font-family:Saira, sans-serif; font-size:16px; font-weight:600; text-align:center; outline:none;" style-focus="border-color:#00a3ff;">
+            <input type="number" inputmode="numeric" placeholder="{{ s.repHint }}" value="{{ s.reps }}" onChange="{{ s.onReps }}" style="width:100%; height:44px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); border-radius:11px; color:#e9eef6; font-family:Saira, sans-serif; font-size:16px; font-weight:600; text-align:center; outline:none;" style-focus="border-color:#00a3ff;">
+            <button onClick="{{ s.toggle }}" style="appearance:none; cursor:pointer; width:44px; height:44px; border-radius:12px; background:{{ s.btnBg }}; border:1px solid {{ s.btnBd }}; color:{{ s.btnFg }}; font-size:17px; line-height:1;">✓</button>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ restRunning }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; align-items:center; gap:14px; background:rgba(0,163,255,.1); border:1px solid rgba(0,163,255,.35); border-radius:16px; padding:14px 16px;">
+          <div style="font-family:Saira, sans-serif; font-size:30px; font-weight:700; color:#5ad1ff; letter-spacing:-.02em; min-width:74px;">{{ restLabel }}</div>
+          <div style="flex:1; font-size:13px; color:#9fb0c4;">Rest — breathe, then go again.</div>
+          <button onClick="{{ skipRest }}" style="appearance:none; cursor:pointer; background:transparent; border:1px solid rgba(255,255,255,.16); color:#a8b7c9; border-radius:11px; padding:9px 12px; font-size:12.5px; font-weight:600;">Skip</button>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="position:sticky; bottom:0; padding:14px 20px 22px; background:linear-gradient(180deg, rgba(5,7,11,0), #05070b 32%); display:flex; gap:10px;">
+      <button onClick="{{ prevEx }}" style="appearance:none; cursor:pointer; flex:none; width:56px; height:54px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#8fa0b6; font-size:18px;">←</button>
+      <button onClick="{{ nextEx }}" style="appearance:none; cursor:pointer; flex:1; height:54px; border-radius:16px; background:linear-gradient(180deg,#0ab0ff,#0077d6); border:none; color:#00131f; font-family:Saira, sans-serif; font-size:16px; font-weight:700; letter-spacing:.01em; box-shadow:0 8px 24px rgba(0,163,255,.32);">{{ nextLabel }}</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isCourt }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; padding:26px 20px 110px; display:flex; flex-direction:column; gap:22px; animation:riseIn .3s ease both;">
+    <div>
+      <div style="font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#00a3ff; font-family:Saira, sans-serif; font-weight:600;">On court</div>
+      <div style="font-family:Saira, sans-serif; font-size:28px; font-weight:700; letter-spacing:-.02em; margin-top:2px;">Log today's load</div>
+    </div>
+
+    <div style="background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:18px; display:flex; flex-direction:column; gap:18px;">
+      <div style="display:flex; flex-direction:column; gap:9px;">
+        <div style="font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:#5f6b7d;">Session type</div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <sc-for list="{{ courtTypes }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.select }}" style="appearance:none; cursor:pointer; padding:10px 14px; min-height:44px; border-radius:12px; background:{{ t.bg }}; border:1px solid {{ t.bd }}; color:{{ t.fg }}; font-size:13.5px; font-weight:600;">{{ t.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:9px;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <div style="font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:#5f6b7d;">Minutes</div>
+          <div style="font-family:Saira, sans-serif; font-size:20px; font-weight:700; color:#5ad1ff;">{{ draftMins }}</div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <sc-for list="{{ minSteps }}" as="m" hint-placeholder-count="5">
+            <button onClick="{{ m.select }}" style="appearance:none; cursor:pointer; flex:1; min-height:44px; border-radius:12px; background:{{ m.bg }}; border:1px solid {{ m.bd }}; color:{{ m.fg }}; font-family:Saira, sans-serif; font-size:14px; font-weight:600;">{{ m.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:9px;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <div style="font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:#5f6b7d;">How hard</div>
+          <div style="font-size:13px; color:#8fa0b6;">{{ rpeWord }}</div>
+        </div>
+        <div style="display:flex; gap:5px;">
+          <sc-for list="{{ rpeScale }}" as="r" hint-placeholder-count="10">
+            <button onClick="{{ r.select }}" style="appearance:none; cursor:pointer; flex:1; height:46px; border-radius:10px; background:{{ r.bg }}; border:1px solid {{ r.bd }}; color:{{ r.fg }}; font-family:Saira, sans-serif; font-size:13px; font-weight:700;">{{ r.n }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <button onClick="{{ addCourt }}" style="appearance:none; cursor:pointer; height:52px; border-radius:15px; background:linear-gradient(180deg,#0ab0ff,#0077d6); border:none; color:#00131f; font-family:Saira, sans-serif; font-size:15.5px; font-weight:700; box-shadow:0 8px 24px rgba(0,163,255,.28);">{{ addLabel }}</button>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:13px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline;">
+        <div style="font-family:Saira, sans-serif; font-size:18px; font-weight:700;">Last 14 days</div>
+        <div style="font-size:12.5px; color:#7d8a9e;">{{ loadSummary }}</div>
+      </div>
+      <div style="display:flex; align-items:flex-end; gap:5px; height:96px; padding:0 2px; border-bottom:1px solid rgba(255,255,255,.08);">
+        <sc-for list="{{ loadBars }}" as="b" hint-placeholder-count="14">
+          <div title="{{ b.title }}" style="flex:1; height:{{ b.h }}; min-height:3px; border-radius:4px 4px 0 0; background:{{ b.bg }};"></div>
+        </sc-for>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:11px; color:#5f6b7d;">
+        <span>14d ago</span><span>Today</span>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isDaily }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; padding:26px 20px 110px; display:flex; flex-direction:column; gap:22px; animation:riseIn .3s ease both;">
+    <div>
+      <div style="font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#00a3ff; font-family:Saira, sans-serif; font-weight:600;">AM, before food</div>
+      <div style="font-family:Saira, sans-serif; font-size:28px; font-weight:700; letter-spacing:-.02em; margin-top:2px;">Readiness log</div>
+      <div style="font-size:13.5px; color:#7d8a9e; margin-top:4px;">{{ todayLabel }}</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:9px;">
+      <sc-for list="{{ fields }}" as="f" hint-placeholder-count="8">
+        <div style="display:flex; align-items:center; gap:12px; background:rgba(255,255,255,.03); border:1px solid {{ f.bd }}; border-radius:15px; padding:10px 12px;">
+          <div style="flex:1; font-size:14px; color:#a8b7c9;">{{ f.label }}</div>
+          <input type="{{ f.type }}" inputmode="{{ f.mode }}" placeholder="—" value="{{ f.value }}" onChange="{{ f.onChange }}" style="width:104px; height:44px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); border-radius:11px; color:#e9eef6; font-family:Saira, sans-serif; font-size:16px; font-weight:600; text-align:center; outline:none;" style-focus="border-color:#00a3ff;">
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:11px;">
+      <div style="font-family:Saira, sans-serif; font-size:18px; font-weight:700;">Gate — decision for Mon 3 Aug</div>
+      <sc-for list="{{ gate }}" as="g" hint-placeholder-count="3">
+        <div style="background:{{ g.bg }}; border:1px solid {{ g.bd }}; border-radius:16px; padding:14px 15px; display:flex; flex-direction:column; gap:7px;">
+          <div style="font-family:Saira, sans-serif; font-size:12px; font-weight:800; letter-spacing:.16em; color:{{ g.fg }};">{{ g.level }}</div>
+          <div style="font-size:13.5px; color:#c3d0de; line-height:1.5; text-wrap:pretty;">{{ g.criteria }}</div>
+          <div style="font-size:13px; color:#8b9ab0; line-height:1.5; border-top:1px solid rgba(255,255,255,.07); padding-top:8px; text-wrap:pretty;">{{ g.action }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:9px;">
+      <div style="font-family:Saira, sans-serif; font-size:18px; font-weight:700;">Logged this week</div>
+      <sc-for list="{{ readinessRows }}" as="r" hint-placeholder-count="3">
+        <div style="display:flex; align-items:center; gap:12px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:12px 14px;">
+          <div style="font-family:Saira, sans-serif; font-size:13px; color:#5ad1ff; width:62px; flex:none;">{{ r.date }}</div>
+          <div style="flex:1; font-size:13px; color:#8b9ab0; text-wrap:pretty;">{{ r.summary }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isProgress }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; padding:26px 20px 110px; display:flex; flex-direction:column; gap:24px; animation:riseIn .3s ease both;">
+    <div>
+      <div style="font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#00a3ff; font-family:Saira, sans-serif; font-weight:600;">{{ athleteName }}</div>
+      <div style="font-family:Saira, sans-serif; font-size:28px; font-weight:700; letter-spacing:-.02em; margin-top:2px;">Progress</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+        <div style="background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:14px 12px; display:flex; flex-direction:column; gap:4px;">
+          <div style="font-family:Saira, sans-serif; font-size:27px; font-weight:700; color:#5ad1ff; letter-spacing:-.02em;">{{ s.value }}</div>
+          <div style="font-size:11.5px; color:#7d8a9e; line-height:1.3;">{{ s.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div style="font-family:Saira, sans-serif; font-size:18px; font-weight:700;">Last 8 weeks</div>
+      <div style="display:grid; grid-template-columns:repeat(14, 1fr); gap:5px;">
+        <sc-for list="{{ heat }}" as="h" hint-placeholder-count="56">
+          <div title="{{ h.title }}" style="aspect-ratio:1; border-radius:4px; background:{{ h.bg }}; border:1px solid {{ h.bd }};"></div>
+        </sc-for>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px; font-size:11.5px; color:#5f6b7d;">
+        <span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:9px; height:9px; border-radius:3px; background:#00a3ff; display:inline-block;"></span>Plan day</span>
+        <span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:9px; height:9px; border-radius:3px; background:#f5a524; display:inline-block;"></span>Court</span>
+        <span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:9px; height:9px; border-radius:3px; background:#1e2a38; display:inline-block;"></span>Rest</span>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:11px;">
+      <div style="font-family:Saira, sans-serif; font-size:18px; font-weight:700;">Recent</div>
+      <sc-for list="{{ history }}" as="h" hint-placeholder-count="4">
+        <div style="display:flex; align-items:center; gap:12px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:13px 14px;">
+          <div style="width:8px; height:8px; border-radius:50%; background:{{ h.dot }}; flex:none;"></div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:14.5px; font-weight:600;">{{ h.title }}</div>
+            <div style="font-size:12px; color:#6f7d90;">{{ h.detail }}</div>
+          </div>
+          <div style="font-size:12px; color:#6f7d90; font-family:Saira, sans-serif;">{{ h.when }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <button onClick="{{ exportProgress }}" style="appearance:none; cursor:pointer; height:50px; border-radius:15px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); color:#a8b7c9; font-size:14px; font-weight:600;" style-hover="border-color:rgba(0,163,255,.5); color:#e9eef6;">{{ exportLabel }}</button>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isEmptyBlock }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; padding:22px 20px 110px; display:flex; flex-direction:column; gap:20px; animation:riseIn .3s ease both;">
+    <button onClick="{{ backToBlocks }}" style="appearance:none; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#8fa0b6; width:36px; height:36px; border-radius:11px; font-size:16px; line-height:1; align-self:flex-start;" style-hover="color:#e9eef6;">←</button>
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#6f7d90; font-family:Saira, sans-serif; font-weight:600;">{{ emptyDates }}</div>
+      <div style="font-family:Saira, sans-serif; font-size:29px; font-weight:700; letter-spacing:-.02em; line-height:1.1; text-wrap:balance;">{{ emptyTitle }}</div>
+      <div style="font-size:14.5px; color:#9fb0c4; line-height:1.6; text-wrap:pretty;">{{ emptyPurpose }}</div>
+    </div>
+    <div style="border:1px dashed rgba(255,255,255,.14); border-radius:20px; padding:26px 20px; display:flex; flex-direction:column; gap:10px; align-items:flex-start;">
+      <div style="font-family:Saira, sans-serif; font-size:17px; font-weight:700; color:#8fa0b6;">Plan not written yet</div>
+      <div style="font-size:13.5px; color:#6f7d90; line-height:1.6; text-wrap:pretty;">This block unlocks when the week's markdown is added. Sessions, rest days and the readiness gate all appear here automatically.</div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; padding:22px 20px 60px; display:flex; flex-direction:column; gap:22px; animation:riseIn .25s ease both;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <button onClick="{{ closeSettings }}" style="appearance:none; cursor:pointer; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#8fa0b6; width:36px; height:36px; border-radius:11px; font-size:16px; line-height:1;" style-hover="color:#e9eef6;">←</button>
+      <div style="font-family:Saira, sans-serif; font-size:24px; font-weight:700; letter-spacing:-.02em;">Settings</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#5f6b7d; font-family:Saira, sans-serif; font-weight:700;">Sync</div>
+      <button onClick="{{ exportProgress }}" style="appearance:none; cursor:pointer; height:50px; border-radius:15px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); color:#a8b7c9; font-size:14px; font-weight:600;" style-hover="border-color:rgba(0,163,255,.5); color:#e9eef6;">{{ exportLabel }}</button>
+      <div style="display:flex; gap:8px;">
+        <input type="text" placeholder="Paste a progress code" value="{{ importText }}" onChange="{{ onImportText }}" style="flex:1; height:50px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); border-radius:15px; color:#e9eef6; font-size:14px; padding:0 14px; outline:none;" style-focus="border-color:#00a3ff;">
+        <button onClick="{{ doImport }}" style="appearance:none; cursor:pointer; width:96px; height:50px; border-radius:15px; background:rgba(0,163,255,.14); border:1px solid rgba(0,163,255,.4); color:#5ad1ff; font-family:Saira, sans-serif; font-size:14px; font-weight:700;">{{ importLabel }}</button>
+      </div>
+      <div style="font-size:12.5px; color:#5f6b7d; line-height:1.6; text-wrap:pretty;">Codes are a full snapshot — sets, rest-day ticks, court load and readiness. Until the app has a database, this is how progress travels between phones.</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#5f6b7d; font-family:Saira, sans-serif; font-weight:700;">This device</div>
+      <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:15px; padding:14px;">
+        <span style="font-size:14px; color:#a8b7c9;">Storage used</span>
+        <span style="font-family:Saira, sans-serif; font-size:14px; color:#5ad1ff;">{{ storageUsed }}</span>
+      </div>
+      <button onClick="{{ resetData }}" style="appearance:none; cursor:pointer; height:50px; border-radius:15px; background:{{ resetBg }}; border:1px solid {{ resetBd }}; color:{{ resetFg }}; font-size:14px; font-weight:600;">{{ resetLabel }}</button>
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,.06); padding-top:16px; font-size:12px; color:#4e5866; line-height:1.7;">Court Strength · static build<br>Plans generated as markdown, compiled at build time.</div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isComplete }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1; padding:60px 24px 40px; display:flex; flex-direction:column; justify-content:center; gap:26px; animation:riseIn .3s ease both;">
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div style="width:54px; height:54px; border-radius:17px; background:rgba(0,163,255,.14); border:1px solid rgba(0,163,255,.45); display:flex; align-items:center; justify-content:center; font-size:23px; color:#5ad1ff; animation:pulseGlow 2.2s ease-in-out infinite;">✓</div>
+      <div style="font-family:Saira, sans-serif; font-size:34px; font-weight:700; letter-spacing:-.025em; line-height:1.05; text-wrap:balance;">{{ completeTitle }}</div>
+      <div style="font-size:15px; color:#9fb0c4; line-height:1.6; text-wrap:pretty;">{{ completeSub }}</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+      <sc-for list="{{ completeStats }}" as="s" hint-placeholder-count="2">
+        <div style="background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:15px 14px; display:flex; flex-direction:column; gap:4px;">
+          <div style="font-family:Saira, sans-serif; font-size:26px; font-weight:700; color:#5ad1ff; letter-spacing:-.02em;">{{ s.value }}</div>
+          <div style="font-size:11.5px; color:#7d8a9e; line-height:1.3;">{{ s.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="border-left:2px solid rgba(0,163,255,.6); padding:2px 0 2px 13px; color:#8b9ab0; font-size:13.5px; line-height:1.6; text-wrap:pretty;">{{ completeNext }}</div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <button onClick="{{ completeToWeek }}" style="appearance:none; cursor:pointer; height:54px; border-radius:16px; background:linear-gradient(180deg,#0ab0ff,#0077d6); border:none; color:#00131f; font-family:Saira, sans-serif; font-size:16px; font-weight:700; box-shadow:0 8px 24px rgba(0,163,255,.3);">Back to the week</button>
+      <button onClick="{{ completeToProgress }}" style="appearance:none; cursor:pointer; height:50px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); color:#a8b7c9; font-size:14px; font-weight:600;">See progress</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showTabs }}" hint-placeholder-val="{{ false }}">
+  <div style="position:sticky; bottom:0; left:0; right:0; background:rgba(6,9,14,.92); backdrop-filter:blur(14px); border-top:1px solid rgba(255,255,255,.07); display:grid; grid-template-columns:1fr 1fr 1fr 1fr; padding:9px 10px 20px;">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+      <button onClick="{{ t.select }}" style="appearance:none; cursor:pointer; background:transparent; border:none; padding:8px 0; min-height:48px; display:flex; flex-direction:column; align-items:center; gap:5px; color:{{ t.fg }};">
+        <span style="font-size:17px; line-height:1;">{{ t.icon }}</span>
+        <span style="font-size:11px; font-weight:600; letter-spacing:.03em;">{{ t.label }}</span>
+      </button>
+    </sc-for>
+  </div>
+</sc-if>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:440,&quot;height&quot;:900}}">
+const BLUE = '#00a3ff';
+const AMBER = '#f5a524';
+const KEY = 'cs.progress.v3';
+
+const DAILY = {
+  name: 'Back Insurance',
+  mins: '8 min · non-negotiable',
+  steps: ['Glute bridge', 'Couch stretch (L first)', 'Supine hamstring (L first)', '90/90', 'Dead bugs', "Child's pose"],
+};
+
+const WEEK = {
+  id: 'decompression',
+  title: 'Decompression Pre-week',
+  dates: 'Tue 28 Jul – Sun 2 Aug 2026',
+  purpose: 'Shed fatigue, hold tendon quality, reset the clock. Not a training week.',
+  meta: [
+    { label: 'Days to finals (3 Sep)', value: '37 → 32' },
+    { label: 'Week 0 starts', value: 'Mon 3 Aug' },
+    { label: 'First heavy lift', value: 'Mon 10 Aug' },
+    { label: '3x3 Scotland', value: 'Sun 16 Aug' },
+  ],
+  rules: {
+    do: ['Walk', 'Breathe', 'Mobilise', 'Low-load isometrics', 'Sleep'],
+    dont: ['Plyometrics', 'Jumps', 'Sled', 'Change of direction', 'Barbell of any weight', 'Nordics', '5v5', 'Shooting to fatigue', 'GHD (ever)'],
+    note: 'Three light sessions, three rest days. The rest days are programmed — they are not missed sessions.',
+  },
+  days: [
+    {
+      id: 'd1', label: 'Tue 28 Jul', title: 'Arrival', type: 'travel', out: 37,
+      summary: 'No training. Lands 13:00. Jet lag is the only job today.',
+      items: [
+        ['Ankle pumps / calf circulation', '30 each foot, seated', 'On arrival'],
+        ['Easy walk outdoors', '20–30 min, daylight, no phone', '15:00'],
+        ['Nap', '20 min MAX, only before 15:00', '—'],
+        ['Back Insurance', '8 min', '20:30'],
+        ['Screens and bright light off', '', '21:30'],
+        ['Bed', 'UK time, no later', '22:30'],
+      ],
+      notes: ['5-hour eastward shift = phase advance. Morning daylight pulls the clock forward; long naps and evening light push it back. One disciplined day here saves three.'],
+    },
+    {
+      id: 'd2', label: 'Wed 29 Jul', title: 'Restoration A', type: 'session', out: 36, dur: '~35 min', rpe: 5,
+      summary: 'Morning: 10 min outdoors within 30 min of waking. Circadian anchor — every day this week.',
+      ex: [
+        ['Easy bike or brisk walk', 'Conversational, nose breathing', '1 × 20min', '—'],
+        ['Spanish squat isometric', 'Bodyweight + band', '4 × 30s', '45s'],
+        ['Tibialis raise', 'Bodyweight, monkey foot or wall', '2 × 20', '45s'],
+        ['Calf raise, 3s down', 'Bodyweight only', '2 × 12', '60s'],
+        ['90/90 hip switches', 'Bodyweight', '2 × 8 each', '30s'],
+        ['Dead bug, slow exhale', 'Bodyweight', '2 × 6 each', '45s'],
+      ],
+      cues: { 'Spanish squat isometric': 'Knees stacked over toes, shins vertical-ish. Hold the shake — this is the tendon dose.' },
+      notes: ['Isometrics maintain tendon stiffness at near-zero systemic cost. This is the one quality we refuse to give back this week — the plyo ramp in Week 3 depends on it.'],
+    },
+    {
+      id: 'd3', label: 'Thu 30 Jul', title: 'Full Rest', type: 'rest', out: 35,
+      summary: 'Nothing. Walk if he wants to, morning light, Back Insurance in the evening.',
+      items: [
+        ['Morning light', '10 min outdoors within 30 min of waking', 'AM'],
+        ['Optional easy walk', 'Only if he wants it', '—'],
+        ['Back Insurance', '8 min', 'PM'],
+      ],
+      notes: ['No gym. No court. No "just a bit of shooting."'],
+    },
+    {
+      id: 'd4', label: 'Fri 31 Jul', title: 'Restoration B', type: 'session', out: 34, dur: '~35 min', rpe: 6,
+      summary: 'Blood flow, no CNS cost. He should be fresh the next morning — if he is sore, it was too much.',
+      ex: [
+        ['Spanish squat isometric', 'Bodyweight + band', '4 × 30s', '45s'],
+        ['A1 Ring row, tall chest', 'Bodyweight, feet forward (easy angle)', '3 × 10', '30s'],
+        ['A2 DB incline press', '12–14kg', '3 × 12', '60s'],
+        ['B1 Cable face pull', 'Light', '3 × 15', '30s'],
+        ['B2 DB curl', '8–10kg', '3 × 12', '45s'],
+        ['Dead bug', 'Bodyweight', '2 × 8 each', '30s'],
+        ['Side plank', 'Bodyweight', '2 × 25s each', '45s'],
+      ],
+      notes: ['Antagonistic pairing keeps it efficient and keeps the load light. Nothing here should feel like a set worth counting.'],
+    },
+    {
+      id: 'd5', label: 'Sat 1 Aug', title: 'Restoration C', type: 'session', out: 33, dur: '~35 min',
+      summary: 'Re-groove patterns at bodyweight. Left leg leads every unilateral movement.',
+      ex: [
+        ['Spanish squat isometric', 'Bodyweight + band', '3 × 30s', '45s'],
+        ['ATG split squat', 'Bodyweight only', '2 × 8 each (L first)', '60s'],
+        ['Standing knee drive above 90°', 'Band or cable, 5–7kg', '3 × 8 each', '45s'],
+        ['Seated hip flexor lift (knee bent)', 'Bodyweight', '2 × 8 each', '45s'],
+        ['Glute bridge march', 'Bodyweight', '2 × 10 each', '45s'],
+        ['Single-leg RDL, slow', '8kg DB', '2 × 6 each (L first)', '60s'],
+      ],
+      optional: { title: 'Court work', limit: '15 min hard cap', body: 'Spot shooting, form only, stationary. No movement shooting, no game speed, no counting makes. Stop the second mechanics wobble — fatigued reps cost more than they give.' },
+      notes: [
+        'Hip flexor work belongs here, not in a heavy week — low load, fresh, full control. This is the root of the compensation pattern and a rest week is the cheapest time to attack it.',
+        'No Nordics until Week 0. Hamstrings get length and control this week, not eccentric damage.',
+      ],
+    },
+    {
+      id: 'd6', label: 'Sun 2 Aug', title: 'Full Rest + Readiness Gate', type: 'rest', out: 32,
+      summary: 'Back Insurance. Log the readiness numbers. Nothing else.',
+      items: [
+        ['Morning light', '10 min outdoors', 'AM'],
+        ['Readiness log', 'All fields, before food', 'AM'],
+        ['Back Insurance', '8 min', 'PM'],
+      ],
+      notes: ['This week is also the test. If he bounces back springy, he was functionally overreached and the timing was right. If he is still flat by Sunday, we have found that out before loading him at 90% — which is the whole point.'],
+    },
+  ],
+  readiness: ['Resting HR', 'Sleep (h)', 'Sleep 1–10', 'Soreness 1–10', 'Motivation 1–10', 'Bodyweight', 'Back', 'L hamstring'],
+  gate: [
+    { level: 'GREEN', fg: '#34d399', bg: 'rgba(52,211,153,.08)', bd: 'rgba(52,211,153,.28)', criteria: 'RHR within 5 of baseline · sleep 8h+ · motivation 7+ · back clear', action: 'Week 0 runs as written, 65–70%' },
+    { level: 'AMBER', fg: AMBER, bg: 'rgba(245,165,36,.08)', bd: 'rgba(245,165,36,.28)', criteria: 'Any two markers off · back tight but not painful', action: 'Week 0 Day 1 at 55–60%, 4 training days that week only' },
+    { level: 'RED', fg: '#ff5470', bg: 'rgba(255,84,112,.07)', bd: 'rgba(255,84,112,.26)', criteria: 'RHR +10 · broken sleep · back symptomatic · flat and unmotivated', action: 'Extend decompression 3 days. We move the calendar, not the athlete' },
+  ],
+};
+
+const BLOCKS = [
+  { id: 'decompression', tag: 'Current', title: 'Decompression Pre-week', dates: '28 Jul – 2 Aug', purpose: 'Shed fatigue, hold tendon quality, reset the clock.', week: WEEK },
+  { id: 'week0', tag: 'Next', title: 'Week 0 — Reload', dates: '3 – 9 Aug', purpose: 'Re-enter at 65–70%. Gate decision on Sun 2 Aug sets the entry point.' },
+  { id: 'preseason', tag: 'Pre-season', title: 'Pre-season Block', dates: '10 – 30 Aug', purpose: 'Heavy lifting returns, plyo ramp, court volume climbs toward 3x3 Scotland.' },
+  { id: 'inseason', tag: 'In-season', title: 'In-season Maintenance', dates: 'From 3 Sep', purpose: 'Two short lifts a week around games. Hold what was built.' },
+];
+
+const COURT_TYPES = ['Practice', 'Game', 'Shootaround', 'Skills'];
+const RPE_WORDS = ['', 'Very easy', 'Easy', 'Light', 'Steady', 'Moderate', 'Solid', 'Hard', 'Very hard', 'Brutal', 'Everything'];
+
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+function planDate(label) {
+  const m = label.match(/(\d{1,2})\s+([A-Za-z]{3})/);
+  if (!m) return new Date();
+  return new Date(2026, MONTHS.indexOf(m[2].toLowerCase()), parseInt(m[1]), 12);
+}
+function ymd(d) { return d.toISOString().slice(0, 10); }
+function daysAgo(n) { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - n); return d; }
+function parseSets(scheme) { const m = String(scheme).match(/^(\d+)/); return m ? parseInt(m[1]) : 1; }
+function parseReps(scheme) { const p = String(scheme).split('×')[1]; return p ? p.trim() : ''; }
+function parsePair(name) { const m = name.match(/^([AB]\d)\s+(.*)$/); return m ? { pair: m[1], name: m[2] } : { pair: '', name }; }
+function restSecs(r) { const m = String(r).match(/(\d+)\s*s/); if (m) return parseInt(m[1]); const mm = String(r).match(/(\d+)\s*min/); return mm ? parseInt(mm[1]) * 60 : 0; }
+
+class Component extends DCLogic {
+  state = {
+    athlete: null, tab: 'plan', block: null, day: null, session: false, exIdx: 0,
+    log: {}, court: [], readiness: {}, rest: 0, exported: false, added: false,
+    overlay: null, complete: null, importText: '', imported: 0, resetArm: false,
+    draft: { type: 'Practice', mins: 60, rpe: 6 },
+  };
+
+  componentDidMount() {
+    try {
+      const d = JSON.parse(localStorage.getItem(KEY) || '{}');
+      const who = localStorage.getItem(KEY + '.who');
+      this.setState({ log: d.log || {}, court: d.court || [], readiness: d.readiness || {}, athlete: who || null });
+    } catch (e) {}
+    this.timer = setInterval(() => { if (this.state.rest > 0) this.setState(s => ({ rest: s.rest - 1 })); }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.timer); }
+
+  save(patch) {
+    this.setState(patch, () => {
+      try { localStorage.setItem(KEY, JSON.stringify({ log: this.state.log, court: this.state.court, readiness: this.state.readiness })); } catch (e) {}
+    });
+  }
+
+  athletes() {
+    return [
+      { id: 'kai', name: 'Kai', sub: 'Guard · U16 · 3x3 Scotland' },
+      { id: 'sam', name: 'Sam', sub: 'Forward · U18 · Off-season' },
+      { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
+    ];
+  }
+
+  dkey(dayId) { return this.state.athlete + ':' + dayId; }
+  rec(dayId) { return this.state.log[this.dkey(dayId)] || { sets: {}, ticks: {} }; }
+  block() { return BLOCKS.find(b => b.id === this.state.block); }
+  day() { const b = this.block(); return b && b.week ? b.week.days.find(d => d.id === this.state.day) : null; }
+  exercises(day) {
+    return (day.ex || []).map(e => {
+      const p = parsePair(e[0]);
+      return { name: p.name, pair: p.pair, load: e[1], scheme: e[2], rest: e[3], cue: (day.cues || {})[e[0]] || (day.cues || {})[p.name] || '' };
+    });
+  }
+
+  renderVals() {
+    const st = this.state;
+    const blk = this.block();
+    const day = this.day();
+    const screen = !st.athlete ? 'home'
+      : st.overlay === 'settings' ? 'settings'
+      : st.complete ? 'complete'
+      : st.session && day ? 'session'
+      : st.tab !== 'plan' ? st.tab
+      : day ? 'day' : blk ? (blk.week ? 'week' : 'empty') : 'blocks';
+
+    const v = {
+      isHome: screen === 'home', isBlocks: screen === 'blocks', isWeek: screen === 'week',
+      isDay: screen === 'day', isSession: screen === 'session', isCourt: screen === 'court',
+      isDaily: screen === 'daily', isProgress: screen === 'progress',
+      isSettings: screen === 'settings', isComplete: screen === 'complete', isEmptyBlock: screen === 'empty',
+      isCoach: st.athlete === 'coach',
+      showTabs: !!st.athlete && ['blocks', 'week', 'court', 'daily', 'progress', 'empty'].indexOf(screen) >= 0,
+      athleteName: (this.athletes().find(a => a.id === st.athlete) || {}).name || '',
+      goHome: () => { try { localStorage.removeItem(KEY + '.who'); } catch (e) {} this.setState({ athlete: null, block: null, day: null, session: false, overlay: null, complete: null, tab: 'plan' }); },
+      backToBlocks: () => this.setState({ block: null, day: null }),
+      dailyName: DAILY.name, dailyMins: DAILY.mins, dailySteps: DAILY.steps.join(' → '),
+      countdown: 'Finals Thu 3 Sep · 3x3 Scotland Sun 16 Aug',
+    };
+
+    v.athletes = this.athletes().map(a => {
+      const n = Object.keys(st.log).filter(k => k.startsWith(a.id + ':') && st.log[k].completed).length;
+      return { name: a.name, sub: a.sub, initials: a.name.slice(0, 2).toUpperCase(), pct: n ? n + ' days' : 'Start', open: () => { try { localStorage.setItem(KEY + '.who', a.id); } catch (e) {} this.setState({ athlete: a.id, tab: 'plan', block: null, day: null }); } };
+    });
+
+    v.tabs = [
+      { key: 'plan', label: 'Plan', icon: '▤' },
+      { key: 'court', label: 'Court', icon: '◎' },
+      { key: 'daily', label: 'Daily', icon: '✎' },
+      { key: 'progress', label: 'Progress', icon: '◔' },
+    ].map(t => ({ ...t, fg: st.tab === t.key ? BLUE : '#6f7d90', select: () => this.setState({ tab: t.key }) }));
+
+    v.blocks = BLOCKS.map(b => {
+      const total = b.week ? b.week.days.length : 0;
+      const done = b.week ? b.week.days.filter(d => this.rec(d.id).completed).length : 0;
+      const live = !!b.week;
+      return {
+        title: b.title, dates: b.dates, purpose: b.purpose, tag: live ? b.tag : b.tag + ' · not written yet',
+        tagFg: live ? '#00131f' : '#7d8a9e', tagBg: live ? BLUE : 'rgba(255,255,255,.05)', tagBd: live ? BLUE : 'rgba(255,255,255,.1)',
+        bg: live ? 'linear-gradient(180deg, rgba(0,163,255,.09), rgba(255,255,255,.02))' : 'rgba(255,255,255,.025)',
+        bd: live ? 'rgba(0,163,255,.3)' : 'rgba(255,255,255,.07)',
+        pct: total ? Math.round((done / total) * 100) + '%' : '0%',
+        progress: total ? done + '/' + total + ' days' : 'Awaiting plan',
+        open: () => this.setState({ block: b.id, day: null }),
+      };
+    });
+
+    // Today card
+    const liveBlock = BLOCKS.find(b => b.week);
+    const dayDates = liveBlock.week.days.map(d => planDate(d.label));
+    const todayY = ymd(new Date());
+    const idxToday = dayDates.findIndex(d => ymd(d) === todayY);
+    const first = dayDates[0], last = dayDates[dayDates.length - 1];
+    const dayDiff = Math.round((first - new Date(todayY + 'T12:00:00')) / 86400000);
+    if (idxToday >= 0) {
+      const d = liveBlock.week.days[idxToday];
+      v.todayKicker = 'Today';
+      v.todayTitle = d.title;
+      v.todaySub = d.type === 'session' ? [d.dur, (d.ex || []).length + ' exercises'].filter(Boolean).join(' · ') : 'Programmed rest · checklist';
+      v.openToday = () => this.setState({ block: liveBlock.id, day: d.id, tab: 'plan', exIdx: 0 });
+    } else if (dayDiff > 0) {
+      const d = liveBlock.week.days[0];
+      v.todayKicker = dayDiff === 1 ? 'Starts tomorrow' : 'Starts in ' + dayDiff + ' days';
+      v.todayTitle = liveBlock.week.title;
+      v.todaySub = d.label + ' · ' + d.title;
+      v.openToday = () => this.setState({ block: liveBlock.id, day: null, tab: 'plan' });
+    } else {
+      v.todayKicker = new Date(todayY) > last ? 'Block finished' : 'Off-plan day';
+      v.todayTitle = liveBlock.week.title;
+      v.todaySub = 'Review the week or log court work';
+      v.openToday = () => this.setState({ block: liveBlock.id, day: null, tab: 'plan' });
+    }
+
+    // Settings
+    v.openSettings = () => this.setState({ overlay: 'settings', resetArm: false });
+    v.closeSettings = () => this.setState({ overlay: null, resetArm: false });
+    v.importText = st.importText;
+    v.onImportText = e => this.setState({ importText: e.target.value, imported: 0 });
+    v.importLabel = st.imported === 1 ? 'Loaded' : st.imported === -1 ? 'Bad code' : 'Import';
+    v.doImport = () => {
+      try {
+        const d = JSON.parse(decodeURIComponent(escape(atob(st.importText.trim()))));
+        this.save({ log: { ...st.log, ...(d.log || {}) }, court: [...st.court, ...(d.court || [])], readiness: { ...st.readiness, ...(d.readiness || {}) }, imported: 1, importText: '' });
+      } catch (e) { this.setState({ imported: -1 }); }
+    };
+    let bytes = 0;
+    try { bytes = (localStorage.getItem(KEY) || '').length; } catch (e) {}
+    v.storageUsed = bytes < 1024 ? bytes + ' B' : (bytes / 1024).toFixed(1) + ' KB';
+    v.resetLabel = st.resetArm ? 'Tap again to erase everything' : 'Reset this device';
+    v.resetBg = st.resetArm ? 'rgba(255,84,112,.12)' : 'rgba(255,255,255,.04)';
+    v.resetBd = st.resetArm ? 'rgba(255,84,112,.45)' : 'rgba(255,255,255,.12)';
+    v.resetFg = st.resetArm ? '#ff8ea1' : '#8b9ab0';
+    v.resetData = () => {
+      if (!st.resetArm) return this.setState({ resetArm: true });
+      this.save({ log: {}, court: [], readiness: {}, resetArm: false, overlay: null });
+    };
+
+    if (blk && !blk.week) {
+      v.emptyTitle = blk.title; v.emptyDates = blk.dates; v.emptyPurpose = blk.purpose;
+    }
+
+    if (st.complete) {
+      v.completeTitle = st.complete.title;
+      v.completeSub = st.complete.sub;
+      v.completeStats = st.complete.stats;
+      v.completeNext = st.complete.next;
+      v.completeToWeek = () => this.setState({ complete: null, day: null, session: false });
+      v.completeToProgress = () => this.setState({ complete: null, day: null, session: false, tab: 'progress' });
+    }
+
+    if (blk && blk.week) {
+      const w = blk.week;
+      v.blockTag = blk.tag + ' block';
+      v.weekTitle = w.title; v.weekDates = w.dates; v.weekPurpose = w.purpose; v.meta = w.meta;
+      v.ruleDo = w.rules.do; v.ruleDont = w.rules.dont; v.ruleNote = w.rules.note;
+      v.days = w.days.map(d => {
+        const done = !!this.rec(d.id).completed;
+        const isRest = d.type !== 'session';
+        return {
+          label: d.label, title: d.title, out: d.out,
+          meta: d.type === 'session' ? [d.dur, d.rpe ? 'RPE cap ' + d.rpe : '', (d.ex || []).length + ' exercises'].filter(Boolean).join(' · ') : (d.type === 'travel' ? 'Travel day · checklist' : 'Programmed rest'),
+          titleFg: isRest && !done ? '#a8b7c9' : '#e9eef6',
+          bg: done ? 'rgba(0,163,255,.08)' : isRest ? 'rgba(255,255,255,.02)' : 'rgba(255,255,255,.035)',
+          bd: done ? 'rgba(0,163,255,.32)' : 'rgba(255,255,255,.07)',
+          mark: done ? '✓' : isRest ? '·' : '▲',
+          markBg: done ? 'rgba(0,163,255,.18)' : 'rgba(255,255,255,.04)',
+          markBd: done ? 'rgba(0,163,255,.5)' : 'rgba(255,255,255,.1)',
+          markFg: done ? '#5ad1ff' : isRest ? '#5f6b7d' : '#8fa0b6',
+          open: () => this.setState({ day: d.id, exIdx: 0 }),
+        };
+      });
+      v.gate = w.gate;
+      v.fieldDefs = w.readiness;
+    }
+
+    if (day) {
+      const rec = this.rec(day.id);
+      const exs = this.exercises(day);
+      v.dayLabel = day.label + ' · ' + day.out + ' days out';
+      v.dayTitle = day.title;
+      v.dayMeta = day.type === 'session' ? [day.dur, day.rpe ? 'RPE cap ' + day.rpe : ''].filter(Boolean).join(' · ') : 'No training';
+      v.hasSummary = !!day.summary; v.daySummary = day.summary || '';
+      v.hasChecklist = !!(day.items || []).length;
+      v.checklist = (day.items || []).map((it, i) => {
+        const on = !!rec.ticks['i' + i];
+        return {
+          name: it[0], detail: it[1] || '', when: it[2] === '—' ? '' : (it[2] || ''),
+          bg: on ? 'rgba(0,163,255,.08)' : 'rgba(255,255,255,.028)',
+          bd: on ? 'rgba(0,163,255,.3)' : 'rgba(255,255,255,.07)',
+          boxBg: on ? BLUE : 'rgba(255,255,255,.04)', boxBd: on ? BLUE : 'rgba(255,255,255,.12)',
+          boxFg: on ? '#00131f' : '#39424f', fg: on ? '#9fd8ff' : '#e9eef6',
+          toggle: () => this.tick(day.id, 'i' + i),
+        };
+      });
+      v.hasExercises = exs.length > 0;
+      v.exCountLabel = exs.length + ' exercises · tap to jump in';
+      v.exList = exs.map((e, i) => {
+        const setsDone = (rec.sets[i] || []).filter(s => s && s.done).length;
+        const all = setsDone >= parseSets(e.scheme);
+        return {
+          name: (e.pair ? e.pair + ' ' : '') + e.name, load: e.load, scheme: e.scheme,
+          bg: all ? 'rgba(0,163,255,.08)' : 'rgba(255,255,255,.028)',
+          bd: all ? 'rgba(0,163,255,.3)' : 'rgba(255,255,255,.07)',
+          mark: all ? '✓' : String(i + 1),
+          boxBg: all ? BLUE : 'rgba(255,255,255,.04)', boxBd: all ? BLUE : 'rgba(255,255,255,.12)',
+          boxFg: all ? '#00131f' : '#6f7d90',
+          open: () => this.setState({ session: true, exIdx: i, rest: 0 }),
+        };
+      });
+      v.hasOptional = !!day.optional;
+      if (day.optional) { v.optTitle = day.optional.title; v.optLimit = day.optional.limit; v.optBody = day.optional.body; }
+      v.dayNotes = day.notes || [];
+      v.dailyChips = DAILY.steps.map((s, i) => {
+        const on = !!rec.ticks['bi' + i];
+        return { label: s, fg: on ? '#00131f' : '#8b9ab0', bg: on ? BLUE : 'rgba(255,255,255,.04)', bd: on ? BLUE : 'rgba(255,255,255,.09)', toggle: () => this.tick(day.id, 'bi' + i) };
+      });
+      v.startLabel = Object.keys(rec.sets || {}).length ? 'Continue session' : 'Start session';
+      v.startSession = () => this.setState({ session: true, exIdx: 0, rest: 0 });
+      v.closeDay = () => this.setState({ day: null });
+      const dn = !!rec.completed;
+      v.doneLabel = dn ? 'Day complete ✓' : 'Mark day complete';
+      v.doneBg = dn ? 'rgba(0,163,255,.15)' : 'rgba(255,255,255,.04)';
+      v.doneBd = dn ? 'rgba(0,163,255,.5)' : 'rgba(255,255,255,.12)';
+      v.doneFg = dn ? '#5ad1ff' : '#a8b7c9';
+      v.toggleDayDone = () => this.completeDay(day, !dn);
+
+      if (st.session && exs.length) {
+        const ex = exs[Math.min(st.exIdx, exs.length - 1)];
+        const nSets = parseSets(ex.scheme);
+        const reps = parseReps(ex.scheme);
+        const done = rec.sets[st.exIdx] || [];
+        v.exPos = st.exIdx + 1; v.exTotal = exs.length;
+        v.exName = ex.name; v.exScheme = ex.scheme; v.exLoad = ex.load; v.exRest = ex.rest;
+        v.hasPair = !!ex.pair; v.exPair = ex.pair;
+        v.pairWith = ex.pair ? (exs.filter(o => o.pair && o.pair[0] === ex.pair[0] && o.pair !== ex.pair).map(o => o.name)[0] || 'paired') : '';
+        v.hasCue = !!ex.cue; v.exCue = ex.cue;
+        v.repHeader = /s$/.test(reps) ? 'Time' : 'Reps';
+        v.sessionDoneCount = exs.filter((_, i) => (rec.sets[i] || []).filter(s => s && s.done).length > 0).length;
+        v.exDots = exs.map((_, i) => ({ bg: i === st.exIdx ? BLUE : ((rec.sets[i] || []).filter(s => s && s.done).length ? 'rgba(0,163,255,.4)' : 'rgba(255,255,255,.1)') }));
+        v.sets = Array.from({ length: nSets }, (_, i) => {
+          const s = done[i] || {};
+          const on = !!s.done;
+          return {
+            n: i + 1, weight: s.weight || '', reps: s.reps || '',
+            loadHint: /bodyweight/i.test(ex.load) ? 'BW' : 'kg',
+            repHint: reps.replace(/[^0-9]/g, '') || '—',
+            bg: on ? 'rgba(0,163,255,.09)' : 'rgba(255,255,255,.025)',
+            bd: on ? 'rgba(0,163,255,.35)' : 'rgba(255,255,255,.07)',
+            numFg: on ? '#5ad1ff' : '#6f7d90',
+            btnBg: on ? BLUE : 'rgba(255,255,255,.05)', btnBd: on ? BLUE : 'rgba(255,255,255,.12)', btnFg: on ? '#00131f' : '#5f6b7d',
+            onWeight: e => this.setSet(day.id, i, 'weight', e.target.value),
+            onReps: e => this.setSet(day.id, i, 'reps', e.target.value),
+            toggle: () => this.toggleSet(day.id, i, restSecs(ex.rest)),
+          };
+        });
+        v.restRunning = st.rest > 0;
+        v.restLabel = Math.floor(st.rest / 60) + ':' + String(st.rest % 60).padStart(2, '0');
+        v.skipRest = () => this.setState({ rest: 0 });
+        v.prevEx = () => this.setState(s => ({ exIdx: Math.max(0, s.exIdx - 1), rest: 0 }));
+        v.nextLabel = st.exIdx >= exs.length - 1 ? 'Finish session' : 'Next exercise';
+        v.nextEx = () => {
+          if (st.exIdx >= exs.length - 1) {
+            this.completeDay(day, true);
+            const r = this.rec(day.id);
+            const setCount = Object.keys(r.sets || {}).reduce((a, k) => a + (r.sets[k] || []).filter(s => s && s.done).length, 0);
+            const nextDay = (blk.week.days[blk.week.days.findIndex(d => d.id === day.id) + 1] || null);
+            this.setState({
+              session: false, rest: 0,
+              complete: {
+                title: day.title + ' done',
+                sub: day.label + ' logged. ' + (day.rpe ? 'RPE cap was ' + day.rpe + ' — if it felt harder than that, tell your coach.' : 'Fresh tomorrow is the target.'),
+                stats: [{ value: String(setCount), label: 'Sets logged' }, { value: String(exs.length), label: 'Exercises' }],
+                next: nextDay ? 'Next: ' + nextDay.label + ' — ' + nextDay.title + '. ' + (nextDay.type === 'session' ? 'Bring the same intent.' : 'Rest is programmed. Take it.') : 'Last day of the block. Fill the readiness log before the gate decision.',
+              },
+            });
+          } else this.setState(s => ({ exIdx: s.exIdx + 1, rest: 0 }));
+        };
+        v.closeSession = () => this.setState({ session: false, rest: 0 });
+      }
+    }
+
+    // Court
+    v.courtTypes = COURT_TYPES.map(t => ({
+      label: t,
+      bg: st.draft.type === t ? 'rgba(0,163,255,.15)' : 'rgba(255,255,255,.04)',
+      bd: st.draft.type === t ? 'rgba(0,163,255,.5)' : 'rgba(255,255,255,.09)',
+      fg: st.draft.type === t ? '#eaf6ff' : '#8fa0b6',
+      select: () => this.setState(s => ({ draft: { ...s.draft, type: t }, added: false })),
+    }));
+    v.minSteps = [15, 30, 45, 60, 90].map(m => ({
+      label: String(m),
+      bg: st.draft.mins === m ? 'rgba(0,163,255,.15)' : 'rgba(255,255,255,.04)',
+      bd: st.draft.mins === m ? 'rgba(0,163,255,.5)' : 'rgba(255,255,255,.09)',
+      fg: st.draft.mins === m ? '#eaf6ff' : '#8fa0b6',
+      select: () => this.setState(s => ({ draft: { ...s.draft, mins: m }, added: false })),
+    }));
+    v.draftMins = st.draft.mins + ' min';
+    v.rpeWord = st.draft.rpe + ' · ' + RPE_WORDS[st.draft.rpe];
+    v.rpeScale = Array.from({ length: 10 }, (_, i) => i + 1).map(n => ({
+      n, bg: st.draft.rpe === n ? BLUE : 'rgba(255,255,255,.04)', bd: st.draft.rpe === n ? BLUE : 'rgba(255,255,255,.09)',
+      fg: st.draft.rpe === n ? '#00131f' : '#7d8a9e',
+      select: () => this.setState(s => ({ draft: { ...s.draft, rpe: n }, added: false })),
+    }));
+    v.addLabel = st.added ? 'Logged ✓' : 'Log session';
+    v.addCourt = () => this.save({ court: [...st.court, { athlete: st.athlete, date: ymd(new Date()), ...st.draft, load: st.draft.mins * st.draft.rpe }], added: true });
+
+    const mine = st.court.filter(c => c.athlete === st.athlete);
+    const byDate = {};
+    mine.forEach(c => { byDate[c.date] = (byDate[c.date] || 0) + c.load; });
+    const last14 = Array.from({ length: 14 }, (_, i) => daysAgo(13 - i)).map(d => ({ date: ymd(d), load: byDate[ymd(d)] || 0 }));
+    const maxLoad = Math.max(600, ...last14.map(x => x.load));
+    v.loadBars = last14.map(x => ({
+      h: Math.max(3, Math.round((x.load / maxLoad) * 100)) + '%',
+      bg: x.load ? 'linear-gradient(180deg,#5ad1ff,#0077d6)' : 'rgba(255,255,255,.06)',
+      title: x.date + ' · load ' + x.load,
+    }));
+    const wk = last14.slice(7).reduce((a, x) => a + x.load, 0);
+    const prev = last14.slice(0, 7).reduce((a, x) => a + x.load, 0);
+    v.loadSummary = wk ? wk + ' load · ' + (prev ? (wk >= prev ? '+' : '') + Math.round(((wk - prev) / prev) * 100) + '% vs prior' : 'first week') : 'Nothing logged yet';
+
+    // Readiness
+    const today = ymd(new Date());
+    const rkey = st.athlete + ':' + today;
+    const todayRow = st.readiness[rkey] || {};
+    v.todayLabel = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' });
+    v.fields = (WEEK.readiness).map(label => {
+      const numeric = /HR|h\)|1–10|Bodyweight/.test(label);
+      const val = todayRow[label] || '';
+      return {
+        label, value: val, type: numeric ? 'number' : 'text', mode: numeric ? 'decimal' : 'text',
+        bd: val ? 'rgba(0,163,255,.28)' : 'rgba(255,255,255,.07)',
+        onChange: e => this.setReadiness(rkey, label, e.target.value),
+      };
+    });
+    v.readinessRows = Object.keys(st.readiness).filter(k => k.startsWith(st.athlete + ':')).sort().reverse().slice(0, 6).map(k => {
+      const row = st.readiness[k];
+      const summary = Object.keys(row).filter(f => row[f] !== '').map(f => f.replace(' 1–10', '') + ' ' + row[f]).join(' · ');
+      return { date: k.split(':')[1].slice(5), summary: summary || 'Empty' };
+    });
+    if (!v.readinessRows.length) v.readinessRows = [{ date: '—', summary: 'Nothing logged yet' }];
+
+    // Progress
+    const doneDays = Object.keys(st.log).filter(k => k.startsWith(st.athlete + ':') && st.log[k].completed);
+    const dates = {}; doneDays.forEach(k => { dates[st.log[k].date] = true; });
+    let streak = 0;
+    for (let i = 0; i < 60; i++) {
+      const d = ymd(daysAgo(i));
+      if (dates[d] || byDate[d]) streak++; else if (i > 0) break;
+    }
+    v.stats = [
+      { value: String(doneDays.length), label: 'Plan days done' },
+      { value: String(mine.length), label: 'Court sessions' },
+      { value: String(streak), label: 'Day streak' },
+    ];
+    v.heat = Array.from({ length: 56 }, (_, i) => daysAgo(55 - i)).map(d => {
+      const k = ymd(d); const p = dates[k]; const c = byDate[k];
+      return { bg: p ? BLUE : c ? AMBER : 'rgba(255,255,255,.045)', bd: p || c ? 'transparent' : 'rgba(255,255,255,.05)', title: k + (p ? ' · plan' : '') + (c ? ' · court ' + c : '') };
+    });
+    const hist = [
+      ...doneDays.map(k => ({ date: st.log[k].date, title: st.log[k].name, detail: st.log[k].detail, dot: BLUE })),
+      ...mine.map(c => ({ date: c.date, title: c.type, detail: c.mins + ' min · RPE ' + c.rpe, dot: AMBER })),
+    ].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 6);
+    v.history = hist.length ? hist.map(h => ({ ...h, when: h.date.slice(5) })) : [{ title: 'Nothing logged yet', detail: 'Finish a day and it lands here', when: '—', dot: 'rgba(255,255,255,.2)' }];
+    v.exportLabel = st.exported ? 'Copied to clipboard ✓' : 'Export progress for coach';
+    v.exportProgress = () => {
+      const payload = btoa(unescape(encodeURIComponent(JSON.stringify({ a: st.athlete, log: st.log, court: st.court, readiness: st.readiness }))));
+      try { navigator.clipboard.writeText(payload); } catch (e) {}
+      this.setState({ exported: true });
+      setTimeout(() => this.setState({ exported: false }), 2200);
+    };
+
+    return v;
+  }
+
+  mutate(dayId, fn) {
+    const key = this.dkey(dayId);
+    const log = { ...this.state.log };
+    const rec = { ...(log[key] || { sets: {}, ticks: {} }) };
+    rec.sets = { ...(rec.sets || {}) }; rec.ticks = { ...(rec.ticks || {}) };
+    fn(rec);
+    log[key] = rec;
+    this.save({ log });
+  }
+
+  tick(dayId, k) { this.mutate(dayId, rec => { rec.ticks[k] = !rec.ticks[k]; }); }
+
+  setSet(dayId, i, field, val) {
+    this.mutate(dayId, rec => {
+      const arr = [...(rec.sets[this.state.exIdx] || [])];
+      arr[i] = { ...(arr[i] || {}), [field]: val };
+      rec.sets[this.state.exIdx] = arr;
+    });
+  }
+
+  toggleSet(dayId, i, rest) {
+    let on = false;
+    this.mutate(dayId, rec => {
+      const arr = [...(rec.sets[this.state.exIdx] || [])];
+      const cur = { ...(arr[i] || {}) };
+      cur.done = !cur.done; on = cur.done;
+      arr[i] = cur;
+      rec.sets[this.state.exIdx] = arr;
+    });
+    this.setState({ rest: on ? rest : 0 });
+  }
+
+  completeDay(day, on) {
+    this.mutate(day.id, rec => {
+      rec.completed = on;
+      rec.date = ymd(new Date());
+      rec.name = day.title + ' · ' + day.label;
+      const sets = Object.keys(rec.sets || {}).reduce((a, k) => a + (rec.sets[k] || []).filter(s => s && s.done).length, 0);
+      rec.detail = day.type === 'session' ? sets + ' sets logged · ' + (day.ex || []).length + ' exercises' : 'Rest day ticked off';
+    });
+  }
+}
+
+</script>
+</body>
+</html>
