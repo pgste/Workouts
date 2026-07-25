@@ -60,6 +60,14 @@ export default function Blocks() {
   const athlete = ATHLETES.find((a) => a.id === state.athlete);
   const today = todayCard(actions);
 
+  // Read the list as a timeline: the current block (written, still in progress)
+  // and the one genuinely next after it. Everything else is just "later", so the
+  // next block reads as next instead of a second copy of the current one.
+  const blockDone = (b) => (b.week ? b.week.days.every((d) => record(d.id).completed) : false);
+  const currentIdx = BLOCKS.findIndex((b) => b.week && !blockDone(b));
+  const nextIdx = BLOCKS.findIndex((b, i) => i > currentIdx && !blockDone(b));
+  const statusOf = (i) => (i === currentIdx ? 'current' : i === nextIdx ? 'next' : '');
+
   return (
     <div className="screen screen--pad">
       <div className="blocks__head">
@@ -90,18 +98,24 @@ export default function Blocks() {
       </button>
 
       <div className="blocks__list">
-        {BLOCKS.map((b) => {
+        {BLOCKS.map((b, i) => {
           const live = !!b.week;
+          const status = statusOf(i);
           const total = live ? b.week.days.length : 0;
           const done = live ? b.week.days.filter((d) => record(d.id).completed).length : 0;
           return (
             <button
               key={b.id}
               type="button"
-              className={'block' + (live ? ' block--live' : '')}
+              className={'block' + (live ? ' block--live' : '') + (status ? ' block--' + status : '')}
               onClick={() => actions.openBlock(b.id)}
             >
               <div className="block__top">
+                {status ? (
+                  <span className={'block__status block__status--' + status}>
+                    {status === 'current' ? 'Current' : 'Next up'}
+                  </span>
+                ) : null}
                 <span className="block__tag">{live ? b.tag : b.tag + ' · not written yet'}</span>
                 <span className="block__dates">{b.dates}</span>
               </div>
