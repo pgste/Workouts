@@ -2,9 +2,22 @@ import { ATHLETES, BLOCKS, COUNTDOWN } from '../data/plan.js';
 import { planDate, ymd } from '../lib/plan.js';
 import { useTracker } from '../state/store.jsx';
 
-/** The card at the top: today's day if the block is running, otherwise a countdown. */
+/** The card at the top: today's day if a week is live, otherwise the next block up. */
 function todayCard(actions) {
   const live = BLOCKS.find((b) => b.week);
+
+  // No week written yet — point at the first block rather than dereferencing a
+  // week that doesn't exist. The card taps through to its "not written yet" screen.
+  if (!live) {
+    const first = BLOCKS[0];
+    return {
+      kicker: 'Preseason',
+      title: 'Plan not written yet',
+      sub: first ? first.title + ' · ' + first.dates : 'Weeks drop in soon',
+      open: () => { if (first) actions.openBlock(first.id); },
+    };
+  }
+
   const dates = live.week.days.map((d) => planDate(d.label));
   const today = ymd(new Date());
   const idx = dates.findIndex((d) => ymd(d) === today);

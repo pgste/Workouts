@@ -1,23 +1,41 @@
 // Plan data. Hand-authored for now; the shape below is what a markdown
 // compiler built against PLAN-FORMAT.md should emit — one object per week,
-// blocks ordered by filename prefix.
+// blocks ordered as they run.
+//
+// Lewis — Preseason master plan (Tue 28 Jul → Sun 6 Sep 2026), pointing at the
+// 3x3 Finals on 3–6 Sep. The calendar is BLOCKS; a block gains its day-by-day
+// content when a `week` object is attached. Until then it renders as
+// "plan not written yet".
 
 export const AMBER = '#f5a524';
 
 export const ATHLETES = [
-  { id: 'kai', name: 'Kai', sub: 'Guard · U16 · 3x3 Scotland' },
-  { id: 'sam', name: 'Sam', sub: 'Forward · U18 · Off-season' },
+  { id: 'lewis', name: 'Lewis', sub: 'Preseason · 3x3 Finals 3–6 Sep' },
   { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
 ];
 
+// The evening non-negotiable, attached to every day. Left side first throughout.
 export const DAILY = {
   name: 'Back Insurance',
-  mins: '8 min · non-negotiable',
+  mins: '8 min · every evening',
   steps: ['Glute bridge', 'Couch stretch (L first)', 'Supine hamstring (L first)', '90/90', 'Dead bugs', "Child's pose"],
 };
 
+// Plan-level scaffolding for the Daily tab: the readiness log fields and the
+// GREEN/AMBER/RED gate. Master-plan content, not tied to one training week.
 export const WEEK = {
-  id: 'decompression',
+  readiness: ['Resting HR', 'Sleep (h)', 'Sleep 1–10', 'Soreness 1–10', 'Motivation 1–10', 'Bodyweight', 'Back', 'L hamstring'],
+  gate: [
+    { level: 'GREEN', fg: '#34d399', bg: 'rgba(52,211,153,.08)', bd: 'rgba(52,211,153,.28)', criteria: 'RHR within 5 of baseline · sleep 8h+ · motivation 7+ · back clear', action: 'Week 0 runs as written, 65–70%' },
+    { level: 'AMBER', fg: AMBER, bg: 'rgba(245,165,36,.08)', bd: 'rgba(245,165,36,.28)', criteria: 'Any two markers off · back tight but not painful', action: 'Week 0 Day 1 at 55–60%, 4 training days that week only' },
+    { level: 'RED', fg: '#ff5470', bg: 'rgba(255,84,112,.07)', bd: 'rgba(255,84,112,.26)', criteria: 'RHR +10 · broken sleep · back symptomatic · flat and unmotivated', action: 'Extend decompression 3 days. Tell me — we move the calendar, not the athlete' },
+  ],
+};
+
+// Pre-week — Decompression. The first written week. Attached to the `preweek`
+// block below; every other block stays empty until its week is written.
+const PREWEEK = {
+  id: 'preweek',
   title: 'Decompression Pre-week',
   dates: 'Tue 28 Jul – Sun 2 Aug 2026',
   purpose: 'Shed fatigue, hold tendon quality, reset the clock. Not a training week.',
@@ -38,10 +56,10 @@ export const WEEK = {
       summary: 'No training. Lands 13:00. Jet lag is the only job today.',
       items: [
         ['Ankle pumps / calf circulation', '30 each foot, seated', 'On arrival'],
-        ['Easy walk outdoors', '20–30 min, daylight, no phone', '15:00'],
+        ['Easy walk outdoors', '20–30 min, daylight, no phone', '15:00–17:00'],
         ['Nap', '20 min MAX, only before 15:00', '—'],
-        ['Back Insurance', '8 min', '20:30'],
-        ['Screens and bright light off', '', '21:30'],
+        ['Back Insurance', '8 min', '~20:30'],
+        ['Screens / bright light off', '', '21:30'],
         ['Bed', 'UK time, no later', '22:30'],
       ],
       notes: ['5-hour eastward shift = phase advance. Morning daylight pulls the clock forward; long naps and evening light push it back. One disciplined day here saves three.'],
@@ -52,7 +70,7 @@ export const WEEK = {
       ex: [
         ['Easy bike or brisk walk', 'Conversational, nose breathing', '1 × 20min', '—'],
         ['Spanish squat isometric', 'Bodyweight + band', '4 × 30s', '45s'],
-        ['Tibialis raise', 'Bodyweight, monkey foot or wall', '2 × 20', '45s'],
+        ['Tibialis raise', 'Bodyweight (monkey foot or wall)', '2 × 20', '45s'],
         ['Calf raise, 3s down', 'Bodyweight only', '2 × 12', '60s'],
         ['90/90 hip switches', 'Bodyweight', '2 × 8 each', '30s'],
         ['Dead bug, slow exhale', 'Bodyweight', '2 × 6 each', '45s'],
@@ -95,7 +113,7 @@ export const WEEK = {
         ['Glute bridge march', 'Bodyweight', '2 × 10 each', '45s'],
         ['Single-leg RDL, slow', '8kg DB', '2 × 6 each (L first)', '60s'],
       ],
-      optional: { title: 'Court work', limit: '15 min hard cap', body: 'Spot shooting, form only, stationary. No movement shooting, no game speed, no counting makes. Stop the second mechanics wobble — fatigued reps cost more than they give.' },
+      optional: { title: 'Court work', limit: '15 min hard cap', body: 'Spot shooting, form only, stationary. No movement shooting, no game speed, no counting makes. Stop the second mechanics wobble — fatigued reps at this stage cost more than they give.' },
       notes: [
         'Hip flexor work belongs here, not in a heavy week — low load, fresh, full control. This is the root of the compensation pattern and a rest week is the cheapest time to attack it.',
         'No Nordics until Week 0. Hamstrings get length and control this week, not eccentric damage.',
@@ -112,23 +130,22 @@ export const WEEK = {
       notes: ['This week is also the test. If he bounces back springy, he was functionally overreached and the timing was right. If he is still flat by Sunday, we have found that out before loading him at 90% — which is the whole point.'],
     },
   ],
-  readiness: ['Resting HR', 'Sleep (h)', 'Sleep 1–10', 'Soreness 1–10', 'Motivation 1–10', 'Bodyweight', 'Back', 'L hamstring'],
-  gate: [
-    { level: 'GREEN', fg: '#34d399', bg: 'rgba(52,211,153,.08)', bd: 'rgba(52,211,153,.28)', criteria: 'RHR within 5 of baseline · sleep 8h+ · motivation 7+ · back clear', action: 'Week 0 runs as written, 65–70%' },
-    { level: 'AMBER', fg: AMBER, bg: 'rgba(245,165,36,.08)', bd: 'rgba(245,165,36,.28)', criteria: 'Any two markers off · back tight but not painful', action: 'Week 0 Day 1 at 55–60%, 4 training days that week only' },
-    { level: 'RED', fg: '#ff5470', bg: 'rgba(255,84,112,.07)', bd: 'rgba(255,84,112,.26)', criteria: 'RHR +10 · broken sleep · back symptomatic · flat and unmotivated', action: 'Extend decompression 3 days. We move the calendar, not the athlete' },
-  ],
 };
 
+// The calendar. One entry per block, ordered as they run. A block gains its
+// day-by-day content when a `week` object is attached; until then it shows as
+// "not written yet" and taps through to the empty-block screen.
 export const BLOCKS = [
-  { id: 'decompression', tag: 'Current', title: 'Decompression Pre-week', dates: '28 Jul – 2 Aug', purpose: 'Shed fatigue, hold tendon quality, reset the clock.', week: WEEK },
-  { id: 'week0', tag: 'Next', title: 'Week 0 — Reload', dates: '3 – 9 Aug', purpose: 'Re-enter at 65–70%. Gate decision on Sun 2 Aug sets the entry point.' },
-  { id: 'preseason', tag: 'Pre-season', title: 'Pre-season Block', dates: '10 – 30 Aug', purpose: 'Heavy lifting returns, plyo ramp, court volume climbs toward 3x3 Scotland.' },
-  { id: 'inseason', tag: 'In-season', title: 'In-season Maintenance', dates: 'From 3 Sep', purpose: 'Two short lifts a week around games. Hold what was built.' },
+  { id: 'preweek', tag: 'Pre-week', title: 'Pre-week — Decompression', dates: 'Tue 28 Jul – Sun 2 Aug', purpose: 'Decompression, jet lag, tendon hold. Not a training week.', week: PREWEEK },
+  { id: 'week0', tag: 'Week 0', title: 'Week 0 — Reintegration', dates: 'Mon 3 – Sun 9 Aug', purpose: 'Re-groove patterns at 65–70%. Nothing heavy, nothing fast.' },
+  { id: 'week1', tag: 'Week 1', title: 'Week 1 — Max Strength (front-loaded)', dates: 'Mon 10 – Sun 16 Aug', purpose: 'Heavy Mon/Wed, unload Thu–Sat around 3x3 Scotland on Sun 16.' },
+  { id: 'week2', tag: 'Week 2', title: 'Week 2 — Max Strength', dates: 'Mon 17 – Sun 23 Aug', purpose: 'The heaviest week of the year.' },
+  { id: 'week3', tag: 'Week 3', title: 'Week 3 — Power Conversion', dates: 'Mon 24 – Sun 30 Aug', purpose: 'Load drops, intent goes to max. Convert strength to rate; plyo peaks.' },
+  { id: 'week4', tag: 'Week 4', title: 'Week 4 — Speed & Peak / Taper', dates: 'Mon 31 Aug – Sun 6 Sep', purpose: 'Sharpen and arrive fresh. Finals 3–6 Sep.' },
 ];
 
 export const COURT_TYPES = ['Practice', 'Game', 'Shootaround', 'Skills'];
 export const RPE_WORDS = ['', 'Very easy', 'Easy', 'Light', 'Steady', 'Moderate', 'Solid', 'Hard', 'Very hard', 'Brutal', 'Everything'];
 
-export const COUNTDOWN = 'Finals Thu 3 Sep · 3x3 Scotland Sun 16 Aug';
+export const COUNTDOWN = 'Finals 3–6 Sep · 3x3 Scotland Sun 16 Aug';
 export const GATE_HEADING = 'Gate — decision for Mon 3 Aug';
