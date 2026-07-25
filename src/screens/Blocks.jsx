@@ -1,0 +1,111 @@
+import { ATHLETES, BLOCKS, COUNTDOWN } from '../data/plan.js';
+import { planDate, ymd } from '../lib/plan.js';
+import { useTracker } from '../state/store.jsx';
+
+/** The card at the top: today's day if the block is running, otherwise a countdown. */
+function todayCard(actions) {
+  const live = BLOCKS.find((b) => b.week);
+  const dates = live.week.days.map((d) => planDate(d.label));
+  const today = ymd(new Date());
+  const idx = dates.findIndex((d) => ymd(d) === today);
+  const last = dates[dates.length - 1];
+  const openWeek = () => actions.set({ block: live.id, day: null, tab: 'plan' });
+
+  if (idx >= 0) {
+    const d = live.week.days[idx];
+    return {
+      kicker: 'Today',
+      title: d.title,
+      sub: d.type === 'session'
+        ? [d.dur, (d.ex || []).length + ' exercises'].filter(Boolean).join(' · ')
+        : 'Programmed rest · checklist',
+      open: () => actions.openDay(live.id, d.id),
+    };
+  }
+
+  const diff = Math.round((dates[0] - new Date(today + 'T12:00:00')) / 86400000);
+  if (diff > 0) {
+    const d = live.week.days[0];
+    return {
+      kicker: diff === 1 ? 'Starts tomorrow' : 'Starts in ' + diff + ' days',
+      title: live.week.title,
+      sub: d.label + ' · ' + d.title,
+      open: openWeek,
+    };
+  }
+
+  return {
+    kicker: new Date(today) > last ? 'Block finished' : 'Off-plan day',
+    title: live.week.title,
+    sub: 'Review the week or log court work',
+    open: openWeek,
+  };
+}
+
+export default function Blocks() {
+  const { state, actions, record } = useTracker();
+  const athlete = ATHLETES.find((a) => a.id === state.athlete);
+  const today = todayCard(actions);
+
+  return (
+    <div className="screen screen--pad">
+      <div className="blocks__head">
+        <div>
+          <div className="kicker">{athlete ? athlete.name : ''}</div>
+          <div className="screen-title">Training blocks</div>
+          <div className="screen-sub">{COUNTDOWN}</div>
+        </div>
+        <div className="blocks__head-actions">
+          <button type="button" className="gear-btn" onClick={actions.openSettings} aria-label="Settings">⚙</button>
+          <button type="button" className="pill-btn" onClick={actions.goHome}>Switch</button>
+        </div>
+      </div>
+
+      {state.athlete === 'coach' ? (
+        <div className="banner">
+          Coach view — you&apos;re reading someone else&apos;s plan. Anything you tick here is saved to this device only.
+        </div>
+      ) : null}
+
+      <button type="button" className="today" onClick={today.open}>
+        <div className="today__body">
+          <div className="today__kicker">{today.kicker}</div>
+          <div className="today__title">{today.title}</div>
+          <div className="today__sub">{today.sub}</div>
+        </div>
+        <div className="today__arrow">→</div>
+      </button>
+
+      <div className="blocks__list">
+        {BLOCKS.map((b) => {
+          const live = !!b.week;
+          const total = live ? b.week.days.length : 0;
+          const done = live ? b.week.days.filter((d) => record(d.id).completed).length : 0;
+          return (
+            <button
+              key={b.id}
+              type="button"
+              className={'block' + (live ? ' block--live' : '')}
+              onClick={() => actions.openBlock(b.id)}
+            >
+              <div className="block__top">
+                <span className="block__tag">{live ? b.tag : b.tag + ' · not written yet'}</span>
+                <span className="block__dates">{b.dates}</span>
+              </div>
+              <div className="block__body">
+                <div className="block__title">{b.title}</div>
+                <div className="block__purpose">{b.purpose}</div>
+              </div>
+              <div className="block__foot">
+                <div className="block__bar">
+                  <i style={{ width: total ? Math.round((done / total) * 100) + '%' : '0%' }} />
+                </div>
+                <div className="block__progress">{total ? done + '/' + total + ' days' : 'Awaiting plan'}</div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
