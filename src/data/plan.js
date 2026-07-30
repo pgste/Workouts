@@ -155,452 +155,306 @@ const LEWIS_PLAN = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PAUL — Return Plan v3, post surgeon clearance. Distal medial hamstring
-// insertion (semimembranosus). Phase-based rehab back to running and Hyrox.
-// Gating metric throughout: swelling / soreness the NEXT MORNING.
+// PAUL — Integrated Return Plan v4. Hamstring rehab (distal medial insertion,
+// semimembranosus) merged with the ongoing VO2 / Hyrox program. Phase 1 (Weeks
+// 1–4) the hamstring leads; Phase 2 (Week 5+) is the merged program. Gating
+// metric throughout: next-morning soreness / swelling — hamstring OR knee.
+// Skeleton to be fleshed out — session titles, cardio and named lifts are in;
+// finer prescriptions get filled in per day.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Paul has no cross trainer — treadmill (walking) / ski erg / rower / bike only.
+// Hamstring curls and hip work use a monkey-foot cable attachment.
+
 const PAUL_DAILY = {
-  name: 'Iso + stretch',
-  mins: 'AM iso · PM stretch',
-  steps: ['AM — iso 5 × 40s @ 30–45° (effort per week)', 'PM — standing ham stretch 3 × 20–30s each'],
+  name: 'Daily spine',
+  mins: 'AM iso + knee · PM stretch · daily sled',
+  steps: [
+    'AM — hamstring iso 5 × 40s @ 30–45° (70% → near-max by wk3)',
+    'AM — knee rehab (heel slides, quad sets, SL raises + balance, calf)',
+    'PM — light hamstring stretch 3 × 20–30s, mild',
+    'Daily — backward sled drag (quad-dominant, hamstring-quiet)',
+  ],
 };
 
-// The rule that got broken last time — repeated as a note on every session.
+// The rule that got broken last time — repeated as a note on key sessions.
 const PAUL_STOP_RULE = 'If something feels off mid-session, the session ends. Do not move to another machine to test it.';
 
-// Week 1 — Rebuild the base. Includes the ramp-in weekend (Fri–Sun) that leads
-// into Week 1 proper on Monday 3 Aug.
+// PHASE 1, Week 1 — Rebuild the base. Volume without hinge or impact.
 const PAUL_WK1 = {
   id: 'wk1',
   title: 'Week 1 — Rebuild the base',
-  dates: 'Ramp-in Fri 31 Jul · Week 1 from Mon 3 Aug',
-  purpose: 'Ramp-in weekend, then rebuild the base: volume without hinge or impact. Quad-dominant, hamstring-quiet.',
+  dates: 'Phase 1 · hamstring leads',
+  purpose: 'Volume without hinge or impact. Cardio on hamstring-safe machines, lower work bodyweight-to-light. Upper body and skills unrestricted.',
   meta: [
+    { label: 'Phase', value: '1 · hamstring leads' },
     { label: 'Isometrics', value: '70% effort' },
     { label: 'Theme', value: 'Volume, no hinge/impact' },
-    { label: 'Ramp-in', value: 'Fri–Sun 31 Jul' },
     { label: 'Gate to Wk2', value: 'Pain-free flexion' },
   ],
   rules: {
-    do: ['Machine cardio', 'Backward sled', 'Goblet & split squats', 'Wall balls', "Farmer's carries", 'Full upper body'],
-    dont: ['Running', 'Loaded hinging', 'Forward sled', 'Burpees', 'Nordics / GHD', 'Jumps / plyos'],
-    note: 'Gate to Week 2: resisted flexion pain-free, and light stretch producing no next-morning soreness.',
+    do: ['Backward sled 8×20m', 'Treadmill walk 20–25', 'Ski / row (arms + short slide)', 'Goblet & split squats (BW–light)', 'Full upper body', 'Walking'],
+    dont: ['Running', 'Loaded hinging', 'Leg press', 'Full-slide rowing at intensity', 'Nordics / GHD', 'Plyometrics', 'Floor Oly lifts'],
+    note: 'Gate to Week 2: resisted hamstring flexion pain-free AND light stretch tolerated with no next-morning soreness.',
   },
   days: [
+    { id: 'w1_mon', label: 'Mon', title: 'Upper Push + Handstand + Pump', type: 'session', summary: 'Unrestricted upper push, handstand work, pump. Cardio: treadmill walk 20 + ski (arms / short slide) 20.' },
     {
-      id: 'p1_fri', label: 'Fri 31 Jul', title: 'Ramp-in — Stretching only', type: 'rest',
-      summary: 'Ramp-in weekend begins. Isometrics @ 60%, mild stretch, walk as desired. No training.',
-      items: [
-        ['AM isometrics', '5 × 40s @ 60% effort', 'AM'],
-        ['PM stretch', '3 × 20s each side, mild', 'PM'],
-        ['Walking', 'As desired', '—'],
-      ],
-      notes: ['No training today — isometrics and stretching only.'],
-    },
-    {
-      id: 'p1_sat', label: 'Sat 1 Aug', title: 'Basic reintroduction', type: 'session', dur: '~40 min',
-      summary: 'Isometrics @ 60%. Easy machine reintroduction. Set the bike seat for 25–35° knee bend at full extension.',
+      id: 'w1_tue', label: 'Tue', title: 'Lower — LIGHT', type: 'session', summary: 'Bodyweight-to-light lower. Cardio: treadmill walk 20–25.',
       ex: [
-        ['Treadmill', 'Easy walk, upright', '1 × 12min', '—'],
-        ['Static bike', 'Easy, 90rpm, seat 25–35° knee bend', '1 × 10min', '—'],
-        ['Backward sled drag', 'Very light', '4 × 20m', '60s'],
-        ['Pull-ups', 'Bodyweight', '3 × 6', '90s'],
-        ['DB overhead press', 'Moderate', '3 × 8', '90s'],
-        ['Face pulls', 'Light', '2 × 15', '45s'],
-      ],
-      notes: [PAUL_STOP_RULE],
-    },
-    {
-      id: 'p1_sun', label: 'Sun 2 Aug', title: 'A bit more', type: 'session', dur: '~55 min',
-      summary: 'Isometrics @ 65%. A little more volume — all machine and light strength.',
-      ex: [
-        ['Ski erg', 'Steady, tall, arms + lats', '1 × 12min', '—'],
-        ['Treadmill', 'Steady walk', '1 × 15min', '—'],
-        ['Backward sled drag', 'Light', '6 × 20m', '60s'],
-        ['Goblet squat', 'Light', '3 × 10', '90s'],
+        ['Goblet squat', 'Bodyweight–light', '3 × 10', '90s'],
         ['Split squat', 'Bodyweight–light', '3 × 8 each', '90s'],
-        ['Calf raise', '', '3 × 12', '60s'],
-        ['DB row', 'Moderate', '3 × 10', '60s'],
-        ['Lateral raise', 'Light', '3 × 15', '45s'],
-      ],
-      notes: ["Gate to Week 1: no next-morning soreness Monday. If sore → repeat Saturday's session and delay 2 days."],
-    },
-    {
-      id: 'p1_mon', label: 'Mon 3 Aug', title: 'Lower rehab + Push', type: 'session',
-      summary: 'Cardio 40 min: treadmill walk 20 min steady · bike 20 min easy 90rpm.',
-      ex: [
         ['Backward sled drag', 'Light', '8 × 20m', '60s'],
-        ['Goblet squat', 'Moderate', '4 × 10', '90s'],
-        ['Split squat', '', '3 × 8 each', '90s'],
-        ['Calf raise', '', '3 × 15', '60s'],
-        ['Incline DB press', '', '4 × 8', '90s'],
-        ['DB overhead press', '', '3 × 10', '90s'],
-        ['Lateral raise', '', '3 × 15', '45s'],
-        ['Dips or close-grip press', '', '3 × 8', '90s'],
       ],
     },
+    { id: 'w1_wed', label: 'Wed', title: 'Upper Pull + Muscle-up + Pump', type: 'session', summary: 'Unrestricted upper pull, muscle-up, pump. Cardio: ski (arms) 20 + row (short slide, controlled) 20.' },
     {
-      id: 'p1_tue', label: 'Tue 4 Aug', title: 'Threshold (machine only)', type: 'session',
-      summary: 'Cardio: ski erg 5 × 4 min @ RPE 7 (90s rest) · bike 15 min easy.',
-      ex: [
-        ['Ski erg intervals', 'RPE 7', '5 × 4min', '90s'],
-        ['Wall balls', 'Squat pattern is clear', '4 × 15', '—'],
-        ["Farmer's carry", 'Heavy', '4 × 40m', '—'],
-        ['Hanging knee raise', '', '3 × 12', '—'],
-        ['Pallof press', '', '3 × 12 each', '—'],
-      ],
+      id: 'w1_thu', label: 'Thu', title: 'VO2 — machine-modified', type: 'session', rpe: 9,
+      summary: 'Bike 4×4 (knee at 25–35° bend) + ski short-slide. No explosive rowing catch, no running.',
+      ex: [['Bike 4×4 (+ ski short-slide)', 'RPE 9', '4 × 4min', '3min']],
       notes: [PAUL_STOP_RULE],
     },
+    { id: 'w1_fri', label: 'Fri', title: 'Boxing + Mobility + Skills', type: 'session', summary: 'Boxing (bag, unrestricted) 30 + mobility + skills (lever / flag — upper only).' },
     {
-      id: 'p1_wed', label: 'Wed 5 Aug', title: 'Pull', type: 'session',
-      summary: 'Cardio 40 min: rower — arms + short slide only, 20 min · treadmill walk 20 min.',
+      id: 'w1_sat', label: 'Sat', title: 'Lower — LIGHT repeat', type: 'session', summary: 'Repeat of Tuesday. Cardio: treadmill walk 20–25.',
       ex: [
-        ['Pull-ups', '', '4 × 6', '90s'],
-        ['Lat pulldown', '', '3 × 10', '90s'],
-        ['DB row', '', '4 × 10', '60s'],
-        ['Face pulls', '', '3 × 15', '45s'],
-        ['Rear delt fly', '', '3 × 15', '45s'],
-        ['Bicep curl', '', '3 × 12', '45s'],
+        ['Goblet squat', 'Bodyweight–light', '3 × 10', '90s'],
+        ['Split squat', 'Bodyweight–light', '3 × 8 each', '90s'],
+        ['Backward sled drag', 'Light', '8 × 20m', '60s'],
       ],
     },
     {
-      id: 'p1_thu', label: 'Thu 6 Aug', title: 'VO2 max (machines only)', type: 'session', rpe: 9,
-      summary: 'Norwegian 4 × 4: 4 min @ RPE 9 / 3 min recovery — alternate bike and ski erg. Warm-up 10 min treadmill walk, cool-down 10 min bike.',
-      ex: [
-        ['Norwegian 4×4 (bike / ski erg)', 'RPE 9', '4 × 4min', '3min'],
-      ],
-      notes: ['The hardest session of the week. Machines only — no running.'],
-    },
-    {
-      id: 'p1_fri2', label: 'Fri 7 Aug', title: 'Rest', type: 'rest',
-      summary: 'Isometrics + stretching only. Walk.',
-      items: [
-        ['Isometrics + stretch', 'As the daily routine', '—'],
-        ['Walk', 'Easy', '—'],
-      ],
-    },
-    {
-      id: 'p1_sat2', label: 'Sat 8 Aug', title: 'Sled + Strength', type: 'session',
-      summary: 'Cardio 40 min: treadmill walk 20 min · bike 20 min.',
-      ex: [
-        ['Backward sled drag', 'Moderate', '10 × 20m', '60s'],
-        ['Box step-ups', "Step, don't jump", '3 × 10 each', '90s'],
-        ['Leg extension or wall sit', '', '3 × 30s', '60s'],
-        ['Calf raise', '', '4 × 12', '60s'],
-        ['Pull-ups', '', '3 × 8', '90s'],
-        ['DB press', '', '3 × 10', '90s'],
-        ['Lateral raise', '', '3 × 15', '45s'],
-      ],
-    },
-    {
-      id: 'p1_sun2', label: 'Sun 9 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
-      summary: '90 min continuous, moderate, RPE 6–7. Bike-based and protected — no running, no burpees. Repeat the circuit × 4.',
-      ex: [
-        ['Bike 1km → 10 wall balls', 'RPE 6–7', '4 rounds', '—'],
-        ['Ski erg 500m → backward sled drag 40m', 'RPE 6–7', '4 rounds', '—'],
-        ['Treadmill walk 5 min → 20 farmer carry steps', 'RPE 6–7', '4 rounds', '—'],
-      ],
-      notes: ['Gate to Week 2: resisted flexion pain-free + light stretch producing no next-morning soreness.'],
+      id: 'w1_sun', label: 'Sun', title: 'Half-Hyrox — MODIFIED', type: 'session', rpe: 7,
+      summary: 'Bike subs all runs; stations = ski / sled / short-slide row / carry only. Steady.',
+      notes: ['Gate to Week 2: resisted flexion pain-free + light stretch with no next-morning soreness.'],
     },
   ],
 };
 
-// Week 2 — Load through range. Introduces the tempo RDL.
+// PHASE 1, Week 2 — Introduce load through range. The tempo RDL enters.
 const PAUL_WK2 = {
   id: 'wk2',
   title: 'Week 2 — Load through range',
-  dates: 'Mon 10 – Sun 16 Aug',
-  purpose: 'Introduce the tempo RDL — the key rebuild exercise. Forward sled returns.',
+  dates: 'Phase 2 · hamstring leads',
+  purpose: 'Introduce the tempo RDL (4s eccentric) — the most important exercise in the plan. Treat it as medicine, not training; don’t chase load.',
   meta: [
+    { label: 'Phase', value: '1 · hamstring leads' },
     { label: 'Isometrics', value: '80% effort' },
     { label: 'Key lift', value: 'Tempo RDL (4s ecc)' },
-    { label: 'Runs', value: 'Not yet' },
     { label: 'Gate to Wk3', value: 'RDL comfortable light' },
   ],
   rules: {
-    do: ['Tempo RDL (4s ecc)', 'Forward sled push', 'Full-slide rowing', 'Incline walking', 'Wall balls', 'Carries'],
-    dont: ['Running', 'Heavy hinge', 'Jumping burpees', 'Nordics / GHD', 'Speed work'],
+    do: ['Tempo RDL (4s ecc)', 'Forward sled push (moderate)', 'Full-slide rowing (moderate)', 'Incline walk 5–6%', 'Upper unrestricted'],
+    dont: ['Running', 'Rowing at intensity', 'Nordics / GHD', 'Plyometrics', 'Floor Oly lifts'],
     note: 'Gate to Week 3: tempo RDL comfortable at light load, no next-morning response.',
   },
   days: [
+    { id: 'w2_mon', label: 'Mon', title: 'Upper Push + Handstand + Pump', type: 'session', summary: 'Cardio: treadmill walk 20 + ski 20.' },
     {
-      id: 'p2_mon', label: 'Mon 10 Aug', title: 'Lower + Push', type: 'session',
-      summary: 'Cardio 40 min: treadmill walk 20 · bike 20.',
+      id: 'w2_tue', label: 'Tue', title: 'Lower — tempo RDL', type: 'session', summary: 'Cardio: bike 20.',
       ex: [
         ['Tempo RDL', 'Very light (empty bar / 20kg), 4s eccentric', '3 × 8', '2min'],
-        ['Backward sled drag', 'Moderate', '8 × 20m', '60s'],
         ['Goblet squat', '', '4 × 12', '90s'],
         ['Split squat', '', '3 × 10 each', '90s'],
-        ['Incline DB press', '', '4 × 8', '90s'],
-        ['DB overhead press', '', '3 × 10', '90s'],
-        ['Lateral raise', '', '3 × 15', '45s'],
-      ],
-      cues: { 'Tempo RDL': 'The main event. 4-second lower, feel the hamstring lengthen under control. Very light — range and control, not load.' },
-      notes: ['Tempo RDL is the key rebuild exercise — slow eccentric load is what rebuilds insertion tolerance.'],
-    },
-    {
-      id: 'p2_tue', label: 'Tue 11 Aug', title: 'Threshold (machine)', type: 'session',
-      summary: 'Ski erg 5 × 4 min @ RPE 7–8 · rower full slide, moderate, 15 min.',
-      ex: [
-        ['Ski erg intervals', 'RPE 7–8', '5 × 4min', '90s'],
-        ['Rower', 'Full slide, moderate', '1 × 15min', '—'],
-        ['Wall balls', '', '5 × 15', '—'],
-        ["Farmer's carry", '', '4 × 50m', '—'],
-        ['Hanging leg raise', '', '3 × 12', '—'],
-      ],
-      notes: [PAUL_STOP_RULE],
-    },
-    {
-      id: 'p2_wed', label: 'Wed 12 Aug', title: 'Pull', type: 'session',
-      summary: 'Cardio 40 min: rower full slide 20 min moderate · treadmill walk 20 min.',
-      ex: [
-        ['Pull-ups', '', '4 × 7', '90s'],
-        ['Lat pulldown', '', '3 × 10', '90s'],
-        ['DB row', '', '4 × 10', '60s'],
-        ['Back extension', 'Bodyweight, short range', '3 × 10', '60s'],
-        ['Face pulls', '', '3 × 15', '45s'],
-        ['Rear delt fly', '', '3 × 15', '45s'],
-      ],
-    },
-    {
-      id: 'p2_thu', label: 'Thu 13 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
-      summary: '30/30 shuttle: 30s @ RPE 9–10 / 30s easy × 12, rest 3 min, repeat × 2 blocks. Alternate bike, ski erg, rower.',
-      ex: [
-        ['30/30 intervals (bike / ski / rower)', 'RPE 9–10', '2 × 12', '3min'],
-      ],
-      notes: ['Machines only. Do not run this.'],
-    },
-    {
-      id: 'p2_fri', label: 'Fri 14 Aug', title: 'Rest', type: 'rest',
-      summary: 'Isometrics + stretching. Incline walk 10 min @ 5–6% if the shin is quiet.',
-      items: [
-        ['Isometrics + stretch', 'As the daily routine', '—'],
-        ['Incline walk', '10 min @ 5–6%, only if shin quiet', '—'],
-      ],
-    },
-    {
-      id: 'p2_sat', label: 'Sat 15 Aug', title: 'Sled + Strength', type: 'session',
-      summary: 'Cardio 40 min: incline walk 15 min @ 6% · bike 25 min.',
-      ex: [
-        ['Forward sled push', 'Moderate — returns this week', '6 × 20m', '90s'],
         ['Backward sled drag', '', '8 × 20m', '60s'],
-        ['Box step-ups', '', '4 × 10 each', '90s'],
+      ],
+      cues: { 'Tempo RDL': 'The main event. 4-second lower, feel the hamstring lengthen under control. Medicine, not training — range and control, not load.' },
+    },
+    { id: 'w2_wed', label: 'Wed', title: 'Upper Pull + Muscle-up + Pump', type: 'session', summary: 'Cardio: row (full-slide, moderate) 20 + ski 20.' },
+    {
+      id: 'w2_thu', label: 'Thu', title: 'VO2', type: 'session', rpe: 9,
+      summary: 'Bike 4×4 + ski + row (full-slide moderate, still not explosive). Isometrics → 80%.',
+      ex: [['Bike 4×4 (+ ski + moderate row)', 'RPE 9', '4 × 4min', '3min']],
+    },
+    { id: 'w2_fri', label: 'Fri', title: 'Boxing + Mobility + Skills', type: 'session', summary: 'Bag 30 + mobility + skills.' },
+    {
+      id: 'w2_sat', label: 'Sat', title: 'Lower + forward sled', type: 'session', summary: 'Incline walk 5–6%, 10–15 min.',
+      ex: [
         ['Tempo RDL', 'Light, 4s eccentric', '3 × 8', '2min'],
-        ['Pull-ups', '', '3 × 8', '90s'],
-        ['DB press', '', '3 × 10', '90s'],
-        ['Bicep curl', '', '3 × 12', '45s'],
+        ['Forward sled push', 'Moderate — returns this week', '6 × 20m', '90s'],
       ],
     },
     {
-      id: 'p2_sun', label: 'Sun 16 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
-      summary: 'Same structure as Week 1, 4 rounds at RPE 7. Swap one bike block for rower 500m; add 10 step-back burpees (no jump) per round.',
-      ex: [
-        ['Bike / rower 1km → 10 wall balls', 'RPE 7', '4 rounds', '—'],
-        ['Ski erg 500m → backward sled drag 40m', 'RPE 7', '4 rounds', '—'],
-        ['Treadmill walk 5 min → 20 farmer carry steps', 'RPE 7', '4 rounds', '—'],
-        ['Step-back burpees (no jump)', 'Per round', '4 × 10', '—'],
-      ],
+      id: 'w2_sun', label: 'Sun', title: 'Half-Hyrox', type: 'session', rpe: 7,
+      summary: 'Bike subs runs; full-slide row now allowed in stations. Steady.',
       notes: ['Gate to Week 3: tempo RDL comfortable at light load, no next-morning response.'],
     },
   ],
 };
 
-// Week 3 — Strength + full range. Full-range hamstring work returns.
+// PHASE 1, Week 3 — Strength & speed of contraction. Full-range ham work returns.
 const PAUL_WK3 = {
   id: 'wk3',
-  title: 'Week 3 — Strength & full range',
-  dates: 'Mon 17 – Sun 23 Aug',
-  purpose: 'Full-range hamstring work returns; build load. The gate to running sits at the end of this week.',
+  title: 'Week 3 — Strength & speed',
+  dates: 'Phase 3 · hamstring leads',
+  purpose: 'Full-range hamstring work returns; build RDL load and speed of contraction. Rowing intensity and bike come back. The gate to running sits at week end.',
   meta: [
-    { label: 'Isometrics', value: '85% effort' },
+    { label: 'Phase', value: '1 · hamstring leads' },
+    { label: 'Isometrics', value: 'near-max' },
     { label: 'Theme', value: 'Full-range ham work' },
-    { label: 'Runs', value: 'Not yet' },
     { label: 'Gate', value: '3 pain-free tests → run' },
   ],
   rules: {
-    do: ['Tempo RDL building', 'Hamstring curl (full range)', 'Front squat', 'Forward sled heavier', 'Incline walk 6–8%'],
-    dont: ['Running (until the 3-part gate)', 'Speed work / hills', 'Jumping'],
-    note: 'Gate to running: pain-free resisted flexion + pain-free loaded hinge + pain-free full-range curl. All three.',
+    do: ['RDL building (3–4s ecc)', 'Hamstring curls (light, full range)', 'Rowing intensity returns', 'Bike unrestricted', 'Wall balls', 'Box step-ups (not jumps)'],
+    dont: ['Running (until the 3-part gate)', 'Box jumps', 'Speed work / hills', 'Burpee broad jumps'],
+    note: 'Gate to running: pain-free resisted flexion + loaded hinge + full-range curl. All three, no next-morning soreness.',
   },
   days: [
+    { id: 'w3_mon', label: 'Mon', title: 'Upper Push + Handstand + Pump', type: 'session', summary: 'Cardio: ski 20 + row 20.' },
     {
-      id: 'p3_mon', label: 'Mon 17 Aug', title: 'Lower + Push', type: 'session',
-      summary: 'Cardio 40 min: treadmill walk 20 · rower 20 moderate.',
+      id: 'w3_tue', label: 'Tue', title: 'Lower — RDL + curls', type: 'session', summary: 'Cardio: bike 20.',
       ex: [
-        ['Tempo RDL', 'Building load, 3s eccentric', '4 × 8', '2min'],
+        ['Tempo RDL', 'Build load, keep 3–4s eccentric', '4 × 8', '2min'],
         ['Hamstring curl', 'Monkey foot on cable, light — full range returns', '3 × 12', '90s'],
+        ['Split squat', '', '3 × 10 each', '90s'],
         ['Backward sled drag', '', '8 × 25m', '60s'],
-        ['Front squat or goblet', 'Moderate', '4 × 8', '2min'],
-        ['Incline DB press', '', '4 × 8', '90s'],
-        ['DB overhead press', '', '4 × 8', '90s'],
-        ['Lateral raise', '', '3 × 15', '45s'],
       ],
-      cues: { 'Hamstring curl': 'Full range but light. This is the first full-range flexion load — earn the range before the load.' },
     },
+    { id: 'w3_wed', label: 'Wed', title: 'Upper Pull + Muscle-up + Pump', type: 'session', summary: 'Cardio: row 20 + ski 20.' },
     {
-      id: 'p3_tue', label: 'Tue 18 Aug', title: 'Threshold (machine)', type: 'session', rpe: 8,
-      summary: 'Rower 4 × 1000m @ RPE 8, 2 min rest · bike 10 min easy.',
+      id: 'w3_thu', label: 'Thu', title: 'VO2 — full return', type: 'session', rpe: 10,
+      summary: 'Row intensity intervals now allowed + bike + ski. 4×4 or 30/30. Isometrics near-max.',
+      ex: [['VO2 4×4 / 30-30 (row / bike / ski)', 'RPE 9–10', '4 × 4min', '3min']],
+    },
+    { id: 'w3_fri', label: 'Fri', title: 'Boxing + Mobility + Skills', type: 'session', summary: 'Bag 30 + mobility + skills.' },
+    {
+      id: 'w3_sat', label: 'Sat', title: 'Lower — RDL + wall balls', type: 'session', summary: 'Cardio: bike.',
       ex: [
-        ['Rower intervals', 'RPE 8', '4 × 1000m', '2min'],
-        ['Wall balls', '', '5 × 20', '—'],
-        ['Sandbag / DB carries', '', '4 × 50m', '—'],
-        ['Core circuit', '', '3 rounds', '—'],
-      ],
-      notes: [PAUL_STOP_RULE],
-    },
-    {
-      id: 'p3_wed', label: 'Wed 19 Aug', title: 'Pull', type: 'session',
-      summary: 'Cardio 40 min: ski erg 20 min · treadmill walk 20 min.',
-      ex: [
-        ['Pull-ups', '', '4 × 8', '90s'],
-        ['Weighted lat pulldown', '', '4 × 8', '90s'],
-        ['DB row', '', '4 × 12', '60s'],
-        ['Back extension', 'Full range', '3 × 12', '60s'],
-        ['Face pulls', '', '3 × 15', '45s'],
-        ['Bicep curl', '', '3 × 15', '45s'],
+        ['Tempo RDL', 'Building', '4 × 6', '2min'],
+        ['Hamstring curl', 'Monkey foot on cable', '3 × 12', '90s'],
+        ['Wall balls', '', '4 × 15', '—'],
+        ['Box step-ups', 'Step, not jump', '3 × 10 each', '90s'],
+        ['Front squat', 'Light', '3 × 8', '2min'],
       ],
     },
     {
-      id: 'p3_thu', label: 'Thu 20 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
-      summary: 'Norwegian 4 × 4 @ RPE 9–10, alternating machines. Push genuinely hard.',
-      ex: [
-        ['Norwegian 4×4 (alternate machines)', 'RPE 9–10', '4 × 4min', '3min'],
-      ],
-    },
-    {
-      id: 'p3_fri', label: 'Fri 21 Aug', title: 'Rest', type: 'rest',
-      summary: 'Isometrics + stretching. Incline walk 15 min @ 6–8%.',
-      items: [
-        ['Isometrics + stretch', 'As the daily routine', '—'],
-        ['Incline walk', '15 min @ 6–8%', '—'],
-      ],
-    },
-    {
-      id: 'p3_sat', label: 'Sat 22 Aug', title: 'Sled + Strength', type: 'session',
-      summary: 'Cardio 40 min: incline walk 20 min @ 8% · bike 20 min.',
-      ex: [
-        ['Forward sled push', 'Heavier', '8 × 20m', '90s'],
-        ['Backward sled drag', '', '8 × 25m', '60s'],
-        ['Tempo RDL', 'Moderate load, 3s eccentric', '4 × 6', '2min'],
-        ['Box step-ups', '', '4 × 12', '90s'],
-        ['Calf raise', '', '4 × 15', '60s'],
-        ['Upper accessory', 'Your choice', '3 × 12', '—'],
-      ],
-    },
-    {
-      id: 'p3_sun', label: 'Sun 23 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 8,
-      summary: 'Full machine simulation, 5 rounds, RPE 7–8. Still no running.',
-      ex: [
-        ['Machine Hyrox circuit', 'RPE 7–8', '5 rounds', '—'],
-      ],
-      notes: ['GATE TO RUNNING: pain-free resisted flexion + pain-free loaded hinge + pain-free full-range curl. All three, or running waits.'],
+      id: 'w3_sun', label: 'Sun', title: 'Half-Hyrox', type: 'session', rpe: 8,
+      summary: 'Bike still subs runs; stations now full (ski / sled / row / carry / wall balls).',
+      notes: ['GATE TO RUNNING: pain-free resisted flexion + loaded hinge + full-range curl. All three, no next-morning soreness.'],
     },
   ],
 };
 
-// Week 4 — Running returns. Runs 48h apart: Tuesday and Saturday only.
+// PHASE 1→2 merge, Week 4+ — Running returns carefully. Runs Tue + Sat only.
 const PAUL_WK4 = {
   id: 'wk4',
-  title: 'Week 4 — Running returns',
-  dates: 'Mon 24 – Sun 30 Aug',
-  purpose: 'Running reintroduced — Tuesday and Saturday only, 48h apart, Zone 2. Frequency before volume.',
+  title: 'Week 4+ — Running returns',
+  dates: 'Phase 1 → 2 merge',
+  purpose: 'Where v3 and the main program merge. Frequency before volume; let the slowest tissue lead. Runs Tuesday + Saturday only (48h apart), machine VO2 stays on Thursday.',
   meta: [
-    { label: 'Isometrics', value: '85% effort' },
-    { label: 'Theme', value: 'Running returns' },
+    { label: 'Phase', value: '1 → 2 merge' },
     { label: 'Run days', value: 'Tue + Sat only' },
     { label: 'Rule', value: '48h apart, Zone 2' },
+    { label: 'VO2', value: 'Machines (Thu)' },
   ],
   rules: {
-    do: ['Running Tue + Sat (Zone 2)', 'Tempo RDL', 'Hamstring curl', 'Sled', 'Machine VO2'],
-    dont: ['Runs on consecutive days', 'Running the VO2 session', 'Speed work / hills', 'Running inside the Sunday sim'],
-    note: 'Runs 48h apart — Tuesday and Saturday only. Never Tues + Thurs.',
+    do: ['Running Tue + Sat (3×1km Zone 2)', 'Machine VO2 Thu', 'RDL + curls kept in', 'Full Hyrox stations'],
+    dont: ['Runs on consecutive days', 'Running the VO2 session', 'Speed work / hills (last)', 'Burpee broad jumps (last)'],
+    note: 'Add distance only after a week with zero next-morning soreness (hamstring, knee OR shin). Diffuse shin ache = that run is over.',
   },
   days: [
+    { id: 'w4_mon', label: 'Mon', title: 'Upper Push + Handstand + Pump', type: 'session', summary: 'Cardio: ski 20 + row 20.' },
     {
-      id: 'p4_mon', label: 'Mon 24 Aug', title: 'Lower + Push', type: 'session',
-      summary: 'Cardio 40 min: treadmill walk 20 · bike 20.',
-      ex: [
-        ['Tempo RDL', 'Building, 3s eccentric', '4 × 6', '2min'],
-        ['Hamstring curl', 'Monkey foot on cable', '3 × 12', '90s'],
-        ['Backward sled drag', '', '8 × 25m', '60s'],
-        ['Squat', 'Moderate', '4 × 6', '2min'],
-        ['Full push session', 'Incline press / OHP / lateral raise', '3 × 10', '90s'],
-      ],
-    },
-    {
-      id: 'p4_tue', label: 'Tue 25 Aug', title: 'RUN 1 🏃', type: 'session',
-      summary: 'Warm-up: treadmill 10 min easy (walk into jog) + dynamic prep. Cool-down: bike 10 min easy. Nothing else this session.',
+      id: 'w4_tue', label: 'Tue', title: 'RUN 1 🏃 + Lower', type: 'session', summary: 'Warm-up: treadmill 10 min easy (walk into jog) + dynamic prep.',
       ex: [
         ['Run — 3 × 1km easy', 'Zone 2, conversational, 2 min walk between', '3 × 1km', '2min'],
+        ['Tempo RDL (kept in)', '', '3 × 8', '2min'],
       ],
       cues: { 'Run — 3 × 1km easy': 'Zone 2 — conversational, not threshold. Frequency before volume; this is the first run back.' },
-      notes: ['Stop immediately if: diffuse shin ache, or any pull behind the knee. That run is over — the bone is still the slowest tissue in the queue.'],
+      notes: ['Stop immediately on diffuse shin ache or any pull behind the knee — that run is over. The tibia is the slowest tissue and gives little warning.'],
     },
+    { id: 'w4_wed', label: 'Wed', title: 'Upper Pull + Muscle-up + Pump', type: 'session', summary: 'Recovery from the run — no leg work. Cardio: row 20 + ski 20.' },
     {
-      id: 'p4_wed', label: 'Wed 26 Aug', title: 'Pull (no leg work)', type: 'session',
-      summary: 'Recovery from the run — no leg work. Cardio: rower 20 min · ski erg 20 min. Full pull session as Week 3.',
-      ex: [
-        ['Pull-ups', '', '4 × 8', '90s'],
-        ['Weighted lat pulldown', '', '4 × 8', '90s'],
-        ['DB row', '', '4 × 12', '60s'],
-        ['Back extension', '', '3 × 12', '60s'],
-        ['Face pulls', '', '3 × 15', '45s'],
-      ],
+      id: 'w4_thu', label: 'Thu', title: 'VO2 — machines only', type: 'session', rpe: 10,
+      summary: 'Bike / ski / row, 4×4 or 30/30. Do NOT run it — machine VO2 protects the hamstring and the tibia.',
+      ex: [['VO2 (machines only)', 'RPE 9–10', '4 × 4min', '3min']],
     },
+    { id: 'w4_fri', label: 'Fri', title: 'Boxing + Mobility + Skills', type: 'session', summary: 'Bag 30 + mobility + skills.' },
     {
-      id: 'p4_thu', label: 'Thu 27 Aug', title: 'VO2 max (machines only)', type: 'session', rpe: 10,
-      summary: '4 × 4 or 30/30, alternating bike / ski / rower. Machine-based — do NOT run it.',
-      ex: [
-        ['VO2 intervals (machines only)', 'RPE 9–10', '4 × 4min', '3min'],
-      ],
-      notes: ['This stays machine-based. Your two runs (Tue + Sat) are the only running this week.'],
-    },
-    {
-      id: 'p4_fri', label: 'Fri 28 Aug', title: 'Rest', type: 'rest',
-      summary: 'Isometrics + stretching. Easy walk.',
-      items: [
-        ['Isometrics + stretch', 'As the daily routine', '—'],
-        ['Walk', 'Easy', '—'],
-      ],
-    },
-    {
-      id: 'p4_sat', label: 'Sat 29 Aug', title: 'RUN 2 🏃 + Sled', type: 'session',
-      summary: '48h after Run 1 — runs are Tuesday and Saturday only, never consecutive days.',
+      id: 'w4_sat', label: 'Sat', title: 'RUN 2 🏃 + Lower', type: 'session', summary: '48h after Run 1 — never consecutive days.',
       ex: [
         ['Run — 3 × 1km easy', 'Zone 2, same as Tuesday', '3 × 1km', '2min'],
-        ['Backward sled drag', '', '8 × 20m', '60s'],
-        ['Tempo RDL', '', '3 × 8', '2min'],
-        ['Light upper accessory', 'Your choice', '3 × 12', '—'],
+        ['Nordic negatives (once cleared)', 'Slow eccentric', '3 × 5', '—'],
       ],
     },
     {
-      id: 'p4_sun', label: 'Sun 30 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
-      summary: 'Machines + sled, RPE 7. Keep running OUT of the sim for now — your two runs are enough load.',
+      id: 'w4_sun', label: 'Sun', title: 'Half-Hyrox', type: 'session', rpe: 7,
+      summary: 'Hyrox rebuild order (locked): sled → row → ski → wall balls → burpee broad jumps → running intervals. The last two come back last.',
+      notes: ['Speed work and hills come last — high-speed running is the single highest hamstring-insertion demand.'],
+    },
+  ],
+};
+
+// PHASE 2, Week 5+ — Merged program. v3 maintenance baked into the VO2/Hyrox week.
+const PAUL_MERGED = {
+  id: 'maint',
+  title: 'Week 5+ — Merged program',
+  dates: 'Phase 2 · ongoing',
+  purpose: 'Once running is back and the hamstring is quiet: the full integrated week. Runs Tue + Sat (48h apart), machine VO2 Thursday. Hamstring insurance is permanent, not rehab.',
+  meta: [
+    { label: 'Phase', value: '2 · merged' },
+    { label: 'Runs', value: 'Tue + Sat' },
+    { label: 'VO2', value: 'Thu (machines)' },
+    { label: 'Hard days', value: 'Tue / Thu / Sun' },
+  ],
+  rules: {
+    do: ['Runs Tue + Sat (48h apart)', 'Machine VO2 Thu', 'Oly light (Tue / Sat)', 'Permanent iso + tempo RDL + Nordics + Jefferson curls'],
+    dont: ['Runs Tues + Thurs', 'Dropping the hamstring insurance', 'Skipping a gate when you feel good'],
+    note: 'Permanent insurance, 2×/week min: iso (Wed + Sun AM), tempo RDL (Tue), Nordic negatives (Sat), Jefferson curls (Fri, once healed).',
+  },
+  days: [
+    { id: 'm_mon', label: 'Mon', title: 'Upper Push + Handstand + Pump', type: 'session', summary: 'Cardio: ski 20 + row 20.' },
+    {
+      id: 'm_tue', label: 'Tue', title: 'Run threshold + Lower + Oly light', type: 'session', summary: 'Cardio: run + bike 20. RDL tempo kept in.',
       ex: [
-        ['Machine + sled Hyrox circuit', 'RPE 7', '5 rounds', '—'],
+        ['Run — threshold', 'Zone 3–4', '1 × 20–30min', '—'],
+        ['Tempo RDL (kept in)', '', '3 × 8', '2min'],
+        ['Oly — light', 'From hang', '3 × 3', '2min'],
       ],
-      notes: ['Week 5+: add one running variable per week — +1km total OR a third run, never both. Speed and hills come last.'],
+    },
+    { id: 'm_wed', label: 'Wed', title: 'Upper Pull + Muscle-up + Pump', type: 'session', summary: 'Cardio: row 20 + ski 20. Isometrics AM.' },
+    {
+      id: 'm_thu', label: 'Thu', title: 'VO2 max — machines', type: 'session', rpe: 10,
+      summary: 'Bike / ski / row, 4×4 or 30/30.',
+      ex: [['VO2 (machines)', 'RPE 9–10', '4 × 4min', '3min']],
+    },
+    { id: 'm_fri', label: 'Fri', title: 'Boxing + Mobility + Skills', type: 'session', summary: 'Bag 30 + ski 15. Jefferson curls (once fully healed).' },
+    {
+      id: 'm_sat', label: 'Sat', title: 'Run + Lower + Oly (snatch)', type: 'session', summary: 'Cardio: run + machine top-up. Nordic negatives kept in.',
+      ex: [
+        ['Run', 'Zone 2–3', '1 × session', '—'],
+        ['Snatch', 'Light, from hang', '3 × 2', '2min'],
+        ['Nordic negatives (kept in)', 'Slow eccentric', '3 × 5', '—'],
+      ],
+    },
+    {
+      id: 'm_sun', label: 'Sun', title: 'Half-Hyrox simulation', type: 'session', rpe: 8,
+      summary: 'Full session. Isometrics AM.',
+      notes: [
+        'Permanent hamstring insurance (never drop): isometrics, tempo RDL, Nordic negatives, Jefferson curls — tendons stay resilient through ongoing load, not through having recovered once.',
+        'Escalate to surgeon / physio (not self-managed): sharp or sit-bone pain, joint swelling, no progress across 2 weeks of loading, or diffuse shin ache that won’t settle.',
+        'The lesson: muscle and fitness adapt in weeks; tendon and bone take months. Let the slowest tissue set the pace — the morning-after check is how you stay on the right side of it.',
+      ],
     },
   ],
 };
 
 const PAUL_PLAN = {
-  countdown: 'Return to Hyrox build · gate on next-morning soreness',
-  gateHeading: 'Gate — next-morning response',
+  countdown: 'Integrated return — hamstring leads, then merged · gate: next-morning soreness',
+  gateHeading: 'Gate — next-morning response (hamstring or knee)',
   daily: PAUL_DAILY,
-  readiness: ['Next-AM soreness 1–10', 'Swelling', 'Hamstring', 'Sleep (h)', 'Bodyweight', 'Notes'],
+  readiness: ['Next-AM soreness 1–10', 'Hamstring', 'Knee', 'Swelling', 'Sleep (h)', 'Bodyweight', 'Notes'],
   gate: [
-    gate(GREEN_C, 'GREEN', 'No next-morning soreness or swelling · movement pain-free', 'Progress the phase as written — add load / range'),
+    gate(GREEN_C, 'GREEN', 'No next-morning soreness or swelling — hamstring AND knee · movement pain-free', 'Progress the phase as written — add load / range'),
     gate(AMBER_C, 'AMBER', 'Mild next-AM soreness that settles by midday · no swelling', 'Hold. Repeat that week, do not progress'),
-    gate(RED_C, 'RED', 'Sorer next morning · joint swelling · sharp or sit-bone pain', 'Stop. Sit-bone pain → physio; joint swelling → surgeon’s team. Diffuse shin ache on a run → hold running volume 2 weeks'),
+    gate(RED_C, 'RED', 'Sorer next morning · joint swelling · sharp or sit-bone pain · diffuse shin ache that won’t settle', 'Stop. Sit-bone / shin / swelling → physio or surgeon’s team. Otherwise repeat the week'),
   ],
   blocks: [
-    { id: 'wk1', tag: 'Week 1', title: 'Week 1 — Rebuild the base', dates: 'Fri 31 Jul – Sun 9 Aug', purpose: 'Ramp-in weekend, then rebuild the base — volume without hinge or impact.', week: PAUL_WK1 },
-    { id: 'wk2', tag: 'Week 2', title: 'Week 2 — Load through range', dates: 'Mon 10 – Sun 16 Aug', purpose: 'Introduce the tempo RDL — the key rebuild exercise. Forward sled returns.', week: PAUL_WK2 },
-    { id: 'wk3', tag: 'Week 3', title: 'Week 3 — Strength & full range', dates: 'Mon 17 – Sun 23 Aug', purpose: 'Full-range hamstring work returns; build load. Gate to running at the end.', week: PAUL_WK3 },
-    { id: 'wk4', tag: 'Week 4', title: 'Week 4 — Running returns', dates: 'Mon 24 – Sun 30 Aug', purpose: 'Running reintroduced Tuesday & Saturday only, 48h apart, Zone 2.', week: PAUL_WK4 },
-    { id: 'maint', tag: 'Week 5+', title: 'Week 5+ — Progression rules', dates: 'From Mon 31 Aug', purpose: 'Add one running variable per week (+1km OR a third run, never both). Keep tempo RDL + isometrics permanently, 2× weekly; add Nordic negatives and Jefferson curls once RDL is at full load. Speed and hills last.' },
+    { id: 'wk1', tag: 'Week 1', title: 'Week 1 — Rebuild the base', dates: 'Phase 1', purpose: 'Volume without hinge or impact. Hamstring-safe machines; lower bodyweight-to-light; upper unrestricted.', week: PAUL_WK1 },
+    { id: 'wk2', tag: 'Week 2', title: 'Week 2 — Load through range', dates: 'Phase 1', purpose: 'The tempo RDL enters (4s eccentric) — the key rebuild lift. Forward sled and full-slide rowing return.', week: PAUL_WK2 },
+    { id: 'wk3', tag: 'Week 3', title: 'Week 3 — Strength & speed', dates: 'Phase 1', purpose: 'Full-range hamstring work returns; rowing intensity and bike come back. Gate to running at week end.', week: PAUL_WK3 },
+    { id: 'wk4', tag: 'Week 4+', title: 'Week 4+ — Running returns', dates: 'Phase 1 → 2', purpose: 'v3 and the main program merge. Running returns Tue + Sat (48h apart, Zone 2); machine VO2 stays Thursday.', week: PAUL_WK4 },
+    { id: 'maint', tag: 'Week 5+', title: 'Week 5+ — Merged program', dates: 'Phase 2 · ongoing', purpose: 'The full integrated week with permanent hamstring insurance baked in.', week: PAUL_MERGED },
   ],
 };
 
