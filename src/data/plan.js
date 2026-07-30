@@ -628,6 +628,219 @@ const REC_W4 = {
   ],
 };
 
+// ── Hyrox Training (Integrated Program v2). Shared weekly template; only the
+// Tuesday run intervals and Sunday half-Hyrox progress week to week.
+const HY_ZONES = 'Zones: Easy/Z2 RPE 3–5 · Threshold RPE 7–8 · VO2 RPE 9–10 (Thursday only) · Hyrox RPE 5–7.';
+
+const HY_MON = [
+  { id: 'cardio', title: 'Cardio (first)', summary: '40 min before the lift', ex: [
+    ['Ski erg', '1 min hard / 2 min easy pyramid', '1 × 20min', '—'],
+    ['Row', 'Steady, RPE 5', '1 × 20min', '—'],
+  ] },
+  { id: 'handstand', title: 'Handstand skill (10–15 min)', ex: [
+    ['Wall walks', '', '3 × 3', '60s'],
+    ['Wall handstand hold', 'Chest to wall', '3 × max', '60s'],
+    ['Pike push-ups', '', '3 × 5–8', '60s'],
+  ] },
+  { id: 'strength', title: 'Strength', ex: [
+    ['Standing OHP', 'Main lift', '4 × 5', '2min'],
+    ['Incline DB press', '', '4 × 8', '90s'],
+  ] },
+  { id: 'pump', title: 'Pump — supersets, 2 sets each, near failure', ex: [
+    ['DB lateral raise', '', '2 × 12–15', '30s'],
+    ['Cable lateral raise', '', '2 × 15', '30s'],
+    ['Weighted dip', '', '2 × 8', '60s'],
+    ['Cable chest fly', '', '2 × 12', '30s'],
+    ['Tricep pushdown', '', '2 × 12', '30s'],
+    ['Overhead cable ext', '', '2 × 12', '30s'],
+  ] },
+  { id: 'core', title: 'Core', ex: [
+    ['Hollow hold', '', '3 × max', '45s'],
+    ['Pallof press', '', '3 × 10 each', '30s'],
+  ] },
+];
+
+const HY_WED = [
+  { id: 'cardio', title: 'Cardio (first)', summary: '40 min before the lift', ex: [
+    ['Row', '1 min hard / 2 min easy', '1 × 20min', '—'],
+    ['Ski erg', 'Steady', '1 × 20min', '—'],
+  ] },
+  { id: 'muscleup', title: 'Muscle-up skill (10–15 min)', ex: [
+    ['False-grip ring row', '', '3 × 6', '60s'],
+    ['Ring pull-up to chest', 'Pull high — sternum to rings', '3 × 5', '90s'],
+    ['Ring dip', '', '3 × 5', '90s'],
+    ['Transition drill', '', '3 × 3', '90s'],
+  ] },
+  { id: 'strength', title: 'Strength', ex: [
+    ['Weighted pull-up', 'Main lift', '4 × 5', '2min'],
+    ['Barbell / Pendlay row', 'Back thickness', '4 × 6', '2min'],
+  ] },
+  { id: 'pump', title: 'Pump — supersets, 2 sets each, near failure', ex: [
+    ['Lat pulldown', '', '2 × 10', '30s'],
+    ['Single-arm DB row', '', '2 × 10 each', '30s'],
+    ['Face pulls', '', '2 × 15', '30s'],
+    ['Reverse pec fly', '', '2 × 15', '30s'],
+    ['Barbell curl', '', '2 × 10', '30s'],
+    ['Hammer curl', '', '2 × 12', '30s'],
+  ] },
+  { id: 'core', title: 'Core', ex: [
+    ['Ab wheel rollout', '', '3 × 8', '45s'],
+    ['Hanging leg raise', '', '3 × 8', '45s'],
+  ] },
+];
+
+const HY_THU = [
+  { id: 'warmup', title: 'Warm-up (12–15 min, gradual)', ex: [
+    ['Backward sled drag', 'Moderate', '3 × 20m', '60s'],
+    ['Bike', 'Last 2 min build to RPE 7', '1 × 8min', '—'],
+    ['Machine build-ups', '30 sec each', '3 × 30s', '30s'],
+  ] },
+  { id: 'vo2', title: 'VO2 main set — alternate A / B each week', summary: 'A: Norwegian 4×4 (row→ski→bike→row). B: 30/30 shuttles (ski→bike→row, ×10 = 1 block, 3 blocks).', ex: [
+    ['Norwegian 4×4 (rotate machines)', 'RPE 9 — 90%+ max HR', '4 × 4min', '3min'],
+    ['OR 30/30 shuttles (rotate machines)', 'RPE 10', '3 × 10', '3min'],
+  ] },
+  { id: 'finisher', title: 'Hyrox finisher — moderate, NOT another VO2 push', summary: '2 rounds, RPE 6–7', ex: [
+    ['Sled push 20m → farmers 40m → wall balls 12 → sled drag 20m', 'RPE 6–7', '2 rounds', '—'],
+  ] },
+];
+
+const HY_FRI = [
+  { id: 'cardio', title: 'Cardio (45 min)', ex: [
+    ['Boxing — heavy bag', 'Punch Lab', '1 × 30min', '—'],
+    ['Ski or row', 'Easy', '1 × 15min', '—'],
+  ] },
+  { id: 'skills', title: 'Skill work (light, 10–15 min)', ex: [
+    ['Front lever', 'Tuck hold → adv tuck → straddle', '3 × 20s', '60s'],
+    ['Human flag', 'Vertical clutch flag → straddle', '3 × 10s each', '60s'],
+  ] },
+  { id: 'mobility', title: 'Mobility (15 min)', ex: [
+    ['Couch stretch', '', '1 × 60s each', '—'],
+    ['Supine hamstring', '', '1 × 45s each', '—'],
+    ['90/90 hip switches', '', '1 × 10 each', '—'],
+    ['Deep squat hold', '', '3 × 20s', '—'],
+  ] },
+];
+
+const HY_SAT = [
+  { id: 'cardio', title: 'Cardio (first) — machines only', summary: '40 min, keep legs fresh for snatch', ex: [
+    ['Bike', 'Easy', '1 × 20min', '—'],
+    ['Ski erg', 'Steady', '1 × 20min', '—'],
+  ] },
+  { id: 'oly', title: 'Oly — snatch focus (fresh legs)', ex: [
+    ['Power snatch', 'Catch above parallel', '5 × 2', '2min'],
+    ['Snatch pull', '', '3 × 3', '2min'],
+    ['Overhead squat or snatch balance', 'Only if OH position is solid', '3 × 5', '2min'],
+  ] },
+  { id: 'strength', title: 'Strength — squat day', ex: [
+    ['Front squat', 'Knee-friendlier torso angle', '4 × 6', '2min'],
+    ['RDL', '', '3 × 8', '2min'],
+    ['Walking lunge', 'Only if knee stays quiet', '3 × 10 each', '90s'],
+    ['GHD leg curl', '', '3 × 8', '90s'],
+    ['Calf raise', '', '3 × 15', '60s'],
+  ] },
+];
+
+const HY_TUE_LIFT = [
+  { id: 'oly', title: 'Oly — light (legs pre-fatigued from the run)', ex: [
+    ['Power clean', 'Technical, moderate load only', '4 × 2', '2min'],
+    ['Push jerk', '', '3 × 3', '2min'],
+  ] },
+  { id: 'strength', title: 'Strength & hypertrophy', ex: [
+    ['Trap-bar or Romanian DL', 'Hinge-first — knee friendly', '4 × 6', '2min'],
+    ['Rear-foot-elevated split squat', 'Running strength builder', '3 × 8 each', '90s'],
+    ['Nordic curl', '', '3 × 5', '90s'],
+    ['Back extension', '', '3 × 12', '60s'],
+    ['Calf raise', '', '3 × 15', '60s'],
+  ] },
+];
+
+function hyroxWeek(n, o) {
+  const id = (d) => 'hx' + n + '_' + d;
+  return {
+    id: 'hx_w' + n,
+    title: 'Week ' + n + ' — ' + o.tag,
+    subtitle: o.subtitle,
+    meta: [
+      { label: 'Tue run', value: o.tueLabel },
+      { label: 'Sun', value: o.sunLabel },
+      { label: 'VO2', value: 'Thu machines' },
+      { label: 'Runs', value: 'Tue + Sun' },
+    ],
+    rules: {
+      do: ['Cardio before every lift', 'Morning swelling check', 'One new stressor at a time', 'Daily rehab + sled'],
+      dont: ['Progress if morning swelling', 'Running on Thursday', 'Two new stressors at once'],
+      note: 'Cardio ALWAYS before the lift. Any morning swelling = don’t progress that week, repeat it.',
+    },
+    days: [
+      { id: id('mon'), label: 'Mon', title: 'Upper Push + Handstand + Pump', type: 'session', workouts: HY_MON },
+      {
+        id: id('tue'), label: 'Tue', title: 'Run + Lower + Oly light', type: 'session',
+        summary: 'Cardio first: run intervals, then bike 20 easy to flush the legs before lifting.',
+        workouts: [o.tueRun, ...HY_TUE_LIFT],
+        notes: ['Legs pre-fatigued from the run — keep Oly technique-focused. Save load PRs for Saturday.'],
+      },
+      { id: id('wed'), label: 'Wed', title: 'Upper Pull + Muscle-up + Pump', type: 'session', workouts: HY_WED },
+      {
+        id: id('thu'), label: 'Thu', title: 'VO2 Max — machine intervals', type: 'session', rpe: 10,
+        summary: 'Your dedicated VO2 session — it should feel horrible. 90%+ max HR for cumulative minutes.',
+        workouts: HY_THU,
+        notes: [HY_ZONES, 'If you can talk during the work intervals you are not there. Alternate Format A (Norwegian 4×4) and Format B (30/30) week to week. No running on Thursday.'],
+      },
+      { id: id('fri'), label: 'Fri', title: 'Boxing + Mobility + Skills', type: 'session', workouts: HY_FRI },
+      {
+        id: id('sat'), label: 'Sat', title: 'Lower + Oly (snatch focus)', type: 'session',
+        summary: 'Cardio first: bike 20 + ski 20 — machines only to keep the legs fresh for snatch. This is your squat day.',
+        workouts: HY_SAT,
+      },
+      {
+        id: id('sun'), label: 'Sun', title: 'Half-Hyrox Simulation', type: 'session', rpe: 6,
+        summary: o.sunSummary,
+        workouts: [o.sunWorkout],
+        notes: ['Your favourite — untouched pattern. Start swapping bike legs for real runs per the progression.'],
+      },
+    ],
+  };
+}
+
+const HYROX_WEEKS = [
+  hyroxWeek(1, {
+    tag: 'Build', subtitle: 'Tue 3×800m · bike subs Sunday runs', tueLabel: '3 × 800m RPE 7', sunLabel: 'Bike subs runs',
+    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7 — short sentences only. ~15–20 min inc. walks.', ex: [
+      ['Run — 3 × 800m', 'RPE 7, 90 sec walk between', '3 × 800m', '90s'],
+      ['Bike', 'Easy — flush the legs before lifting', '1 × 20min', '—'],
+    ] },
+    sunSummary: 'RPE 5–6. Bike subs all runs. 4 rounds; stations rotate: ski 500m · sled push 25m · row 500m · farmers 50m · wall balls 20 · sled drag 25m · lunges 20m.',
+    sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (bike subs runs)', ex: [['Bike 1km → station', 'RPE 5–6', '4 rounds', '—']] },
+  }),
+  hyroxWeek(2, {
+    tag: 'Build', subtitle: 'Tue 3×1km · bike subs Sunday runs', tueLabel: '3 × 1km RPE 7', sunLabel: 'Bike subs runs',
+    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7 — short sentences only.', ex: [
+      ['Run — 3 × 1km', 'RPE 7, 90 sec walk between', '3 × 1km', '90s'],
+      ['Bike', 'Easy — flush the legs', '1 × 20min', '—'],
+    ] },
+    sunSummary: 'RPE 5–6. Bike subs all runs. 4 rounds, stations rotating.',
+    sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (bike subs runs)', ex: [['Bike 1km → station', 'RPE 5–6', '4 rounds', '—']] },
+  }),
+  hyroxWeek(3, {
+    tag: 'Progress', subtitle: 'Tue 4×1km · real runs enter Sunday', tueLabel: '4 × 1km RPE 7–8', sunLabel: '500m real runs',
+    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7–8, sustainable.', ex: [
+      ['Run — 4 × 1km', 'RPE 7–8, 90 sec walk between', '4 × 1km', '90s'],
+      ['Bike', 'Easy — flush the legs', '1 × 20min', '—'],
+    ] },
+    sunSummary: 'RPE 5–6. Add 500m REAL runs between 2 of the stations; bike the rest. 4 rounds.',
+    sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (500m real runs ×2)', ex: [['1km bike/run → station', 'RPE 5–6', '4 rounds', '—']] },
+  }),
+  hyroxWeek(4, {
+    tag: 'Progress', subtitle: 'Tue 2×2km continuous · 1km real runs Sunday', tueLabel: '2 × 2km RPE 7', sunLabel: '1km real runs',
+    tueRun: { id: 'run', title: 'Run — continuous threshold', summary: 'RPE 7, continuous.', ex: [
+      ['Run — 2 × 2km continuous', 'RPE 7', '2 × 2km', '3min'],
+      ['Bike', 'Easy — flush the legs', '1 × 20min', '—'],
+    ] },
+    sunSummary: 'RPE 5–6. 1km REAL runs between 4 stations; build toward full 8×1km over coming weeks.',
+    sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (1km real runs)', ex: [['1km run → station', 'RPE 5–6', '4 rounds', '—']] },
+  }),
+];
+
 const PAUL_PLAN = {
   countdown: 'Recovery build → Hyrox · gate on next-morning soreness',
   gateHeading: 'Gate — next-morning response (hamstring or knee)',
@@ -645,11 +858,9 @@ const PAUL_PLAN = {
       weeks: [REC_W1, REC_W2, REC_W3, REC_W4],
     },
     {
-      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'From Week 5',
-      purpose: 'Full-on training to Hyrox once recovery clears. Weeks fill in from the detailed program.',
-      weeks: [
-        { id: 'hx1', title: 'Week 1', subtitle: 'Awaiting the detailed Hyrox program', days: [] },
-      ],
+      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Post-holiday · 4-week build',
+      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift.',
+      weeks: HYROX_WEEKS,
     },
   ],
 };
