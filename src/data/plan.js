@@ -653,6 +653,7 @@ const HY_MON = [
     ['Cable chest fly', '', '2 × 12', '30s'],
     ['Tricep pushdown', '', '2 × 12', '30s'],
     ['Overhead cable ext', '', '2 × 12', '30s'],
+    ['Face pulls', 'Shoulder balance — every upper day', '2 × 15', '30s'],
   ] },
   { id: 'core', title: 'Core', ex: [
     ['Hollow hold', '', '3 × max', '45s'],
@@ -679,7 +680,7 @@ const HY_WED = [
     ['Lat pulldown', '', '2 × 10', '30s'],
     ['Single-arm DB row', '', '2 × 10 each', '30s'],
     ['Face pulls', '', '2 × 15', '30s'],
-    ['Reverse pec fly', '', '2 × 15', '30s'],
+    ['Reverse fly (cable)', '', '2 × 15', '30s'],
     ['Barbell curl', '', '2 × 10', '30s'],
     ['Hammer curl', '', '2 × 12', '30s'],
   ] },
@@ -713,10 +714,18 @@ const HY_FRI = [
     ['Front lever', 'Tuck hold → adv tuck → straddle', '3 × 20s', '60s'],
     ['Human flag', 'Vertical clutch flag → straddle', '3 × 10s each', '60s'],
   ] },
+  { id: 'hips', title: 'Hip / glute — monkey foot (light)', summary: 'Running stability + knee support', ex: [
+    ['Monkey-foot hip extension', 'Standing cable kickback — glute', '3 × 12 each', '45s'],
+    ['Monkey-foot hip abduction', 'Standing cable — glute med', '3 × 12 each', '45s'],
+  ] },
   { id: 'mobility', title: 'Mobility (15 min)', ex: [
     ['Couch stretch', '', '1 × 60s each', '—'],
     ['Supine hamstring', '', '1 × 45s each', '—'],
     ['90/90 hip switches', '', '1 × 10 each', '—'],
+    ['Ankle dorsiflexion', '15 pulses each', '1 × 15 each', '—'],
+    ["World's greatest stretch", '', '1 × 6 each', '—'],
+    ['Pigeon', '', '1 × 60s each', '—'],
+    ['Cat-cow', '', '1 × 10', '—'],
     ['Deep squat hold', '', '3 × 20s', '—'],
   ] },
 ];
@@ -750,6 +759,7 @@ const HY_TUE_LIFT = [
     ['Rear-foot-elevated split squat', 'Running strength builder', '3 × 8 each', '90s'],
     ['Nordic curl', '', '3 × 5', '90s'],
     ['Back extension', '', '3 × 12', '60s'],
+    ['Monkey-foot hip flexion', 'Standing on cable — hip drive for running', '3 × 12 each', '45s'],
     ['Calf raise', '', '3 × 15', '60s'],
   ] },
 ];
@@ -772,25 +782,35 @@ function hyroxWeek(n, o) {
       note: 'Cardio ALWAYS before the lift. Any morning swelling = don’t progress that week, repeat it.',
     },
     days: [
-      { id: id('mon'), label: 'Mon', title: 'Upper Push + Handstand + Pump', type: 'session', workouts: HY_MON },
+      {
+        id: id('mon'), label: 'Mon', title: 'Upper Push + Handstand + Pump', type: 'session', workouts: HY_MON,
+        notes: ['Warm-up: shoulder dislocates ×10 · wall angels ×10.', 'Sled ×6 light activation to finish.'],
+      },
       {
         id: id('tue'), label: 'Tue', title: 'Run + Lower + Oly light', type: 'session',
         summary: 'Cardio first: run intervals, then bike 20 easy to flush the legs before lifting.',
         workouts: [o.tueRun, ...HY_TUE_LIFT],
-        notes: ['Legs pre-fatigued from the run — keep Oly technique-focused. Save load PRs for Saturday.'],
+        notes: ['Warm-up: full rehab + sled ×6 progressive + empty-bar prep.', 'Legs pre-fatigued from the run — keep Oly technique-focused. Save load PRs for Saturday.'],
       },
-      { id: id('wed'), label: 'Wed', title: 'Upper Pull + Muscle-up + Pump', type: 'session', workouts: HY_WED },
+      {
+        id: id('wed'), label: 'Wed', title: 'Upper Pull + Muscle-up + Pump', type: 'session', workouts: HY_WED,
+        notes: ['Warm-up: band pull-aparts ×20 · scap pull-ups ×10.', 'Sled ×6 light activation.'],
+      },
       {
         id: id('thu'), label: 'Thu', title: 'VO2 Max — machine intervals', type: 'session', rpe: 10,
         summary: 'Your dedicated VO2 session — it should feel horrible. 90%+ max HR for cumulative minutes.',
         workouts: HY_THU,
         notes: [HY_ZONES, 'If you can talk during the work intervals you are not there. Alternate Format A (Norwegian 4×4) and Format B (30/30) week to week. No running on Thursday.'],
       },
-      { id: id('fri'), label: 'Fri', title: 'Boxing + Mobility + Skills', type: 'session', workouts: HY_FRI },
+      {
+        id: id('fri'), label: 'Fri', title: 'Boxing + Mobility + Skills', type: 'session', workouts: HY_FRI,
+        notes: ['Sled ×6 very light.'],
+      },
       {
         id: id('sat'), label: 'Sat', title: 'Lower + Oly (snatch focus)', type: 'session',
         summary: 'Cardio first: bike 20 + ski 20 — machines only to keep the legs fresh for snatch. This is your squat day.',
         workouts: HY_SAT,
+        notes: ['Warm-up: rehab + sled ×6 + snatch complex empty bar ×3.'],
       },
       {
         id: id('sun'), label: 'Sun', title: 'Half-Hyrox Simulation', type: 'session', rpe: 6,
