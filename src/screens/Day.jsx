@@ -1,13 +1,15 @@
-import { exercisesOf, parseSets } from '../lib/plan.js';
+import { exercisesOf, parseSets, workoutsOf } from '../lib/plan.js';
 import { useTracker } from '../state/store.jsx';
 
 export default function Day() {
   const { day, actions, record, plan } = useTracker();
   const DAILY = plan.daily;
   const rec = record(day.id);
-  const exs = exercisesOf(day);
+  const workouts = workoutsOf(day);
+  const exCount = exercisesOf(day).length;
   const items = day.items || [];
   const done = !!rec.completed;
+  const multi = workouts.length > 1;
 
   const meta = day.type === 'session'
     ? [day.dur, day.rpe ? 'RPE cap ' + day.rpe : ''].filter(Boolean).join(' · ')
@@ -52,19 +54,26 @@ export default function Day() {
           </div>
         ) : null}
 
-        {exs.length ? (
-          <div className="list">
-            <div className="eyebrow">{exs.length} exercises · tap to jump in</div>
-            {exs.map((e, i) => {
-              const all = (rec.sets[i] || []).filter((s) => s && s.done).length >= parseSets(e.scheme);
+        {workouts.map((w) => (
+          <div className="list workout" key={w.id || w.title}>
+            {multi ? (
+              <div className="workout__head">
+                <div className="workout__title">{w.title}</div>
+                {w.summary ? <div className="workout__sub">{w.summary}</div> : null}
+              </div>
+            ) : (
+              <div className="eyebrow">{exCount} exercises · tap to jump in</div>
+            )}
+            {w.exercises.map((e) => {
+              const all = (rec.sets[e.idx] || []).filter((s) => s && s.done).length >= parseSets(e.scheme);
               return (
                 <button
-                  key={e.name + i}
+                  key={e.name + e.idx}
                   type="button"
                   className={'row ex-row' + (all ? ' row--on' : '')}
-                  onClick={() => actions.startSession(i)}
+                  onClick={() => actions.startSession(e.idx)}
                 >
-                  <span className="row__box">{all ? '✓' : String(i + 1)}</span>
+                  <span className="row__box">{all ? '✓' : String(e.idx + 1)}</span>
                   <span className="row__body">
                     <span className="row__name">{(e.pair ? e.pair + ' ' : '') + e.name}</span>
                     <span className="ex-row__load">{e.load}</span>
@@ -74,7 +83,7 @@ export default function Day() {
               );
             })}
           </div>
-        ) : null}
+        ))}
 
         {day.optional ? (
           <div className="optional">
@@ -110,7 +119,7 @@ export default function Day() {
           </div>
         </div>
 
-        {exs.length ? (
+        {exCount ? (
           <button type="button" className="primary-btn day__start" onClick={() => actions.startSession(0)}>
             {Object.keys(rec.sets || {}).length ? 'Continue session' : 'Start session'}
           </button>

@@ -43,12 +43,30 @@ export function restSecs(r) {
   return min ? parseInt(min[1], 10) * 60 : 0;
 }
 
+function mkExercise(e, cues, idx) {
+  const p = parsePair(e[0]);
+  return { name: p.name, pair: p.pair, load: e[1], scheme: e[2], rest: e[3], cue: cues[e[0]] || cues[p.name] || '', idx };
+}
+
+/** A day's workouts, each with its exercises carrying a flat, day-wide index. */
+export function workoutsOf(day) {
+  let idx = 0;
+  return (day.workouts || []).map((w) => ({
+    id: w.id,
+    title: w.title,
+    summary: w.summary,
+    exercises: (w.ex || []).map((e) => mkExercise(e, w.cues || {}, idx++)),
+  }));
+}
+
+/** Flat, ordered exercise list for a day — same order as workoutsOf's indices.
+ *  Drives the Session's prev/next and completion counts. */
 export function exercisesOf(day) {
-  return (day.ex || []).map((e) => {
-    const p = parsePair(e[0]);
-    const cues = day.cues || {};
-    return { name: p.name, pair: p.pair, load: e[1], scheme: e[2], rest: e[3], cue: cues[e[0]] || cues[p.name] || '' };
+  const out = [];
+  (day.workouts || []).forEach((w) => {
+    (w.ex || []).forEach((e) => out.push(mkExercise(e, w.cues || {}, out.length)));
   });
+  return out;
 }
 
 export function countDoneSets(sets) {
