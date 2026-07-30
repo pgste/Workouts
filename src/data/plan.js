@@ -202,7 +202,7 @@ const PAUL_WK1 = {
       id: 'p1_sat', label: 'Sat 1 Aug', title: 'Basic reintroduction', type: 'session', dur: '~40 min',
       summary: 'Isometrics @ 60%. Easy machine reintroduction. Set the bike seat for 25–35° knee bend at full extension.',
       ex: [
-        ['Cross trainer', 'Easy, upright, short stride', '1 × 12min', '—'],
+        ['Treadmill', 'Easy walk, upright', '1 × 12min', '—'],
         ['Static bike', 'Easy, 90rpm, seat 25–35° knee bend', '1 × 10min', '—'],
         ['Backward sled drag', 'Very light', '4 × 20m', '60s'],
         ['Pull-ups', 'Bodyweight', '3 × 6', '90s'],
@@ -216,7 +216,7 @@ const PAUL_WK1 = {
       summary: 'Isometrics @ 65%. A little more volume — all machine and light strength.',
       ex: [
         ['Ski erg', 'Steady, tall, arms + lats', '1 × 12min', '—'],
-        ['Cross trainer', 'Steady', '1 × 15min', '—'],
+        ['Treadmill', 'Steady walk', '1 × 15min', '—'],
         ['Backward sled drag', 'Light', '6 × 20m', '60s'],
         ['Goblet squat', 'Light', '3 × 10', '90s'],
         ['Split squat', 'Bodyweight–light', '3 × 8 each', '90s'],
@@ -228,7 +228,7 @@ const PAUL_WK1 = {
     },
     {
       id: 'p1_mon', label: 'Mon 3 Aug', title: 'Lower rehab + Push', type: 'session',
-      summary: 'Cardio 40 min: cross trainer 20 min steady · bike 20 min easy 90rpm.',
+      summary: 'Cardio 40 min: treadmill walk 20 min steady · bike 20 min easy 90rpm.',
       ex: [
         ['Backward sled drag', 'Light', '8 × 20m', '60s'],
         ['Goblet squat', 'Moderate', '4 × 10', '90s'],
@@ -254,7 +254,7 @@ const PAUL_WK1 = {
     },
     {
       id: 'p1_wed', label: 'Wed 5 Aug', title: 'Pull', type: 'session',
-      summary: 'Cardio 40 min: rower — arms + short slide only, 20 min · cross trainer 20 min.',
+      summary: 'Cardio 40 min: rower — arms + short slide only, 20 min · treadmill walk 20 min.',
       ex: [
         ['Pull-ups', '', '4 × 6', '90s'],
         ['Lat pulldown', '', '3 × 10', '90s'],
@@ -266,7 +266,7 @@ const PAUL_WK1 = {
     },
     {
       id: 'p1_thu', label: 'Thu 6 Aug', title: 'VO2 max (machines only)', type: 'session', rpe: 9,
-      summary: 'Norwegian 4 × 4: 4 min @ RPE 9 / 3 min recovery — alternate bike and ski erg. Warm-up 10 min cross trainer, cool-down 10 min bike.',
+      summary: 'Norwegian 4 × 4: 4 min @ RPE 9 / 3 min recovery — alternate bike and ski erg. Warm-up 10 min treadmill walk, cool-down 10 min bike.',
       ex: [
         ['Norwegian 4×4 (bike / ski erg)', 'RPE 9', '4 × 4min', '3min'],
       ],
@@ -282,7 +282,7 @@ const PAUL_WK1 = {
     },
     {
       id: 'p1_sat2', label: 'Sat 8 Aug', title: 'Sled + Strength', type: 'session',
-      summary: 'Cardio 40 min: cross trainer 20 min · bike 20 min.',
+      summary: 'Cardio 40 min: treadmill walk 20 min · bike 20 min.',
       ex: [
         ['Backward sled drag', 'Moderate', '10 × 20m', '60s'],
         ['Box step-ups', "Step, don't jump", '3 × 10 each', '90s'],
@@ -299,7 +299,7 @@ const PAUL_WK1 = {
       ex: [
         ['Bike 1km → 10 wall balls', 'RPE 6–7', '4 rounds', '—'],
         ['Ski erg 500m → backward sled drag 40m', 'RPE 6–7', '4 rounds', '—'],
-        ['Cross trainer 5 min → 20 farmer carry steps', 'RPE 6–7', '4 rounds', '—'],
+        ['Treadmill walk 5 min → 20 farmer carry steps', 'RPE 6–7', '4 rounds', '—'],
       ],
       notes: ['Gate to Week 2: resisted flexion pain-free + light stretch producing no next-morning soreness.'],
     },
@@ -326,7 +326,7 @@ const PAUL_WK2 = {
   days: [
     {
       id: 'p2_mon', label: 'Mon 10 Aug', title: 'Lower + Push', type: 'session',
-      summary: 'Cardio 40 min: cross trainer 20 · bike 20.',
+      summary: 'Cardio 40 min: treadmill walk 20 · bike 20.',
       ex: [
         ['Tempo RDL', 'Very light (empty bar / 20kg), 4s eccentric', '3 × 8', '2min'],
         ['Backward sled drag', 'Moderate', '8 × 20m', '60s'],
@@ -353,7 +353,7 @@ const PAUL_WK2 = {
     },
     {
       id: 'p2_wed', label: 'Wed 12 Aug', title: 'Pull', type: 'session',
-      summary: 'Cardio 40 min: rower full slide 20 min moderate · cross trainer 20 min.',
+      summary: 'Cardio 40 min: rower full slide 20 min moderate · treadmill walk 20 min.',
       ex: [
         ['Pull-ups', '', '4 × 7', '90s'],
         ['Lat pulldown', '', '3 × 10', '90s'],
@@ -365,9 +365,9 @@ const PAUL_WK2 = {
     },
     {
       id: 'p2_thu', label: 'Thu 13 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
-      summary: '30/30 shuttle: 30s @ RPE 9–10 / 30s easy × 12, rest 3 min, repeat × 2 blocks. Alternate bike, ski erg, cross trainer.',
+      summary: '30/30 shuttle: 30s @ RPE 9–10 / 30s easy × 12, rest 3 min, repeat × 2 blocks. Alternate bike, ski erg, rower.',
       ex: [
-        ['30/30 intervals (bike / ski / cross)', 'RPE 9–10', '2 × 12', '3min'],
+        ['30/30 intervals (bike / ski / rower)', 'RPE 9–10', '2 × 12', '3min'],
       ],
       notes: ['Machines only. Do not run this.'],
     },
@@ -398,7 +398,7 @@ const PAUL_WK2 = {
       ex: [
         ['Bike / rower 1km → 10 wall balls', 'RPE 7', '4 rounds', '—'],
         ['Ski erg 500m → backward sled drag 40m', 'RPE 7', '4 rounds', '—'],
-        ['Cross trainer 5 min → 20 farmer carry steps', 'RPE 7', '4 rounds', '—'],
+        ['Treadmill walk 5 min → 20 farmer carry steps', 'RPE 7', '4 rounds', '—'],
         ['Step-back burpees (no jump)', 'Per round', '4 × 10', '—'],
       ],
       notes: ['Gate to Week 3: tempo RDL comfortable at light load, no next-morning response.'],
@@ -426,10 +426,10 @@ const PAUL_WK3 = {
   days: [
     {
       id: 'p3_mon', label: 'Mon 17 Aug', title: 'Lower + Push', type: 'session',
-      summary: 'Cardio 40 min: cross trainer 20 · rower 20 moderate.',
+      summary: 'Cardio 40 min: treadmill walk 20 · rower 20 moderate.',
       ex: [
         ['Tempo RDL', 'Building load, 3s eccentric', '4 × 8', '2min'],
-        ['Hamstring curl', 'Light — full range returns', '3 × 12', '90s'],
+        ['Hamstring curl', 'Monkey foot on cable, light — full range returns', '3 × 12', '90s'],
         ['Backward sled drag', '', '8 × 25m', '60s'],
         ['Front squat or goblet', 'Moderate', '4 × 8', '2min'],
         ['Incline DB press', '', '4 × 8', '90s'],
@@ -451,7 +451,7 @@ const PAUL_WK3 = {
     },
     {
       id: 'p3_wed', label: 'Wed 19 Aug', title: 'Pull', type: 'session',
-      summary: 'Cardio 40 min: ski erg 20 min · cross trainer 20 min.',
+      summary: 'Cardio 40 min: ski erg 20 min · treadmill walk 20 min.',
       ex: [
         ['Pull-ups', '', '4 × 8', '90s'],
         ['Weighted lat pulldown', '', '4 × 8', '90s'],
@@ -519,10 +519,10 @@ const PAUL_WK4 = {
   days: [
     {
       id: 'p4_mon', label: 'Mon 24 Aug', title: 'Lower + Push', type: 'session',
-      summary: 'Cardio 40 min: cross trainer 20 · bike 20.',
+      summary: 'Cardio 40 min: treadmill walk 20 · bike 20.',
       ex: [
         ['Tempo RDL', 'Building, 3s eccentric', '4 × 6', '2min'],
-        ['Hamstring curl', '', '3 × 12', '90s'],
+        ['Hamstring curl', 'Monkey foot on cable', '3 × 12', '90s'],
         ['Backward sled drag', '', '8 × 25m', '60s'],
         ['Squat', 'Moderate', '4 × 6', '2min'],
         ['Full push session', 'Incline press / OHP / lateral raise', '3 × 10', '90s'],
@@ -530,7 +530,7 @@ const PAUL_WK4 = {
     },
     {
       id: 'p4_tue', label: 'Tue 25 Aug', title: 'RUN 1 🏃', type: 'session',
-      summary: 'Warm-up: cross trainer 10 min + dynamic prep. Cool-down: bike 10 min easy. Nothing else this session.',
+      summary: 'Warm-up: treadmill 10 min easy (walk into jog) + dynamic prep. Cool-down: bike 10 min easy. Nothing else this session.',
       ex: [
         ['Run — 3 × 1km easy', 'Zone 2, conversational, 2 min walk between', '3 × 1km', '2min'],
       ],
@@ -550,7 +550,7 @@ const PAUL_WK4 = {
     },
     {
       id: 'p4_thu', label: 'Thu 27 Aug', title: 'VO2 max (machines only)', type: 'session', rpe: 10,
-      summary: '4 × 4 or 30/30, alternating bike / ski / cross trainer. Machine-based — do NOT run it.',
+      summary: '4 × 4 or 30/30, alternating bike / ski / rower. Machine-based — do NOT run it.',
       ex: [
         ['VO2 intervals (machines only)', 'RPE 9–10', '4 × 4min', '3min'],
       ],
