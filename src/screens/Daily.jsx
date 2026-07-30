@@ -1,11 +1,10 @@
-import { GATE_HEADING, WEEK } from '../data/plan.js';
 import { ymd } from '../lib/plan.js';
 import { useTracker } from '../state/store.jsx';
 
 const isNumeric = (label) => /HR|h\)|1–10|Bodyweight/.test(label);
 
 export default function Daily() {
-  const { state, actions } = useTracker();
+  const { state, actions, plan } = useTracker();
   const today = ymd(new Date());
   const rowKey = state.athlete + ':' + today;
   const row = state.readiness[rowKey] || {};
@@ -37,7 +36,7 @@ export default function Daily() {
       </div>
 
       <div className="readiness__list">
-        {WEEK.readiness.map((label) => {
+        {plan.readiness.map((label) => {
           const value = row[label] || '';
           return (
             <div className={'readiness__field' + (value ? ' readiness__field--filled' : '')} key={label}>
@@ -57,8 +56,8 @@ export default function Daily() {
       </div>
 
       <div className="gate">
-        <div className="section-title">{GATE_HEADING}</div>
-        {WEEK.gate.map((g) => (
+        <div className="section-title">{plan.gateHeading}</div>
+        {plan.gate.map((g) => (
           <div className="gate__card" key={g.level} style={{ background: g.bg, border: '1px solid ' + g.bd }}>
             <div className="gate__level" style={{ color: g.fg }}>{g.level}</div>
             <div className="gate__criteria">{g.criteria}</div>

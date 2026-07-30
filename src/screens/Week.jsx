@@ -1,4 +1,3 @@
-import { DAILY } from '../data/plan.js';
 import { useTracker } from '../state/store.jsx';
 
 function dayMeta(d) {
@@ -11,8 +10,9 @@ function dayMeta(d) {
 }
 
 export default function Week() {
-  const { block, actions, record } = useTracker();
+  const { block, actions, record, plan } = useTracker();
   const w = block.week;
+  const DAILY = plan.daily;
 
   return (
     <div className="screen week">
@@ -70,7 +70,7 @@ export default function Week() {
                 <div className="day-card__title">{d.title}</div>
                 <div className="day-card__meta">{dayMeta(d)}</div>
               </div>
-              <div className="day-card__out">{d.out}<br />days out</div>
+              {d.out != null ? <div className="day-card__out">{d.out}<br />days out</div> : null}
             </button>
           );
         })}

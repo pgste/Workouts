@@ -157,6 +157,8 @@ button { appearance: none; }
   font-weight: 600;
 }
 .pill-btn:hover { color: var(--text); border-color: rgba(0, 163, 255, .5); }
+.pill-btn--on { color: var(--ink); background: var(--blue); border-color: var(--blue); }
+.coach-switch { display: flex; gap: 8px; margin-top: -4px; }
 
 .primary-btn {
   cursor: pointer;

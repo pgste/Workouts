@@ -1,9 +1,9 @@
-import { DAILY } from '../data/plan.js';
 import { exercisesOf, parseSets } from '../lib/plan.js';
 import { useTracker } from '../state/store.jsx';
 
 export default function Day() {
-  const { day, actions, record } = useTracker();
+  const { day, actions, record, plan } = useTracker();
+  const DAILY = plan.daily;
   const rec = record(day.id);
   const exs = exercisesOf(day);
   const items = day.items || [];
@@ -18,7 +18,7 @@ export default function Day() {
       <div className="day__head">
         <button type="button" className="icon-btn" onClick={actions.closeDay} aria-label="Back">←</button>
         <div className="day__head-body">
-          <div className="day__label">{day.label} · {day.out} days out</div>
+          <div className="day__label">{day.label}{day.out != null ? ' · ' + day.out + ' days out' : ''}</div>
           <div className="day__meta">{meta}</div>
         </div>
       </div>

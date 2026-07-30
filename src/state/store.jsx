@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
-import { BLOCKS } from '../data/plan.js';
+import { PLANS, REAL_ATHLETES } from '../data/plan.js';
 import { countDoneSets, ymd } from '../lib/plan.js';
 import {
   decodeSnapshot, encodeSnapshot, loadAthlete, loadProgress,
@@ -13,6 +13,7 @@ const init = () => ({
   tab: 'plan',
   block: null,
   day: null,
+  coachView: null,
   session: false,
   exIdx: 0,
   rest: 0,
@@ -139,7 +140,7 @@ export function TrackerProvider({ children }) {
   const popping = useRef(false);
   const navKey = JSON.stringify({
     athlete: state.athlete, tab: state.tab, block: state.block, day: state.day,
-    session: state.session, overlay: state.overlay, complete: state.complete,
+    coachView: state.coachView, session: state.session, overlay: state.overlay, complete: state.complete,
   });
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -170,6 +171,7 @@ export function TrackerProvider({ children }) {
       goHome: () => { saveAthlete(null); set({ athlete: null, block: null, day: null, session: false, overlay: null, complete: null, tab: 'plan' }); },
       setTab: (tab) => set({ tab }),
       openBlock: (id) => set({ block: id, day: null }),
+      setCoachView: (id) => set({ coachView: id, block: null, day: null }),
       backToBlocks: () => set({ block: null, day: null }),
       openDay: (blockId, dayId) => set({ block: blockId, day: dayId, tab: 'plan', exIdx: 0 }),
       closeDay: () => set({ day: null }),
@@ -205,10 +207,15 @@ export function TrackerProvider({ children }) {
   }, []);
 
   const value = useMemo(() => {
-    const block = BLOCKS.find((b) => b.id === state.block) || null;
+    // Coach view reads whichever athlete it points at (defaulting to the first
+    // real athlete); everyone else reads their own plan.
+    const viewingId = state.athlete === 'coach' ? (state.coachView || REAL_ATHLETES[0].id) : state.athlete;
+    const plan = (viewingId && PLANS[viewingId]) || null;
+    const blocks = plan ? plan.blocks : [];
+    const block = blocks.find((b) => b.id === state.block) || null;
     const day = block && block.week ? block.week.days.find((d) => d.id === state.day) || null : null;
     const record = (dayId) => state.log[state.athlete + ':' + dayId] || { sets: {}, ticks: {} };
-    return { state, actions, block, day, record };
+    return { state, actions, plan, viewingId, block, day, record };
   }, [state, actions]);
 
   return <TrackerContext.Provider value={value}>{children}</TrackerContext.Provider>;
