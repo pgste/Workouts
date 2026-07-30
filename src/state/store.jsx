@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
 import { PLANS, REAL_ATHLETES } from '../data/plan.js';
-import { countDoneSets, ymd } from '../lib/plan.js';
+import { countDoneSets, exercisesOf, ymd } from '../lib/plan.js';
 import {
   decodeSnapshot, encodeSnapshot, loadAthlete, loadProgress,
   saveAthlete, saveProgress,
@@ -12,6 +12,7 @@ const init = () => ({
   athlete: loadAthlete(),
   tab: 'plan',
   block: null,
+  week: null,
   day: null,
   coachView: null,
   session: false,
@@ -86,7 +87,7 @@ function reducer(state, action) {
         rec.date = ymd(new Date());
         rec.name = day.title + ' · ' + day.label;
         rec.detail = day.type === 'session'
-          ? countDoneSets(rec.sets) + ' sets logged · ' + (day.ex || []).length + ' exercises'
+          ? countDoneSets(rec.sets) + ' sets logged · ' + exercisesOf(day).length + ' exercises'
           : 'Rest day ticked off';
       });
 
@@ -139,7 +140,7 @@ export function TrackerProvider({ children }) {
   // restore it. `popping` stops the restore from pushing a fresh entry back.
   const popping = useRef(false);
   const navKey = JSON.stringify({
-    athlete: state.athlete, tab: state.tab, block: state.block, day: state.day,
+    athlete: state.athlete, tab: state.tab, block: state.block, week: state.week, day: state.day,
     coachView: state.coachView, session: state.session, overlay: state.overlay, complete: state.complete,
   });
   useEffect(() => {
@@ -170,10 +171,12 @@ export function TrackerProvider({ children }) {
       pickAthlete: (id) => { saveAthlete(id); set({ athlete: id, tab: 'plan', block: null, day: null }); },
       goHome: () => { saveAthlete(null); set({ athlete: null, block: null, day: null, session: false, overlay: null, complete: null, tab: 'plan' }); },
       setTab: (tab) => set({ tab }),
-      openBlock: (id) => set({ block: id, day: null }),
-      setCoachView: (id) => set({ coachView: id, block: null, day: null }),
-      backToBlocks: () => set({ block: null, day: null }),
-      openDay: (blockId, dayId) => set({ block: blockId, day: dayId, tab: 'plan', exIdx: 0 }),
+      openBlock: (id) => set({ block: id, week: null, day: null }),
+      openWeek: (weekId) => set({ week: weekId, day: null }),
+      backToWeeks: () => set({ week: null, day: null }),
+      setCoachView: (id) => set({ coachView: id, block: null, week: null, day: null }),
+      backToBlocks: () => set({ block: null, week: null, day: null }),
+      openDay: (blockId, weekId, dayId) => set({ block: blockId, week: weekId, day: dayId, tab: 'plan', exIdx: 0 }),
       closeDay: () => set({ day: null }),
       startSession: (exIdx = 0) => set({ session: true, exIdx, rest: 0 }),
       closeSession: () => set({ session: false, rest: 0 }),
@@ -213,9 +216,11 @@ export function TrackerProvider({ children }) {
     const plan = (viewingId && PLANS[viewingId]) || null;
     const blocks = plan ? plan.blocks : [];
     const block = blocks.find((b) => b.id === state.block) || null;
-    const day = block && block.week ? block.week.days.find((d) => d.id === state.day) || null : null;
+    const weeks = block ? (block.weeks || []) : [];
+    const week = weeks.find((w) => w.id === state.week) || null;
+    const day = week ? (week.days || []).find((d) => d.id === state.day) || null : null;
     const record = (dayId) => state.log[state.athlete + ':' + dayId] || { sets: {}, ticks: {} };
-    return { state, actions, plan, viewingId, block, day, record };
+    return { state, actions, plan, viewingId, block, weeks, week, day, record };
   }, [state, actions]);
 
   return <TrackerContext.Provider value={value}>{children}</TrackerContext.Provider>;

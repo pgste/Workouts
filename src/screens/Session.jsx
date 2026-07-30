@@ -2,7 +2,7 @@ import { countDoneSets, exercisesOf, parseReps, parseSets, restSecs } from '../l
 import { useTracker } from '../state/store.jsx';
 
 export default function Session() {
-  const { state, block, day, actions, record } = useTracker();
+  const { state, week, day, actions, record } = useTracker();
   const rec = record(day.id);
   const exs = exercisesOf(day);
   const idx = Math.min(state.exIdx, exs.length - 1);
@@ -21,7 +21,7 @@ export default function Session() {
   const finish = () => {
     actions.completeDay(day, true);
     const setCount = countDoneSets(rec.sets);
-    const days = block.week.days;
+    const days = week.days;
     const next = days[days.findIndex((d) => d.id === day.id) + 1] || null;
     actions.set({
       session: false,
