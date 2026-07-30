@@ -1,17 +1,17 @@
-import { ATHLETES, BLOCKS, COUNTDOWN } from '../data/plan.js';
+import { ATHLETES, REAL_ATHLETES } from '../data/plan.js';
 import { planDate, ymd } from '../lib/plan.js';
 import { useTracker } from '../state/store.jsx';
 
 /** The card at the top: today's day if a week is live, otherwise the next block up. */
-function todayCard(actions) {
-  const live = BLOCKS.find((b) => b.week);
+function todayCard(blocks, actions) {
+  const live = blocks.find((b) => b.week);
 
   // No week written yet — point at the first block rather than dereferencing a
   // week that doesn't exist. The card taps through to its "not written yet" screen.
   if (!live) {
-    const first = BLOCKS[0];
+    const first = blocks[0];
     return {
-      kicker: 'Preseason',
+      kicker: 'Plan',
       title: 'Plan not written yet',
       sub: first ? first.title + ' · ' + first.dates : 'Weeks drop in soon',
       open: () => { if (first) actions.openBlock(first.id); },
@@ -56,9 +56,12 @@ function todayCard(actions) {
 }
 
 export default function Blocks() {
-  const { state, actions, record } = useTracker();
-  const athlete = ATHLETES.find((a) => a.id === state.athlete);
-  const today = todayCard(actions);
+  const { state, actions, record, plan, viewingId } = useTracker();
+  const BLOCKS = plan.blocks;
+  const isCoach = state.athlete === 'coach';
+  const headName = (ATHLETES.find((a) => a.id === state.athlete) || {}).name || '';
+  const viewingName = (ATHLETES.find((a) => a.id === viewingId) || {}).name || '';
+  const today = todayCard(BLOCKS, actions);
 
   // Read the list as a timeline: the current block (written, still in progress)
   // and the one genuinely next after it. Everything else is just "later", so the
@@ -72,9 +75,9 @@ export default function Blocks() {
     <div className="screen screen--pad">
       <div className="blocks__head">
         <div>
-          <div className="kicker">{athlete ? athlete.name : ''}</div>
+          <div className="kicker">{headName}</div>
           <div className="screen-title">Training blocks</div>
-          <div className="screen-sub">{COUNTDOWN}</div>
+          <div className="screen-sub">{plan.countdown}</div>
         </div>
         <div className="blocks__head-actions">
           <button type="button" className="gear-btn" onClick={actions.openSettings} aria-label="Settings">⚙</button>
@@ -82,10 +85,24 @@ export default function Blocks() {
         </div>
       </div>
 
-      {state.athlete === 'coach' ? (
-        <div className="banner">
-          Coach view — you&apos;re reading someone else&apos;s plan. Anything you tick here is saved to this device only.
-        </div>
+      {isCoach ? (
+        <>
+          <div className="banner">
+            Coach view — reading {viewingName}&apos;s plan. Anything you tick here is saved to this device only.
+          </div>
+          <div className="coach-switch">
+            {REAL_ATHLETES.map((a) => (
+              <button
+                key={a.id}
+                type="button"
+                className={'pill-btn' + (a.id === viewingId ? ' pill-btn--on' : '')}
+                onClick={() => actions.setCoachView(a.id)}
+              >
+                {a.name}
+              </button>
+            ))}
+          </div>
+        </>
       ) : null}
 
       <button type="button" className="today" onClick={today.open}>
