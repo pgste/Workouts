@@ -1,8 +1,24 @@
+import { useState } from 'react';
 import { exercisesOf, parseSets, workoutsOf } from '../lib/plan.js';
 import { useTracker } from '../state/store.jsx';
 
 export default function Day() {
   const { day, actions, record, plan } = useTracker();
+  const [shared, setShared] = useState(false);
+
+  // The address bar already holds this day's deep link — share that.
+  const share = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: day.title, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setShared(true);
+      setTimeout(() => setShared(false), 2000);
+    } catch { /* share sheet dismissed / no clipboard */ }
+  };
   const DAILY = plan.daily;
   const rec = record(day.id);
   const workouts = workoutsOf(day);
@@ -23,6 +39,9 @@ export default function Day() {
           <div className="day__label">{day.label}{day.out != null ? ' · ' + day.out + ' days out' : ''}</div>
           <div className="day__meta">{meta}</div>
         </div>
+        <button type="button" className="pill-btn" onClick={share} aria-label="Share link to this day">
+          {shared ? 'Copied ✓' : 'Share'}
+        </button>
       </div>
 
       <div className="day__body">

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
 import { PLANS, REAL_ATHLETES } from '../data/plan.js';
 import { countDoneSets, exercisesOf, ymd } from '../lib/plan.js';
+import { hashOf, parseHash } from '../lib/route.js';
 import {
   decodeSnapshot, encodeSnapshot, loadAthlete, loadProgress,
   saveAthlete, saveProgress,
@@ -27,6 +28,9 @@ const init = () => ({
   imported: 0,
   resetArm: false,
   ...loadProgress(),
+  // A deep link wins over the remembered athlete — that's what makes shared
+  // links land on the right screen.
+  ...(typeof window !== 'undefined' ? parseHash(window.location.hash) || {} : {}),
 });
 
 /** Clone the day record for `dayId` under the current athlete, mutate, store. */
@@ -134,10 +138,12 @@ export function TrackerProvider({ children }) {
 
   useEffect(() => () => clearTimeout(exportTimer.current), []);
 
-  // Browser back / forward. The nav-relevant slice of state is mirrored into the
-  // history stack as opaque entries; the visible URL is left untouched so a
-  // refresh and the Pages sub-path keep working. Back/forward pop an entry and
-  // restore it. `popping` stops the restore from pushing a fresh entry back.
+  // Browser history + deep links. Nav state is mirrored into history entries
+  // AND into the URL hash (#/athlete/block/week/day), so any screen is a
+  // shareable link and back/forward walk the hierarchy. Hash-based because
+  // path routing would 404 on the Pages sub-path. Ephemeral state (session,
+  // overlays) lives only in the history entry, not the URL. `popping` stops a
+  // restore from pushing a fresh entry back.
   const popping = useRef(false);
   const navKey = JSON.stringify({
     athlete: state.athlete, tab: state.tab, block: state.block, week: state.week, day: state.day,
@@ -147,18 +153,28 @@ export function TrackerProvider({ children }) {
     if (typeof window === 'undefined') return;
     if (popping.current) { popping.current = false; return; }
     const entry = { __nav: JSON.parse(navKey) };
+    const url = hashOf(state) || window.location.pathname + window.location.search;
     if (window.history.state && window.history.state.__nav) {
-      window.history.pushState(entry, '');
+      window.history.pushState(entry, '', url);
     } else {
-      window.history.replaceState(entry, '');
+      window.history.replaceState(entry, '', url);
     }
   }, [navKey]);
   useEffect(() => {
     const onPop = (e) => {
-      const nav = e.state && e.state.__nav;
-      if (!nav) return;
       popping.current = true;
-      dispatch({ type: 'set', patch: nav });
+      const nav = e.state && e.state.__nav;
+      if (nav) {
+        dispatch({ type: 'set', patch: nav });
+      } else {
+        // No entry of ours (hand-edited hash, or a link followed in-page):
+        // parse the URL instead.
+        const patch = parseHash(window.location.hash);
+        dispatch({
+          type: 'set',
+          patch: patch || { athlete: null, coachView: null, block: null, week: null, day: null, session: false, overlay: null, complete: null, tab: 'plan' },
+        });
+      }
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
