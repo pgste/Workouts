@@ -775,6 +775,15 @@ button { appearance: none; }
   background: rgba(0, 163, 255, .12);
   border-color: rgba(0, 163, 255, .3);
 }
+.tag--video {
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #ff5470;
+  background: rgba(255, 84, 112, .08);
+  border-color: rgba(255, 84, 112, .28);
+}
+.tag--video:hover { border-color: rgba(255, 84, 112, .6); }
 
 .sets { display: flex; flex-direction: column; gap: 9px; }
 .sets__head {
