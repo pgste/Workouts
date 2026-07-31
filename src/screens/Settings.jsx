@@ -1,9 +1,11 @@
+import { firebaseConfigured } from '../lib/firebase.js';
 import { snapshotSize } from '../lib/storage.js';
 import { useTracker } from '../state/store.jsx';
 
 export default function Settings() {
   const { state, actions } = useTracker();
   const bytes = snapshotSize(state);
+  const mapped = state.profile && state.profile.athleteId;
 
   const exportProgress = () => actions.exportSnapshot({
     a: state.athlete, log: state.log, court: state.court, readiness: state.readiness,
@@ -22,7 +24,40 @@ export default function Settings() {
       </div>
 
       <div className="settings__group">
-        <div className="eyebrow">Sync</div>
+        <div className="eyebrow">Cloud sync</div>
+        {!firebaseConfigured ? (
+          <div className="settings__hint">
+            Not configured in this build — progress stays on this device. Snapshot codes below still work.
+          </div>
+        ) : !state.user ? (
+          <>
+            <button type="button" className="ghost-btn" onClick={actions.signIn}>
+              Sign in with Google
+            </button>
+            <div className="settings__hint">
+              Sign in to sync sets, court load and readiness across devices, and to pull the latest plans.
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="settings__storage">
+              <span>{state.user.email}</span>
+              <span>{mapped ? state.profile.athleteId + (state.profile.role === 'coach' ? ' · coach' : '') : 'awaiting mapping'}</span>
+            </div>
+            {!mapped ? (
+              <div className="settings__hint">
+                Signed in, but this account isn&apos;t mapped to an athlete yet — ask the coach to add your profile, then reopen the app.
+              </div>
+            ) : (
+              <div className="settings__hint">Live sync is on — changes flow both ways while online and queue while offline.</div>
+            )}
+            <button type="button" className="ghost-btn" onClick={actions.signOutUser}>Sign out</button>
+          </>
+        )}
+      </div>
+
+      <div className="settings__group">
+        <div className="eyebrow">Snapshots</div>
         <button type="button" className="ghost-btn" onClick={exportProgress}>
           {state.exported ? 'Copied to clipboard ✓' : 'Export progress for coach'}
         </button>
@@ -39,7 +74,7 @@ export default function Settings() {
           </button>
         </div>
         <div className="settings__hint">
-          Codes are a full snapshot — sets, rest-day ticks, court load and readiness. Until the app has a database, this is how progress travels between phones.
+          Codes are a full snapshot — sets, rest-day ticks, court load and readiness. The manual fallback when cloud sync isn&apos;t signed in.
         </div>
       </div>
 
@@ -60,7 +95,7 @@ export default function Settings() {
 
       <div className="settings__foot">
         Court Strength · static build<br />
-        Plans generated as markdown, compiled at build time.
+        Plans ship with the app and update from the cloud when signed in.
       </div>
     </div>
   );

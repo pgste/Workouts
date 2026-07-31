@@ -17,7 +17,7 @@ export default function Daily() {
     .map((k) => {
       const r = state.readiness[k];
       const summary = Object.keys(r)
-        .filter((f) => r[f] !== '')
+        .filter((f) => f !== '_ts' && r[f] !== '')
         .map((f) => f.replace(' 1–10', '') + ' ' + r[f])
         .join(' · ');
       return { date: k.split(':')[1].slice(5), summary: summary || 'Empty' };
