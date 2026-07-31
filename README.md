@@ -103,9 +103,19 @@ One-time setup:
    ```
 
    Until mapped, a signed-in user can't read or write any progress docs.
-7. **For the publish-plans workflow (phase C)** — Project settings → Service
-   accounts → Generate new private key; paste the JSON into a GitHub Actions
-   *Secret* named `FIREBASE_SERVICE_ACCOUNT` (never shipped to the client).
+7. **For the publish-plans workflow** — Project settings → Service accounts →
+   Generate new private key; paste the JSON into a GitHub Actions *Secret*
+   named `FIREBASE_SERVICE_ACCOUNT` (never shipped to the client).
+
+### Publishing plan changes
+
+Git stays the source of truth. Merging a change to `src/data/plan.js` on
+`main` runs the *Publish plans* workflow, which pushes every plan to
+`plans/{athleteId}` — signed-in phones pick it up on their live listener, no
+app redeploy needed. It can also be run by hand from the Actions tab, and to
+test locally: `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 node
+scripts/publish-plans.mjs` against `npx firebase emulators:start`. Until the
+secret exists the workflow no-ops politely.
 
 For local dev, put the four `VITE_FIREBASE_*` values in `.env.local`
 (gitignored).
