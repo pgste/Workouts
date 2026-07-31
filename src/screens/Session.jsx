@@ -1,4 +1,4 @@
-import { countDoneSets, exercisesOf, parseReps, parseSets, restSecs } from '../lib/plan.js';
+import { countDoneSets, exercisesOf, parseReps, parseSets, restSecs, videoUrl } from '../lib/plan.js';
 import { useTracker } from '../state/store.jsx';
 
 export default function Session() {
@@ -70,6 +70,15 @@ export default function Session() {
             <span className="tag tag--scheme">{ex.scheme}</span>
             <span className="tag">{ex.load}</span>
             <span className="tag">Rest {ex.rest}</span>
+            <a
+              className="tag tag--video"
+              href={videoUrl(ex)}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={'Watch a demo of ' + ex.name + ' on YouTube'}
+            >
+              ▶ Demo
+            </a>
           </div>
         </div>
 
