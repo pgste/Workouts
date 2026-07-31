@@ -45,20 +45,70 @@ src/
 
 ### Plan data
 
-`src/data/plan.js` is hand-authored for now. Its shape is what a markdown
-compiler built against [`project/PLAN-FORMAT.md`](project/PLAN-FORMAT.md) should
-emit — one object per week, blocks ordered as they run. A block without a `week`
-renders as "plan not written yet" rather than a dead tap, so future blocks can be
-listed before they exist.
+`src/data/plan.js` is hand-authored. Hierarchy: `PLANS[athleteId] → blocks →
+weeks → days → workouts → exercises`. A week with no `days` renders as "plan
+not written yet" rather than a dead tap, so future weeks can be listed before
+they exist. Every screen is deep-linkable (`#/paul/hyrox/hx_w1/hx1_mon`,
+`#/lewis/today`).
 
 Exercise names key the history lookups, so keep them identical across weeks.
 
 ### Storage
 
 Everything lives under `cs.progress.v3` (plus `cs.progress.v3.who` for the
-remembered athlete). Writes go through one `saveProgress()` call, so a hosted
-database can drop in behind it later. Until then, Settings → Export copies a
-base64 snapshot to the clipboard and Import merges one back in.
+remembered athlete). Writes go through one `saveProgress()` call, so the
+Firebase sync layer sits behind it. Settings → Export still copies a base64
+snapshot to the clipboard and Import merges one back in — the manual fallback
+for moving data between phones.
+
+## Syncing with Firebase
+
+The app is offline-first: localStorage (plus Firestore's own offline cache) is
+always the write-through layer, and without Firebase configured the app runs
+local-only exactly as before. With it, progress syncs live across devices and
+plan content is served from Firestore — so plan updates reach phones without an
+app redeploy. Firebase also lines up the later Gemini work (Firebase AI Logic
+calls Gemini from the client without exposing a key).
+
+Firestore layout: `profiles/{uid}` (auth user → athlete + role) ·
+`plans/{athleteId}` (the plan document) ·
+`athletes/{athleteId}/dayRecords|courtEntries|readiness/...` (one doc per
+record). [`firebase/firestore.rules`](firebase/firestore.rules) is the security
+boundary — the web config shipped in the static site is public by design.
+
+One-time setup:
+
+1. **Create a project** at [console.firebase.google.com](https://console.firebase.google.com)
+   (Spark free tier is fine; skip Analytics).
+2. **Create the database** — Build → Firestore Database → Create (production
+   mode, pick a nearby region).
+3. **Publish the rules** — Firestore → Rules tab → replace with
+   [`firebase/firestore.rules`](firebase/firestore.rules) → Publish.
+4. **Enable sign-in** — Build → Authentication → Sign-in method → enable
+   **Google** (and optionally Email link). Under Settings → Authorized domains
+   add `pgste.github.io`.
+5. **Register the web app** — Project settings → Your apps → Web (`</>`), no
+   hosting needed. Copy the config values into GitHub repo → Settings →
+   Secrets and variables → Actions → *Variables*:
+   `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`,
+   `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_APP_ID`.
+6. **Map each person after their first sign-in** — Authentication → Users
+   (copy their UID), then Firestore → `profiles` collection → Add document
+   with the UID as document id:
+
+   ```
+   profiles/<uid>  { athleteId: "paul",  role: "athlete" }
+   profiles/<uid>  { athleteId: "lewis", role: "athlete" }
+   profiles/<uid>  { athleteId: "coach", role: "coach" }
+   ```
+
+   Until mapped, a signed-in user can't read or write any progress docs.
+7. **For the publish-plans workflow (phase C)** — Project settings → Service
+   accounts → Generate new private key; paste the JSON into a GitHub Actions
+   *Secret* named `FIREBASE_SERVICE_ACCOUNT` (never shipped to the client).
+
+For local dev, put the four `VITE_FIREBASE_*` values in `.env.local`
+(gitignored).
 
 ## Design source
 
