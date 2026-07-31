@@ -45,20 +45,59 @@ src/
 
 ### Plan data
 
-`src/data/plan.js` is hand-authored for now. Its shape is what a markdown
-compiler built against [`project/PLAN-FORMAT.md`](project/PLAN-FORMAT.md) should
-emit — one object per week, blocks ordered as they run. A block without a `week`
-renders as "plan not written yet" rather than a dead tap, so future blocks can be
-listed before they exist.
+`src/data/plan.js` is hand-authored. Hierarchy: `PLANS[athleteId] → blocks →
+weeks → days → workouts → exercises`. A week with no `days` renders as "plan
+not written yet" rather than a dead tap, so future weeks can be listed before
+they exist. Every screen is deep-linkable (`#/paul/hyrox/hx_w1/hx1_mon`,
+`#/lewis/today`).
 
 Exercise names key the history lookups, so keep them identical across weeks.
 
 ### Storage
 
 Everything lives under `cs.progress.v3` (plus `cs.progress.v3.who` for the
-remembered athlete). Writes go through one `saveProgress()` call, so a hosted
-database can drop in behind it later. Until then, Settings → Export copies a
-base64 snapshot to the clipboard and Import merges one back in.
+remembered athlete). Writes go through one `saveProgress()` call, so the
+Supabase sync layer sits behind it. Settings → Export still copies a base64
+snapshot to the clipboard and Import merges one back in — the manual fallback
+for moving data between phones.
+
+## Syncing with Supabase
+
+The app is offline-first: localStorage is always the write-through cache, and
+without Supabase configured the app runs local-only exactly as before. With it,
+progress syncs across devices (magic-link sign-in) and plan content is fetched
+from the database — so plan updates reach phones without an app redeploy.
+
+One-time setup:
+
+1. **Create a project** at [supabase.com](https://supabase.com) (free tier is fine).
+2. **Run the migration** — Dashboard → SQL → paste
+   [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) → Run.
+3. **Enable email auth** — Authentication → Providers → Email (magic link on).
+   Under URL Configuration set the Site URL to
+   `https://pgste.github.io/Workouts/` and add it to the redirect allowlist.
+4. **Wire the build** — GitHub repo → Settings → Secrets and variables →
+   Actions:
+   - *Variables*: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
+     (Project Settings → API in Supabase; the anon key is public by design —
+     row-level security is the boundary).
+   - *Secrets*: `SUPABASE_SERVICE_ROLE_KEY` — used only by the publish-plans
+     workflow, never shipped to the client.
+5. **Map each person after their first sign-in** — Dashboard → SQL:
+
+   ```sql
+   -- find the user ids
+   select u.id, u.email, p.athlete_id, p.role
+   from auth.users u join public.profiles p on p.user_id = u.id;
+
+   -- then map them (athlete_id: 'paul' | 'lewis' | 'coach')
+   update public.profiles set athlete_id = 'paul',  role = 'athlete' where user_id = '<uuid>';
+   update public.profiles set athlete_id = 'coach', role = 'coach'   where user_id = '<uuid>';
+   ```
+
+   Until mapped, a signed-in user can't read or write any rows.
+
+For local dev, put the two `VITE_` values in `.env.local` (gitignored).
 
 ## Design source
 
