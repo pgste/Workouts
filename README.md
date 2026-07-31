@@ -57,47 +57,58 @@ Exercise names key the history lookups, so keep them identical across weeks.
 
 Everything lives under `cs.progress.v3` (plus `cs.progress.v3.who` for the
 remembered athlete). Writes go through one `saveProgress()` call, so the
-Supabase sync layer sits behind it. Settings → Export still copies a base64
+Firebase sync layer sits behind it. Settings → Export still copies a base64
 snapshot to the clipboard and Import merges one back in — the manual fallback
 for moving data between phones.
 
-## Syncing with Supabase
+## Syncing with Firebase
 
-The app is offline-first: localStorage is always the write-through cache, and
-without Supabase configured the app runs local-only exactly as before. With it,
-progress syncs across devices (magic-link sign-in) and plan content is fetched
-from the database — so plan updates reach phones without an app redeploy.
+The app is offline-first: localStorage (plus Firestore's own offline cache) is
+always the write-through layer, and without Firebase configured the app runs
+local-only exactly as before. With it, progress syncs live across devices and
+plan content is served from Firestore — so plan updates reach phones without an
+app redeploy. Firebase also lines up the later Gemini work (Firebase AI Logic
+calls Gemini from the client without exposing a key).
+
+Firestore layout: `profiles/{uid}` (auth user → athlete + role) ·
+`plans/{athleteId}` (the plan document) ·
+`athletes/{athleteId}/dayRecords|courtEntries|readiness/...` (one doc per
+record). [`firebase/firestore.rules`](firebase/firestore.rules) is the security
+boundary — the web config shipped in the static site is public by design.
 
 One-time setup:
 
-1. **Create a project** at [supabase.com](https://supabase.com) (free tier is fine).
-2. **Run the migration** — Dashboard → SQL → paste
-   [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) → Run.
-3. **Enable email auth** — Authentication → Providers → Email (magic link on).
-   Under URL Configuration set the Site URL to
-   `https://pgste.github.io/Workouts/` and add it to the redirect allowlist.
-4. **Wire the build** — GitHub repo → Settings → Secrets and variables →
-   Actions:
-   - *Variables*: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
-     (Project Settings → API in Supabase; the anon key is public by design —
-     row-level security is the boundary).
-   - *Secrets*: `SUPABASE_SERVICE_ROLE_KEY` — used only by the publish-plans
-     workflow, never shipped to the client.
-5. **Map each person after their first sign-in** — Dashboard → SQL:
+1. **Create a project** at [console.firebase.google.com](https://console.firebase.google.com)
+   (Spark free tier is fine; skip Analytics).
+2. **Create the database** — Build → Firestore Database → Create (production
+   mode, pick a nearby region).
+3. **Publish the rules** — Firestore → Rules tab → replace with
+   [`firebase/firestore.rules`](firebase/firestore.rules) → Publish.
+4. **Enable sign-in** — Build → Authentication → Sign-in method → enable
+   **Google** (and optionally Email link). Under Settings → Authorized domains
+   add `pgste.github.io`.
+5. **Register the web app** — Project settings → Your apps → Web (`</>`), no
+   hosting needed. Copy the config values into GitHub repo → Settings →
+   Secrets and variables → Actions → *Variables*:
+   `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`,
+   `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_APP_ID`.
+6. **Map each person after their first sign-in** — Authentication → Users
+   (copy their UID), then Firestore → `profiles` collection → Add document
+   with the UID as document id:
 
-   ```sql
-   -- find the user ids
-   select u.id, u.email, p.athlete_id, p.role
-   from auth.users u join public.profiles p on p.user_id = u.id;
-
-   -- then map them (athlete_id: 'paul' | 'lewis' | 'coach')
-   update public.profiles set athlete_id = 'paul',  role = 'athlete' where user_id = '<uuid>';
-   update public.profiles set athlete_id = 'coach', role = 'coach'   where user_id = '<uuid>';
+   ```
+   profiles/<uid>  { athleteId: "paul",  role: "athlete" }
+   profiles/<uid>  { athleteId: "lewis", role: "athlete" }
+   profiles/<uid>  { athleteId: "coach", role: "coach" }
    ```
 
-   Until mapped, a signed-in user can't read or write any rows.
+   Until mapped, a signed-in user can't read or write any progress docs.
+7. **For the publish-plans workflow (phase C)** — Project settings → Service
+   accounts → Generate new private key; paste the JSON into a GitHub Actions
+   *Secret* named `FIREBASE_SERVICE_ACCOUNT` (never shipped to the client).
 
-For local dev, put the two `VITE_` values in `.env.local` (gitignored).
+For local dev, put the four `VITE_FIREBASE_*` values in `.env.local`
+(gitignored).
 
 ## Design source
 

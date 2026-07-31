@@ -1,0 +1,57 @@
+rules_version = '2';
+
+// Court Strength — Firestore security rules.
+// Paste into Firebase console → Firestore Database → Rules → Publish.
+//
+// Model: app-level athlete ids ('lewis', 'paul', 'coach') scope every doc.
+// Auth users map to an athlete + role via /profiles/{uid}, created by an
+// admin in the console after each person's first sign-in (see README).
+// These rules are the security boundary — the web config in the static
+// site is public by design.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function profile() {
+      return get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data;
+    }
+
+    function ownsAthlete(athleteId) {
+      return signedIn() && profile().athleteId == athleteId;
+    }
+
+    function isCoach() {
+      return signedIn() && profile().role == 'coach';
+    }
+
+    // Each user can read their own mapping; nobody writes from the client —
+    // profiles are created/edited in the console (or via the Admin SDK,
+    // which bypasses rules).
+    match /profiles/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Plan content: any signed-in user reads every plan (coach view reads
+    // both athletes). Writes come only from the publish-plans workflow's
+    // Admin SDK, so client writes are denied.
+    match /plans/{athleteId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Progress: dayRecords / courtEntries / readiness live as subcollections
+    // under the athlete. You read/write your own athlete's docs; coaches
+    // additionally read everyone. The coach's own ticks are stored under
+    // athlete id 'coach', so the same ownership rule covers them once the
+    // coach profile maps to athleteId 'coach'.
+    match /athletes/{athleteId}/{collection}/{docId} {
+      allow read: if ownsAthlete(athleteId) || isCoach();
+      allow write: if ownsAthlete(athleteId);
+    }
+  }
+}
