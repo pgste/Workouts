@@ -1,4 +1,4 @@
-import { PLANS, REAL_ATHLETES } from '../data/plan.js';
+import { REAL_ATHLETES } from '../data/plan.js';
 import { planDate, ymd } from './plan.js';
 
 // Hash-based deep links — path routing would 404 on the Pages sub-path.
@@ -12,7 +12,7 @@ import { planDate, ymd } from './plan.js';
 
 const TABS = ['court', 'daily', 'progress'];
 
-function findToday(planId) {
+function findToday(PLANS, planId) {
   const plan = PLANS[planId];
   if (!plan) return null;
   const today = ymd(new Date());
@@ -27,9 +27,10 @@ function findToday(planId) {
 }
 
 /** Parse a location.hash into a nav patch, or null if it names nothing valid.
- *  Ids are checked against the plan so a stale link degrades to the nearest
- *  level that still exists rather than a junk screen. */
-export function parseHash(hash) {
+ *  `PLANS` is passed in (plans hydrate from Firestore, so route validation
+ *  must see the live object, not a static import). Ids are checked against
+ *  the plan so a stale link degrades to the nearest level that still exists. */
+export function parseHash(hash, PLANS) {
   const segs = String(hash || '').replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
   if (!segs.length) return null;
 
@@ -48,7 +49,7 @@ export function parseHash(hash) {
 
   const planId = athlete === 'coach' ? (patch.coachView || REAL_ATHLETES[0].id) : athlete;
   if (next === 'today') {
-    Object.assign(patch, findToday(planId) || {});
+    Object.assign(patch, findToday(PLANS, planId) || {});
     return patch;
   }
 

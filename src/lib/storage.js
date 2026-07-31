@@ -37,6 +37,26 @@ export function saveAthlete(id) {
   }
 }
 
+// Plan documents fetched from Firestore, cached so a signed-out or offline
+// start still sees the latest published plans (bundled plan.js is the floor).
+export const PLANS_KEY = 'cs.plans.v1';
+
+export function loadPlanDocs() {
+  try {
+    return JSON.parse(localStorage.getItem(PLANS_KEY) || '{}') || {};
+  } catch {
+    return {};
+  }
+}
+
+export function savePlanDocs(docs) {
+  try {
+    localStorage.setItem(PLANS_KEY, JSON.stringify(docs));
+  } catch {
+    /* quota — cache only */
+  }
+}
+
 /** Bytes this device is holding — measured off the same payload that gets written. */
 export function snapshotSize({ log, court, readiness }) {
   return JSON.stringify({ log, court, readiness }).length;

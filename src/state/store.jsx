@@ -1,44 +1,71 @@
 import { createContext, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
-import { PLANS, REAL_ATHLETES } from '../data/plan.js';
+import { PLANS as BUNDLED_PLANS, REAL_ATHLETES } from '../data/plan.js';
+import { firebaseConfigured, initFirebase } from '../lib/firebase.js';
 import { countDoneSets, exercisesOf, ymd } from '../lib/plan.js';
 import { hashOf, parseHash } from '../lib/route.js';
 import {
-  decodeSnapshot, encodeSnapshot, loadAthlete, loadProgress,
-  saveAthlete, saveProgress,
+  decodeSnapshot, encodeSnapshot, loadAthlete, loadPlanDocs, loadProgress,
+  saveAthlete, savePlanDocs, saveProgress,
 } from '../lib/storage.js';
+import { createSyncEngine, fetchProfile } from '../lib/sync.js';
 
 const TrackerContext = createContext(null);
 
-const init = () => ({
-  athlete: loadAthlete(),
-  tab: 'plan',
-  block: null,
-  week: null,
-  day: null,
-  coachView: null,
-  session: false,
-  exIdx: 0,
-  rest: 0,
-  overlay: null,
-  complete: null,
-  draft: { type: 'Practice', mins: 60, rpe: 6 },
-  exported: false,
-  added: false,
-  importText: '',
-  imported: 0,
-  resetArm: false,
-  ...loadProgress(),
-  // A deep link wins over the remembered athlete — that's what makes shared
-  // links land on the right screen.
-  ...(typeof window !== 'undefined' ? parseHash(window.location.hash) || {} : {}),
-});
+/** Bundled plans are the floor; published Firestore plan docs overlay them.
+ *  Plan docs carry the plan as a JSON string (`json`) because the object
+ *  contains exercise tuples — arrays of arrays — which Firestore can't store
+ *  as native fields. */
+function plansWith(docs) {
+  const plans = { ...BUNDLED_PLANS };
+  for (const [aid, d] of Object.entries(docs || {})) {
+    try {
+      if (d && d.json) plans[aid] = JSON.parse(d.json);
+    } catch { /* corrupt doc — keep the bundled plan */ }
+  }
+  return plans;
+}
 
-/** Clone the day record for `dayId` under the current athlete, mutate, store. */
+const init = () => {
+  const plans = plansWith(loadPlanDocs());
+  const progress = loadProgress();
+  // Older court entries predate sync ids — stamp them once so pushes are idempotent.
+  progress.court = progress.court.map((e) => (e && !e.id ? { ...e, id: crypto.randomUUID() } : e));
+  return {
+    athlete: loadAthlete(),
+    tab: 'plan',
+    block: null,
+    week: null,
+    day: null,
+    coachView: null,
+    session: false,
+    exIdx: 0,
+    rest: 0,
+    overlay: null,
+    complete: null,
+    draft: { type: 'Practice', mins: 60, rpe: 6 },
+    exported: false,
+    added: false,
+    importText: '',
+    imported: 0,
+    resetArm: false,
+    user: null,
+    profile: null,
+    plans,
+    ...progress,
+    // A deep link wins over the remembered athlete — that's what makes shared
+    // links land on the right screen.
+    ...(typeof window !== 'undefined' ? parseHash(window.location.hash, plans) || {} : {}),
+  };
+};
+
+/** Clone the day record for `dayId` under the current athlete, mutate, store.
+ *  Every mutation stamps updatedAt so cross-device sync can last-write-win. */
 function withRecord(state, dayId, fn) {
   const key = state.athlete + ':' + dayId;
   const prev = state.log[key] || {};
   const rec = { ...prev, sets: { ...(prev.sets || {}) }, ticks: { ...(prev.ticks || {}) } };
   fn(rec);
+  rec.updatedAt = Date.now();
   return { ...state, log: { ...state.log, [key]: rec } };
 }
 
@@ -96,12 +123,28 @@ function reducer(state, action) {
       });
 
     case 'readiness': {
-      const row = { ...(state.readiness[action.key] || {}), [action.field]: action.value };
+      // _ts is a reserved sync stamp, filtered out of summaries.
+      const row = { ...(state.readiness[action.key] || {}), [action.field]: action.value, _ts: Date.now() };
       return { ...state, readiness: { ...state.readiness, [action.key]: row } };
     }
 
-    case 'add-court':
-      return { ...state, court: [...state.court, action.entry], added: true };
+    case 'add-court': {
+      const entry = action.entry.id ? action.entry : { ...action.entry, id: crypto.randomUUID() };
+      return { ...state, court: [...state.court, entry], added: true };
+    }
+
+    // Strictly-newer remote data from the sync engine — already filtered, so
+    // merging is a plain overlay (court entries arrive deduped by id).
+    case 'remote-merge':
+      return {
+        ...state,
+        log: action.patch.log ? { ...state.log, ...action.patch.log } : state.log,
+        readiness: action.patch.readiness ? { ...state.readiness, ...action.patch.readiness } : state.readiness,
+        court: action.patch.court ? [...state.court, ...action.patch.court] : state.court,
+      };
+
+    case 'set-plans':
+      return { ...state, plans: plansWith(action.docs) };
 
     case 'import':
       return {
@@ -125,9 +168,59 @@ export function TrackerProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, undefined, init);
   const exportTimer = useRef(null);
 
+  // Live refs for callbacks that outlive a render (popstate, sync engine).
+  const plansRef = useRef(state.plans);
+  plansRef.current = state.plans;
+  const progressRef = useRef(null);
+  progressRef.current = { log: state.log, court: state.court, readiness: state.readiness };
+
   // Persist whenever tracked data changes.
   useEffect(() => {
     saveProgress({ log: state.log, court: state.court, readiness: state.readiness });
+  }, [state.log, state.court, state.readiness]);
+
+  // Firebase sync. Auth state drives the engine: signed-in + mapped profile →
+  // live listeners + push; anything else → local-only, exactly as before.
+  const engineRef = useRef(null);
+  useEffect(() => {
+    if (!firebaseConfigured) return undefined;
+    let offAuth = null;
+    let cancelled = false;
+    initFirebase().then((fb) => {
+      if (!fb || cancelled) return;
+      offAuth = fb.authMod.onAuthStateChanged(fb.auth, async (u) => {
+        if (engineRef.current) { engineRef.current.stop(); engineRef.current = null; }
+        if (!u) { dispatch({ type: 'set', patch: { user: null, profile: null } }); return; }
+        const profile = await fetchProfile(fb, u.uid);
+        dispatch({ type: 'set', patch: { user: { uid: u.uid, email: u.email }, profile } });
+        if (profile && profile.athleteId) {
+          engineRef.current = createSyncEngine({
+            fb,
+            profile,
+            athletes: [...REAL_ATHLETES.map((a) => a.id), 'coach'],
+            getLocal: () => progressRef.current,
+            onPatch: (patch) => dispatch({ type: 'remote-merge', patch }),
+            onPlans: (docs) => { savePlanDocs(docs); dispatch({ type: 'set-plans', docs }); },
+          });
+        }
+      });
+    });
+    return () => {
+      cancelled = true;
+      if (offAuth) offAuth();
+      if (engineRef.current) { engineRef.current.stop(); engineRef.current = null; }
+    };
+  }, []);
+
+  // Push local changes (debounced; Firestore queues them while offline).
+  const pushTimer = useRef(null);
+  useEffect(() => {
+    if (!engineRef.current) return undefined;
+    clearTimeout(pushTimer.current);
+    pushTimer.current = setTimeout(() => {
+      if (engineRef.current) engineRef.current.push(progressRef.current);
+    }, 800);
+    return () => clearTimeout(pushTimer.current);
   }, [state.log, state.court, state.readiness]);
 
   // Rest countdown — a no-op dispatch while no timer is running.
@@ -151,9 +244,18 @@ export function TrackerProvider({ children }) {
   });
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (popping.current) { popping.current = false; return; }
     const entry = { __nav: JSON.parse(navKey) };
     const url = hashOf(state) || window.location.pathname + window.location.search;
+    if (popping.current) {
+      popping.current = false;
+      // A hash-navigation entry the browser created (followed link, edited
+      // hash) isn't ours yet — adopt it, or the next change would replace it
+      // away and eat one step of history.
+      if (!(window.history.state && window.history.state.__nav)) {
+        window.history.replaceState(entry, '', url);
+      }
+      return;
+    }
     if (window.history.state && window.history.state.__nav) {
       window.history.pushState(entry, '', url);
     } else {
@@ -169,7 +271,7 @@ export function TrackerProvider({ children }) {
       } else {
         // No entry of ours (hand-edited hash, or a link followed in-page):
         // parse the URL instead.
-        const patch = parseHash(window.location.hash);
+        const patch = parseHash(window.location.hash, plansRef.current);
         dispatch({
           type: 'set',
           patch: patch || { athlete: null, coachView: null, block: null, week: null, day: null, session: false, overlay: null, complete: null, tab: 'plan' },
@@ -222,6 +324,17 @@ export function TrackerProvider({ children }) {
         exportTimer.current = setTimeout(() => set({ exported: false }), 2200);
       },
       resetDevice: () => dispatch({ type: 'reset' }),
+      signIn: async () => {
+        const fb = await initFirebase();
+        if (!fb) return;
+        try {
+          await fb.authMod.signInWithPopup(fb.auth, new fb.authMod.GoogleAuthProvider());
+        } catch { /* popup dismissed or blocked */ }
+      },
+      signOutUser: async () => {
+        const fb = await initFirebase();
+        if (fb) fb.authMod.signOut(fb.auth);
+      },
     };
   }, []);
 
@@ -229,7 +342,7 @@ export function TrackerProvider({ children }) {
     // Coach view reads whichever athlete it points at (defaulting to the first
     // real athlete); everyone else reads their own plan.
     const viewingId = state.athlete === 'coach' ? (state.coachView || REAL_ATHLETES[0].id) : state.athlete;
-    const plan = (viewingId && PLANS[viewingId]) || null;
+    const plan = (viewingId && state.plans[viewingId]) || null;
     const blocks = plan ? plan.blocks : [];
     const block = blocks.find((b) => b.id === state.block) || null;
     const weeks = block ? (block.weeks || []) : [];
