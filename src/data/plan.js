@@ -175,12 +175,20 @@ const LEWIS_W0 = {
       notes: [RIR_RULE],
     },
     {
-      id: 'w0_tue', label: 'Tue 4 Aug', title: 'COD + shooting — low amplitude', type: 'session', out: 30,
-      workouts: [{ id: 'court', title: 'Court', ex: [
-        ['Linear accel mechanics', 'Wall drills, A-skips, 10m builds', '4 × 10m', '90s'],
-        ['Low-amplitude COD', 'No cutting at speed', '3 rounds', '90s'],
-        ['Form shooting', 'Capped, tied to skills-coach cues', '1 × 20min', '—'],
-      ] }],
+      id: 'w0_tue', label: 'Tue 4 Aug', title: 'COD + shooting · iso + Oly technique', type: 'session', out: 30,
+      summary: 'Court first, then a short gym block — low systemic cost, high pattern value.',
+      workouts: [
+        { id: 'court', title: 'Court', ex: [
+          ['Linear accel mechanics', 'Wall drills, A-skips, 10m builds', '4 × 10m', '90s'],
+          ['Low-amplitude COD', 'No cutting at speed', '3 rounds', '90s'],
+          ['Form shooting', 'Capped, tied to skills-coach cues', '1 × 20min', '—'],
+        ] },
+        { id: 'gym', title: 'Gym — after court', ex: [
+          ['Spanish squat isometric', 'Band + light load', '3 × 30s', '45s'],
+          ['Hang power clean', 'Empty bar → 30kg — bar speed only, technique', '4 × 3', '90s'],
+          ['ATG split squat', 'Bodyweight–light (L first)', '2 × 8 each', '60s'],
+        ], cues: { 'Hang power clean': 'Positions before load — this greases Friday’s cleans at 42.5. If the bar slows, strip it back.' } },
+      ],
       notes: ['No shooting to fatigue — grooving broken mechanics is worse than not shooting.'],
     },
     {
@@ -224,12 +232,19 @@ const LEWIS_W0 = {
       notes: ['Bar speed governs the Olympic lifts — 92% of a clean is a technique breakdown, not a stimulus.'],
     },
     {
-      id: 'w0_sat', label: 'Sat 8 Aug', title: 'Jumps + skills — 40–60 contacts', type: 'session', out: 26,
-      workouts: [{ id: 'plyo', title: 'Low-amplitude plyos', summary: '40–60 total contacts, quality only', ex: [
-        ['Pogo hops', 'Stiff ankle, quiet landing', '3 × 10', '60s'],
-        ['Line hops', '', '3 × 10', '60s'],
-        ['Low box ankle stiffness', 'Step down, pop', '2 × 6', '90s'],
-      ] }],
+      id: 'w0_sat', label: 'Sat 8 Aug', title: 'Jumps + skills · iso + snatch positions', type: 'session', out: 26,
+      workouts: [
+        { id: 'plyo', title: 'Low-amplitude plyos', summary: '40–60 total contacts, quality only', ex: [
+          ['Pogo hops', 'Stiff ankle, quiet landing', '3 × 10', '60s'],
+          ['Line hops', '', '3 × 10', '60s'],
+          ['Low box ankle stiffness', 'Step down, pop', '2 × 6', '90s'],
+        ] },
+        { id: 'gym', title: 'Gym — iso + snatch positions', ex: [
+          ['Spanish squat isometric', 'Band + light load', '3 × 30s', '45s'],
+          ['Overhead squat', 'Empty bar — positions only', '3 × 5', '90s'],
+          ['Muscle snatch', 'Empty bar, slow and precise', '3 × 5', '90s'],
+        ], cues: { 'Overhead squat': 'Building the overhead position early — the hang snatch arrives in Week 2 and this is where it gets cheap.' } },
+      ],
       notes: ['Then skills with the coach. Contacts counted — stop at 60.'],
     },
     {
