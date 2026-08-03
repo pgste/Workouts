@@ -137,6 +137,457 @@ const LEWIS_PREWEEK = {
   ],
 };
 
+// Weeks 0–4, written from the preseason master plan: weekly structure (lower
+// Mon / court Tue / upper Wed / tendon+sled Thu / full-body Fri / jumps Sat /
+// rest Sun), block parameters per week, and the loading table. Skills coach
+// runs Mon/Wed/Fri mornings — weights come AFTER skills, never before. Top set
+// always stops at 2 reps in reserve; nobody chases a number.
+const RIR_RULE = 'Hard rule: top set stops at 2 reps in reserve. If the prescribed weight feels RPE 9 on rep one, it comes down 5kg and the session continues.';
+const AFTER_SKILLS = 'Skills coach in the morning — weights after skills, never before.';
+
+const LEWIS_W0 = {
+  id: 'week0', title: 'Week 0 — Reintegration', subtitle: 'Mon 3 – Sun 9 Aug · re-groove at 65–70%',
+  purpose: 'Re-establish positions and bracing before load returns. Nothing heavy, nothing fast.',
+  meta: [
+    { label: 'Days to finals', value: '31 → 25' },
+    { label: 'Intensity', value: '65–70% · 4–6 reps' },
+    { label: 'Rest', value: '90–120s · controlled' },
+    { label: 'Plyo contacts', value: '40–60 low amplitude' },
+  ],
+  rules: {
+    do: ['Groove positions', 'Isometrics Mon + Fri', 'Light sled (20–30% BW)', 'Nordics — eccentric only', 'Form shooting (capped)'],
+    dont: ['Heavy anything', 'Cutting at speed', 'Rep-outs', 'GHD (ever)', 'Shooting to fatigue'],
+    note: 'Gate on Sun 9: patterns re-grooved, back clear. If not — repeat Week 0 at 70% and compress Weeks 1–2.',
+  },
+  days: [
+    {
+      id: 'w0_mon', label: 'Mon 3 Aug', title: 'Lower — re-groove', type: 'session', out: 31,
+      summary: AFTER_SKILLS,
+      workouts: [
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', 'Band + light load', '4 × 30s', '45s']] },
+        { id: 'lift', title: 'Lower', ex: [
+          ['Back squat', '60kg', '4 × 5', '2min'],
+          ['Trap bar deadlift', '50kg/side', '3 × 5', '2min'],
+          ['Heavy-slow calf raise', '3s up / 3s down, loaded', '4 × 6', '90s'],
+          ['Dead bug', 'Bodyweight', '2 × 8 each', '45s'],
+        ] },
+      ],
+      notes: [RIR_RULE],
+    },
+    {
+      id: 'w0_tue', label: 'Tue 4 Aug', title: 'COD + shooting — low amplitude', type: 'session', out: 30,
+      workouts: [{ id: 'court', title: 'Court', ex: [
+        ['Linear accel mechanics', 'Wall drills, A-skips, 10m builds', '4 × 10m', '90s'],
+        ['Low-amplitude COD', 'No cutting at speed', '3 rounds', '90s'],
+        ['Form shooting', 'Capped, tied to skills-coach cues', '1 × 20min', '—'],
+      ] }],
+      notes: ['No shooting to fatigue — grooving broken mechanics is worse than not shooting.'],
+    },
+    {
+      id: 'w0_wed', label: 'Wed 5 Aug', title: 'Upper — antagonistic, RPE 7 cap', type: 'session', out: 29, rpe: 7,
+      summary: AFTER_SKILLS,
+      workouts: [{ id: 'lift', title: 'Upper', ex: [
+        ['A1 Weighted ring row', 'RPE 7 cap', '3 × 8', '45s'],
+        ['A2 DB incline press', 'RPE 7 cap', '3 × 8', '90s'],
+        ['B1 Chin-up', 'Bodyweight', '3 × 6', '45s'],
+        ['B2 Half-kneeling DB press', '', '3 × 8', '90s'],
+        ['Cable face pull', 'Light', '3 × 15', '45s'],
+      ] }],
+    },
+    {
+      id: 'w0_thu', label: 'Thu 6 Aug', title: 'ATG / tendon + sled', type: 'session', out: 28,
+      workouts: [
+        { id: 'tendon', title: 'Tendon + ATG', ex: [
+          ['ATG split squat', 'Light load (L first)', '3 × 8 each', '90s'],
+          ['Tibialis raise', '', '3 × 20', '45s'],
+          ['Heavy-slow calf raise', '3s up / 3s down', '4 × 6', '90s'],
+        ] },
+        { id: 'sled', title: 'Sled + hip flexor', ex: [
+          ['Sled march', 'Light, 20–30% BW', '6 × 20m', '90s'],
+          ['Standing knee drive above 90°', 'Band or cable', '3 × 8 each', '45s'],
+          ['Seated hip flexor lift', 'Bodyweight', '2 × 8 each', '45s'],
+        ] },
+      ],
+    },
+    {
+      id: 'w0_fri', label: 'Fri 7 Aug', title: 'Full-body — technique', type: 'session', out: 27,
+      summary: AFTER_SKILLS,
+      workouts: [
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', 'Band + light load', '4 × 30s', '45s']] },
+        { id: 'lift', title: 'Full-body', ex: [
+          ['Front squat', '50kg', '4 × 5', '2min'],
+          ['Power clean', '42.5kg — technique', '4 × 3', '2min'],
+          ['Push press', '35kg', '3 × 5', '2min'],
+          ['Nordic curl', 'ECCENTRIC ONLY — reintroduced this week', '3 × 4', '90s'],
+        ] },
+      ],
+      notes: ['Bar speed governs the Olympic lifts — 92% of a clean is a technique breakdown, not a stimulus.'],
+    },
+    {
+      id: 'w0_sat', label: 'Sat 8 Aug', title: 'Jumps + skills — 40–60 contacts', type: 'session', out: 26,
+      workouts: [{ id: 'plyo', title: 'Low-amplitude plyos', summary: '40–60 total contacts, quality only', ex: [
+        ['Pogo hops', 'Stiff ankle, quiet landing', '3 × 10', '60s'],
+        ['Line hops', '', '3 × 10', '60s'],
+        ['Low box ankle stiffness', 'Step down, pop', '2 × 6', '90s'],
+      ] }],
+      notes: ['Then skills with the coach. Contacts counted — stop at 60.'],
+    },
+    {
+      id: 'w0_sun', label: 'Sun 9 Aug', title: 'Rest + gate', type: 'rest', out: 25,
+      summary: 'Programmed rest. Gate: patterns re-grooved, back clear — else repeat Week 0 at 70% and compress Weeks 1–2.',
+      items: [['Readiness log', 'All fields, AM before food', 'AM'], ['Back Insurance', '8 min', 'PM']],
+    },
+  ],
+};
+
+const LEWIS_W1 = {
+  id: 'week1', title: 'Week 1 — Max Strength (front-loaded)', subtitle: 'Mon 10 – Sun 16 Aug · 3x3 Scotland Sun 16',
+  purpose: 'Train through the 3x3, don’t taper for it: heavy Mon/Wed, unload Thu–Sat, compete Sunday. Four days from the last heavy session is enough sharpness for a 3x3.',
+  meta: [
+    { label: 'Days to finals', value: '24 → 18' },
+    { label: 'Intensity', value: '82–92% · 2–4 reps' },
+    { label: 'Rest', value: '180–240s' },
+    { label: 'Sun 16', value: '3x3 Scotland — COMPETE' },
+  ],
+  rules: {
+    do: ['Heavy Mon + Wed', 'Volume cut ~40% Thu', 'RPE 6 cap Fri', 'CNS primer only Sat', 'Grind allowed on the last rep'],
+    dont: ['Tapering the whole week', 'Cleans on Friday', 'Sled on Thursday', 'Anything fatiguing Saturday', 'Rep-outs'],
+    note: 'Tapering properly would cost a max-strength week we cannot get back. Heavy early, sharp Sunday.',
+  },
+  days: [
+    {
+      id: 'w1_mon', label: 'Mon 10 Aug', title: 'Lower — HEAVY', type: 'session', out: 24,
+      summary: AFTER_SKILLS,
+      workouts: [
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', 'Progressing toward 5 × 45s', '4 × 40s', '45s']] },
+        { id: 'lift', title: 'Lower — heavy', ex: [
+          ['Back squat', '80–85kg', '4 × 3', '3min'],
+          ['Trap bar deadlift', '60–65kg/side', '3 × 3', '3min'],
+          ['Heavy-slow calf raise', 'Load up from last week', '4 × 6', '90s'],
+          ['Copenhagen plank', '', '3 × 20s each', '60s'],
+        ] },
+      ],
+      notes: [RIR_RULE],
+    },
+    {
+      id: 'w1_tue', label: 'Tue 11 Aug', title: 'COD at intent + shooting', type: 'session', out: 23,
+      workouts: [{ id: 'court', title: 'Court', ex: [
+        ['COD at intent', 'Full-speed cuts, long recoveries', '4 rounds', '2min'],
+        ['Lateral first-step', '', '4 × 3 each', '90s'],
+        ['Shooting off movement', 'Capped reps, coach cues', '1 × 20min', '—'],
+      ] }],
+    },
+    {
+      id: 'w1_wed', label: 'Wed 12 Aug', title: 'Upper — HEAVY', type: 'session', out: 22,
+      summary: AFTER_SKILLS,
+      workouts: [{ id: 'lift', title: 'Upper — heavy pairs', ex: [
+        ['A1 Weighted dip', '', '4 × 4', '60s'],
+        ['A2 Weighted chin-up', '', '4 × 4', '3min'],
+        ['B1 Barbell row', '', '3 × 4', '60s'],
+        ['B2 DB bench press', '', '3 × 4', '3min'],
+        ['Cable face pull', 'Light', '3 × 15', '45s'],
+      ] }],
+      notes: [RIR_RULE],
+    },
+    {
+      id: 'w1_thu', label: 'Thu 13 Aug', title: 'Tendon — volume cut 40%', type: 'session', out: 21,
+      summary: 'Unload begins. Sled dropped entirely this week.',
+      workouts: [{ id: 'tendon', title: 'Tendon maintenance', ex: [
+        ['ATG split squat', 'Light (L first)', '2 × 8 each', '90s'],
+        ['Tibialis raise', '', '3 × 20', '45s'],
+        ['Heavy-slow calf raise', 'Hold last week’s load', '3 × 6', '90s'],
+        ['Standing knee drive above 90°', 'Band', '2 × 8 each', '45s'],
+      ] }],
+    },
+    {
+      id: 'w1_fri', label: 'Fri 14 Aug', title: 'Full-body — LIGHT, RPE 6 cap', type: 'session', out: 20, rpe: 6,
+      summary: AFTER_SKILLS + ' No cleans today.',
+      workouts: [
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', '', '4 × 40s', '45s']] },
+        { id: 'lift', title: 'Light full-body', ex: [
+          ['Front squat', '~60kg, bar speed crisp', '3 × 3', '2min'],
+          ['Push press', '~40kg', '3 × 3', '2min'],
+          ['Nordic curl', 'Eccentric only', '2 × 4', '90s'],
+        ] },
+      ],
+    },
+    {
+      id: 'w1_sat', label: 'Sat 15 Aug', title: 'CNS primer — 20 min max', type: 'session', out: 19, dur: '20 min max',
+      summary: 'A few jumps, a few accelerations, zero fatigue. Leave the gym feeling springy.',
+      workouts: [{ id: 'primer', title: 'Primer', ex: [
+        ['Hurdle hop', 'Low hurdle, crisp', '2 × 3', '2min'],
+        ['10m acceleration', '', '2 × 10m', '2min'],
+        ['Pogo hops', '', '2 × 5', '60s'],
+      ] }],
+    },
+    {
+      id: 'w1_sun', label: 'Sun 16 Aug', title: '3x3 Scotland — COMPETE', type: 'rest', out: 18,
+      summary: 'Compete. 3x3 is a brutal eccentric load — short court, continuous play, high deceleration density. Tomorrow is a judgement call.',
+      items: [
+        ['Full warm-up protocol', 'Long, gradual — especially if outdoor concrete', 'Pre-game'],
+        ['COMPETE', '', '—'],
+        ['Cool-down + easy spin', '', 'Post'],
+        ['Back Insurance', '8 min — non-negotiable tonight', 'PM'],
+      ],
+      notes: ['Log how he pulls up tomorrow morning — Monday is written two ways and the call gets made on the morning.'],
+    },
+  ],
+};
+
+const LEWIS_W2 = {
+  id: 'week2', title: 'Week 2 — Max Strength', subtitle: 'Mon 17 – Sun 23 Aug · heaviest week of the year',
+  purpose: 'The peak of the strength block. Long rest, low reps, high focus. Monday is the riskiest junction in the plan — it is written two ways.',
+  meta: [
+    { label: 'Days to finals', value: '17 → 11' },
+    { label: 'Intensity', value: '82–92% · 2–4 reps' },
+    { label: 'Rest', value: '180–240s' },
+    { label: 'Plyo contacts', value: '110–130' },
+  ],
+  rules: {
+    do: ['Heaviest lifting of the year', 'Sled accel heavy (15–20m)', 'Lateral bounds join Saturday', 'Long rests, full focus'],
+    dont: ['Going heavy Monday if he pulled up sore', 'Rep-outs', 'GHD (ever)', 'Shooting to fatigue'],
+    note: 'Mon 17 gate: post-3x3 pull-up. Sore or flat → recovery option, heavy moves to Tue/Wed. We move the calendar, not the athlete.',
+  },
+  days: [
+    {
+      id: 'w2_mon', label: 'Mon 17 Aug', title: 'Judgement call — two sessions, pick ONE', type: 'session', out: 17,
+      summary: 'The call gets made on the morning based on how he pulled up from the 3x3. Springy and clear → Option A. Sore, flat, or any back signal → Option B, and heavy shifts to Tue/Wed.',
+      workouts: [
+        { id: 'optA', title: 'Option A — full heavy (pulled up well)', ex: [
+          ['Spanish squat isometric', '', '5 × 45s', '45s'],
+          ['Back squat', '87.5–90kg', '3 × 2', '3min'],
+          ['Trap bar deadlift', '67.5–70kg/side', '3 × 2', '3min'],
+          ['Heavy-slow calf raise', '', '4 × 6', '90s'],
+          ['Copenhagen plank', '', '3 × 20s each', '60s'],
+        ] },
+        { id: 'optB', title: 'Option B — recovery (sore / flat / back signal)', ex: [
+          ['Easy bike flush', 'Conversational', '1 × 20min', '—'],
+          ['Spanish squat isometric', 'Light', '4 × 30s', '45s'],
+          ['90/90 hip switches', '', '2 × 8 each', '30s'],
+          ['Back Insurance (extended)', 'Full routine, slow', '1 × 12min', '—'],
+        ] },
+      ],
+      notes: ['Going straight from a 3x3 into the heaviest week of the year is exactly how the back pattern surfaces. Any back symptom stops the session — stop, and tell me.'],
+    },
+    {
+      id: 'w2_tue', label: 'Tue 18 Aug', title: 'COD at intent + shooting', type: 'session', out: 16,
+      summary: 'If Monday was Option B, today absorbs the heavy lower session instead.',
+      workouts: [{ id: 'court', title: 'Court', ex: [
+        ['COD at intent', '', '4 rounds', '2min'],
+        ['Lateral first-step', '', '4 × 3 each', '90s'],
+        ['Shooting off movement', 'Capped', '1 × 20min', '—'],
+      ] }],
+    },
+    {
+      id: 'w2_wed', label: 'Wed 19 Aug', title: 'Upper — HEAVY', type: 'session', out: 15,
+      summary: AFTER_SKILLS,
+      workouts: [{ id: 'lift', title: 'Upper — heavy pairs', ex: [
+        ['A1 Weighted dip', 'Heavier than last week', '4 × 3', '60s'],
+        ['A2 Weighted chin-up', '', '4 × 3', '3min'],
+        ['B1 Barbell row', '', '3 × 4', '60s'],
+        ['B2 DB bench press', '', '3 × 4', '3min'],
+        ['Cable face pull', '', '3 × 15', '45s'],
+      ] }],
+      notes: [RIR_RULE],
+    },
+    {
+      id: 'w2_thu', label: 'Thu 20 Aug', title: 'ATG loaded + heavy sled', type: 'session', out: 14,
+      workouts: [
+        { id: 'tendon', title: 'ATG + tendon', ex: [
+          ['ATG split squat', 'Loaded (L first)', '3 × 6 each', '2min'],
+          ['Poliquin step-down', '', '3 × 8 each', '90s'],
+          ['Tibialis raise', '', '3 × 20', '45s'],
+          ['Heavy-slow calf raise', '', '4 × 6', '90s'],
+        ] },
+        { id: 'sled', title: 'Sled accel — heavy', ex: [
+          ['Heavy sled acceleration', '15–20m, full recovery', '6 × 15–20m', '3min'],
+          ['Standing knee drive above 90°', 'Cable', '3 × 8 each', '45s'],
+        ] },
+      ],
+    },
+    {
+      id: 'w2_fri', label: 'Fri 21 Aug', title: 'Full-body — peak loads', type: 'session', out: 13,
+      summary: AFTER_SKILLS,
+      workouts: [
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', '', '5 × 45s', '45s']] },
+        { id: 'lift', title: 'Full-body', ex: [
+          ['Front squat', '70–75kg', '3 × 3', '3min'],
+          ['Power clean', '55–57.5kg — bar speed governs', '4 × 2', '3min'],
+          ['Push press', '47.5–50kg', '3 × 3', '3min'],
+          ['Nordic curl', 'Full reps now', '3 × 5', '90s'],
+          ['Muscle snatch', 'Slow eccentric, light', '3 × 3', '2min'],
+        ] },
+      ],
+      notes: ['Olympic lifts sit lower in the range on purpose — at his training age bar speed governs the adaptation, not load.'],
+    },
+    {
+      id: 'w2_sat', label: 'Sat 22 Aug', title: 'Jumps + skills — 110–130 contacts', type: 'session', out: 12,
+      workouts: [{ id: 'plyo', title: 'Plyos', summary: '110–130 total contacts', ex: [
+        ['Hurdle hop', '', '4 × 5', '2min'],
+        ['Lateral bound', 'Joins this week — stick the landing', '4 × 4 each', '2min'],
+        ['Pogo hops', '', '3 × 10', '60s'],
+      ] }],
+      notes: ['Then skills. Count the contacts.'],
+    },
+    {
+      id: 'w2_sun', label: 'Sun 23 Aug', title: 'Rest', type: 'rest', out: 11,
+      summary: 'Programmed rest. The heaviest week of the year is banked — strength built here is still fully expressed on 3 September.',
+      items: [['Readiness log', '', 'AM'], ['Back Insurance', '8 min', 'PM']],
+    },
+  ],
+};
+
+const LEWIS_W3 = {
+  id: 'week3', title: 'Week 3 — Power Conversion', subtitle: 'Mon 24 – Sun 30 Aug · convert strength to rate',
+  purpose: 'Load drops, intent goes to maximum. PAP contrasts throughout; plyometric volume peaks. Max intent every rep.',
+  meta: [
+    { label: 'Days to finals', value: '10 → 4' },
+    { label: 'Intensity', value: '70–80% · 3–5 reps' },
+    { label: 'Bar speed', value: 'MAX intent every rep' },
+    { label: 'Plyo contacts', value: '140–160 (peak)' },
+  ],
+  rules: {
+    do: ['Contrast pairs (heavy → explosive)', 'Depth jumps + lateral bounds', 'Reactive cutting', 'Full recoveries'],
+    dont: ['Grinding any rep', 'Adding load at the cost of speed', 'GHD (ever)'],
+    note: 'Every rep moves fast or the set ends. This week converts the strength bank into rate.',
+  },
+  days: [
+    {
+      id: 'w3_mon', label: 'Mon 24 Aug', title: 'Lower — contrast', type: 'session', out: 10,
+      summary: AFTER_SKILLS,
+      workouts: [
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', '', '4 × 40s', '45s']] },
+        { id: 'contrast', title: 'PAP contrast', ex: [
+          ['Back squat', '70–75kg heavy double', '4 × 2', '30s → jumps'],
+          ['Broad jump', '30s after the squat double', '4 × 3', '3min'],
+          ['Trap bar speed pull', '55kg/side — max intent', '4 × 3', '2min'],
+          ['Heavy-slow calf raise', '', '3 × 6', '90s'],
+        ], cues: { 'Broad jump': 'The pairing is the point: heavy double primes, jumps express. Full rest between pairs.' } },
+      ],
+    },
+    {
+      id: 'w3_tue', label: 'Tue 25 Aug', title: 'Peak COD + reactive cutting', type: 'session', out: 9,
+      workouts: [{ id: 'court', title: 'Court — peak volume', ex: [
+        ['Reactive cutting', 'React to signal, not pattern', '5 rounds', '2min'],
+        ['COD at intent', '', '4 rounds', '2min'],
+        ['Decision-layered shooting', 'Read → decide → shoot', '1 × 20min', '—'],
+      ] }],
+    },
+    {
+      id: 'w3_wed', label: 'Wed 26 Aug', title: 'Upper — contrast', type: 'session', out: 8,
+      summary: AFTER_SKILLS,
+      workouts: [{ id: 'contrast', title: 'Upper contrast', ex: [
+        ['DB bench press', 'Heavy', '4 × 3', '30s → throw'],
+        ['Med ball chest throw', 'Max intent', '4 × 4', '2min'],
+        ['Weighted chin-up', '', '3 × 4', '2min'],
+        ['Med ball deception complex', 'Fake → throw patterns', '3 rounds', '2min'],
+        ['Cable face pull', '', '3 × 15', '45s'],
+      ] }],
+    },
+    {
+      id: 'w3_thu', label: 'Thu 27 Aug', title: 'ATG maintain + sled contrast', type: 'session', out: 7,
+      workouts: [
+        { id: 'tendon', title: 'ATG maintain', ex: [
+          ['ATG split squat', 'Hold load', '2 × 6 each', '90s'],
+          ['Tibialis raise', '', '3 × 20', '45s'],
+          ['Heavy-slow calf raise', '', '3 × 6', '90s'],
+        ] },
+        { id: 'sled', title: 'Sled contrast', ex: [
+          ['Heavy sled push', '', '4 × 15m', '30s → sprint'],
+          ['Free sprint', 'Straight after the push', '4 × 15m', '3min'],
+        ] },
+      ],
+    },
+    {
+      id: 'w3_fri', label: 'Fri 28 Aug', title: 'Full-body — at speed', type: 'session', out: 6,
+      summary: AFTER_SKILLS,
+      workouts: [{ id: 'lift', title: 'Speed work', ex: [
+        ['Power clean', '45–47.5kg — at speed', '5 × 2', '2min'],
+        ['Hang snatch', '32.5–35kg', '4 × 2', '2min'],
+        ['Jump squat', 'Light bar, max intent', '3 × 3', '2min'],
+        ['Nordic curl', '', '3 × 5', '90s'],
+      ] }],
+    },
+    {
+      id: 'w3_sat', label: 'Sat 29 Aug', title: 'Jumps + skills — 140–160 contacts (peak)', type: 'session', out: 5,
+      workouts: [{ id: 'plyo', title: 'Plyo peak', summary: '140–160 total contacts — the peak of the ramp the isometrics protected', ex: [
+        ['Depth jump', 'Low box, instant rebound', '4 × 4', '2min'],
+        ['Lateral bound', '', '4 × 5 each', '2min'],
+        ['Hurdle hop', '', '4 × 5', '2min'],
+        ['Pogo hops', '', '3 × 10', '60s'],
+      ] }],
+      notes: ['Then skills. This is the biggest jump day of the cycle — quality gates every set.'],
+    },
+    {
+      id: 'w3_sun', label: 'Sun 30 Aug', title: 'Rest + taper gate', type: 'rest', out: 4,
+      summary: 'Gate: entering the taper fresh, not flat. If flat — cut Week 4 volume further and hold intensity.',
+      items: [['Readiness log', '', 'AM'], ['Back Insurance', '8 min', 'PM']],
+    },
+  ],
+};
+
+const LEWIS_W4 = {
+  id: 'week4', title: 'Week 4 — Speed & Peak / Taper', subtitle: 'Mon 31 Aug – Sun 6 Sep · arrive fresh',
+  purpose: 'Volume falls off a cliff, intensity and quality hold. He should feel underworked. That is correct. Finals Thu 3 – Sun 6.',
+  meta: [
+    { label: 'Days to finals', value: '3 → 0' },
+    { label: 'Intensity', value: '55–65% · velocity governs' },
+    { label: 'Plyo contacts', value: '60–80, quality only' },
+    { label: 'FINALS', value: 'Thu 3 – Sun 6 Sep' },
+  ],
+  rules: {
+    do: ['Short, sharp, fast', 'Isometrics continue — they cost nothing and protect everything', 'Back Insurance nightly', 'Feel underworked'],
+    dont: ['Chasing fatigue', 'New drills', 'Anything past Wednesday except warm-up protocol'],
+    note: 'Speed sits deliberately closest to the event — maximal-speed residuals run ~5 days.',
+  },
+  days: [
+    {
+      id: 'w4_mon', label: 'Mon 31 Aug', title: 'Lower — light at velocity', type: 'session', out: 3,
+      workouts: [
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', '', '4 × 40s', '45s']] },
+        { id: 'lift', title: 'Velocity', ex: [
+          ['Back squat', '55–62.5kg — bar flies or it ends', '2 × 3', '2min'],
+          ['Movement quality circuit', 'Positions, bracing, landing', '2 rounds', '—'],
+        ] },
+      ],
+    },
+    {
+      id: 'w4_tue', label: 'Tue 1 Sep', title: 'COD — short and sharp', type: 'session', out: 2, dur: '20 min max',
+      workouts: [{ id: 'court', title: 'Court', ex: [
+        ['Sharp COD', 'Few reps, full intent', '3 rounds', '2min'],
+        ['Form shooting', '', '1 × 15min', '—'],
+      ] }],
+    },
+    {
+      id: 'w4_wed', label: 'Wed 2 Sep', title: 'Full-body primer', type: 'session', out: 1,
+      workouts: [{ id: 'lift', title: 'Primer', ex: [
+        ['Power clean', '40kg — speed only', '3 × 2', '2min'],
+        ['Push press', '32.5kg', '2 × 3', '2min'],
+        ['Pogo hops', 'A handful, springy', '2 × 5', '60s'],
+      ] }],
+      notes: ['Last training of the cycle. Everything after this is warm-up protocol only.'],
+    },
+    {
+      id: 'w4_thu', label: 'Thu 3 Sep', title: 'FINALS — Day 1', type: 'rest', out: 0,
+      summary: 'Warm-up protocol only, no training. Back Insurance nightly through the finals.',
+      items: [['Warm-up protocol', 'Long and gradual', 'Pre-game'], ['COMPETE', '', '—'], ['Back Insurance', '8 min', 'PM']],
+    },
+    {
+      id: 'w4_fri', label: 'Fri 4 Sep', title: 'FINALS', type: 'rest',
+      items: [['Warm-up protocol', '', 'Pre-game'], ['COMPETE', '', '—'], ['Back Insurance', '8 min', 'PM']],
+    },
+    {
+      id: 'w4_sat', label: 'Sat 5 Sep', title: 'FINALS', type: 'rest',
+      items: [['Warm-up protocol', '', 'Pre-game'], ['COMPETE', '', '—'], ['Back Insurance', '8 min', 'PM']],
+    },
+    {
+      id: 'w4_sun', label: 'Sun 6 Sep', title: 'FINALS — final day', type: 'rest',
+      summary: 'Everything in the plan pointed at these four days. Leave it on the court.',
+      items: [['Warm-up protocol', '', 'Pre-game'], ['COMPETE', '', '—'], ['Back Insurance', 'One more time', 'PM']],
+    },
+  ],
+};
+
 const LEWIS_PLAN = {
   countdown: 'Finals 3–6 Sep · 3x3 Scotland Sun 16 Aug',
   gateHeading: 'Gate — decision for Mon 3 Aug',
@@ -153,11 +604,11 @@ const LEWIS_PLAN = {
       purpose: 'Decompression → reintegration → max strength → power → taper into the 3x3 Finals.',
       weeks: [
         LEWIS_PREWEEK,
-        { id: 'week0', title: 'Week 0 — Reintegration', subtitle: 'Mon 3 – Sun 9 Aug · re-groove at 65–70%', days: [] },
-        { id: 'week1', title: 'Week 1 — Max Strength (front-loaded)', subtitle: 'Mon 10 – Sun 16 Aug · 3x3 Scotland Sun 16', days: [] },
-        { id: 'week2', title: 'Week 2 — Max Strength', subtitle: 'Mon 17 – Sun 23 Aug · heaviest week', days: [] },
-        { id: 'week3', title: 'Week 3 — Power Conversion', subtitle: 'Mon 24 – Sun 30 Aug · convert to rate', days: [] },
-        { id: 'week4', title: 'Week 4 — Speed & Peak / Taper', subtitle: 'Mon 31 Aug – Sun 6 Sep · arrive fresh', days: [] },
+        LEWIS_W0,
+        LEWIS_W1,
+        LEWIS_W2,
+        LEWIS_W3,
+        LEWIS_W4,
       ],
     },
   ],
