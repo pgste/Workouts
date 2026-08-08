@@ -700,7 +700,7 @@ const REC_W1 = {
   meta: [
     { label: 'Isometrics', value: '70% effort' },
     { label: 'Theme', value: 'Volume, no hinge/impact' },
-    { label: 'Ramp-in', value: 'Fri–Sun 31 Jul' },
+    { label: 'Ramp-in', value: 'Fri–Sun 7–9 Aug' },
     { label: 'Gate to Wk2', value: 'Pain-free flexion' },
   ],
   rules: {
@@ -710,7 +710,7 @@ const REC_W1 = {
   },
   days: [
     {
-      id: 'r1_fri', label: 'Fri 31 Jul', title: 'Ramp-in — Stretching only', type: 'rest',
+      id: 'r1_fri', label: 'Fri 7 Aug', title: 'Ramp-in — Stretching only', type: 'rest',
       summary: 'Ramp-in weekend begins. Isometrics @ 60%, mild stretch, walk. No training.',
       items: [
         ['AM isometrics', '5 × 40s @ 60% effort', 'AM'],
@@ -719,7 +719,7 @@ const REC_W1 = {
       ],
     },
     {
-      id: 'r1_sat', label: 'Sat 1 Aug', title: 'Basic reintroduction', type: 'session', dur: '~40 min',
+      id: 'r1_sat', label: 'Sat 8 Aug', title: 'Basic reintroduction', type: 'session', dur: '~40 min',
       summary: 'Isometrics @ 60%. Easy machine reintroduction. Bike seat set for 25–35° knee bend at full extension.',
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [
@@ -736,7 +736,7 @@ const REC_W1 = {
       notes: [STOP_RULE],
     },
     {
-      id: 'r1_sun', label: 'Sun 2 Aug', title: 'A bit more', type: 'session', dur: '~55 min',
+      id: 'r1_sun', label: 'Sun 9 Aug', title: 'A bit more', type: 'session', dur: '~55 min',
       summary: 'Isometrics @ 65%. A little more volume — all machine and light strength.',
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [
@@ -755,7 +755,7 @@ const REC_W1 = {
       notes: ["Gate to Week 1: no next-morning soreness Monday. If sore → repeat Saturday's session and delay 2 days."],
     },
     {
-      id: 'r1_mon', label: 'Mon 3 Aug', title: 'Lower rehab + Push', type: 'session',
+      id: 'r1_mon', label: 'Mon 10 Aug', title: 'Lower rehab + Push', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min steady', ex: [
           ['Treadmill walk', 'Steady', '1 × 20min', '—'],
@@ -774,7 +774,7 @@ const REC_W1 = {
       ],
     },
     {
-      id: 'r1_tue', label: 'Tue 4 Aug', title: 'Threshold (machine only)', type: 'session',
+      id: 'r1_tue', label: 'Tue 11 Aug', title: 'Threshold (machine only)', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [['Bike', 'Easy', '1 × 15min', '—']] },
         { id: 'threshold', title: 'Threshold', ex: [
@@ -788,7 +788,7 @@ const REC_W1 = {
       notes: [STOP_RULE],
     },
     {
-      id: 'r1_wed', label: 'Wed 5 Aug', title: 'Pull', type: 'session',
+      id: 'r1_wed', label: 'Wed 12 Aug', title: 'Pull', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Rower', 'Arms + short slide only', '1 × 20min', '—'],
@@ -805,7 +805,7 @@ const REC_W1 = {
       ],
     },
     {
-      id: 'r1_thu', label: 'Thu 6 Aug', title: 'VO2 max (machines only)', type: 'session', rpe: 9,
+      id: 'r1_thu', label: 'Thu 13 Aug', title: 'VO2 max (machines only)', type: 'session', rpe: 9,
       workouts: [
         { id: 'warmup', title: 'Warm-up / cool-down', ex: [
           ['Treadmill walk', 'Warm-up', '1 × 10min', '—'],
@@ -816,12 +816,12 @@ const REC_W1 = {
       notes: ['The hardest session of the week. Machines only — no running.'],
     },
     {
-      id: 'r1_fri2', label: 'Fri 7 Aug', title: 'Rest', type: 'rest',
+      id: 'r1_fri2', label: 'Fri 14 Aug', title: 'Rest', type: 'rest',
       summary: 'Isometrics + stretching only. Walk.',
       items: [['Isometrics + stretch', 'As the daily routine', '—'], ['Walk', 'Easy', '—']],
     },
     {
-      id: 'r1_sat2', label: 'Sat 8 Aug', title: 'Sled + Strength', type: 'session',
+      id: 'r1_sat2', label: 'Sat 15 Aug', title: 'Sled + Strength', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Treadmill walk', 'Steady', '1 × 20min', '—'],
@@ -839,7 +839,7 @@ const REC_W1 = {
       ],
     },
     {
-      id: 'r1_sun2', label: 'Sun 9 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
+      id: 'r1_sun2', label: 'Sun 16 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
       summary: '90 min continuous, moderate, RPE 6–7. Bike-based and protected — no running, no burpees. Repeat × 4.',
       workouts: [{ id: 'sim', title: 'Circuit × 4', ex: [
         ['Bike 1km → 10 wall balls', 'RPE 6–7', '4 rounds', '—'],
@@ -852,7 +852,7 @@ const REC_W1 = {
 };
 
 const REC_W2 = {
-  id: 'r_w2', title: 'Week 2 — Load through range', subtitle: 'Mon 10 – Sun 16 Aug · iso 80% · tempo RDL enters',
+  id: 'r_w2', title: 'Week 2 — Load through range', subtitle: 'Mon 17 – Sun 23 Aug · iso 80% · tempo RDL enters',
   purpose: 'Introduce the tempo RDL (4s eccentric) — the key rebuild lift. Treat it as medicine, not training.',
   meta: [
     { label: 'Isometrics', value: '80% effort' },
@@ -867,7 +867,7 @@ const REC_W2 = {
   },
   days: [
     {
-      id: 'r2_mon', label: 'Mon 10 Aug', title: 'Lower + Push', type: 'session',
+      id: 'r2_mon', label: 'Mon 17 Aug', title: 'Lower + Push', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Treadmill walk', '', '1 × 20min', '—'], ['Bike', '', '1 × 20min', '—'],
@@ -884,7 +884,7 @@ const REC_W2 = {
       ],
     },
     {
-      id: 'r2_tue', label: 'Tue 11 Aug', title: 'Threshold (machine)', type: 'session',
+      id: 'r2_tue', label: 'Tue 18 Aug', title: 'Threshold (machine)', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [['Rower', 'Full slide, moderate', '1 × 15min', '—']] },
         { id: 'threshold', title: 'Threshold', ex: [
@@ -897,7 +897,7 @@ const REC_W2 = {
       notes: [STOP_RULE],
     },
     {
-      id: 'r2_wed', label: 'Wed 12 Aug', title: 'Pull', type: 'session',
+      id: 'r2_wed', label: 'Wed 19 Aug', title: 'Pull', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Rower', 'Full slide, moderate', '1 × 20min', '—'], ['Treadmill walk', '', '1 × 20min', '—'],
@@ -913,18 +913,18 @@ const REC_W2 = {
       ],
     },
     {
-      id: 'r2_thu', label: 'Thu 13 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
+      id: 'r2_thu', label: 'Thu 20 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
       summary: '30/30 shuttle: 30s @ RPE 9–10 / 30s easy × 12, rest 3 min, repeat × 2 blocks.',
       workouts: [{ id: 'vo2', title: 'VO2 — 30/30', ex: [['30/30 intervals (bike / ski / rower)', 'RPE 9–10', '2 × 12', '3min']] }],
       notes: ['Machines only. Do not run this.'],
     },
     {
-      id: 'r2_fri', label: 'Fri 14 Aug', title: 'Rest', type: 'rest',
+      id: 'r2_fri', label: 'Fri 21 Aug', title: 'Rest', type: 'rest',
       summary: 'Isometrics + stretching. Incline walk 10 min @ 5–6% if the shin is quiet.',
       items: [['Isometrics + stretch', 'As the daily routine', '—'], ['Incline walk', '10 min @ 5–6%, only if shin quiet', '—']],
     },
     {
-      id: 'r2_sat', label: 'Sat 15 Aug', title: 'Sled + Strength', type: 'session',
+      id: 'r2_sat', label: 'Sat 22 Aug', title: 'Sled + Strength', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Incline walk', '@ 6%', '1 × 15min', '—'], ['Bike', '', '1 × 25min', '—'],
@@ -941,7 +941,7 @@ const REC_W2 = {
       ],
     },
     {
-      id: 'r2_sun', label: 'Sun 16 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
+      id: 'r2_sun', label: 'Sun 23 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
       summary: 'Same structure as Week 1, 4 rounds at RPE 7. Swap one bike block for rower 500m; add 10 step-back burpees per round.',
       workouts: [{ id: 'sim', title: 'Circuit × 4', ex: [
         ['Bike / rower 1km → 10 wall balls', 'RPE 7', '4 rounds', '—'],
@@ -955,7 +955,7 @@ const REC_W2 = {
 };
 
 const REC_W3 = {
-  id: 'r_w3', title: 'Week 3 — Strength & full range', subtitle: 'Mon 17 – Sun 23 Aug · iso 85% · curls return',
+  id: 'r_w3', title: 'Week 3 — Strength & full range', subtitle: 'Mon 24 – Sun 30 Aug · iso 85% · curls return',
   purpose: 'Full-range hamstring work returns; build load. The gate to running sits at week end.',
   meta: [
     { label: 'Isometrics', value: '85% effort' },
@@ -970,7 +970,7 @@ const REC_W3 = {
   },
   days: [
     {
-      id: 'r3_mon', label: 'Mon 17 Aug', title: 'Lower + Push', type: 'session',
+      id: 'r3_mon', label: 'Mon 24 Aug', title: 'Lower + Push', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Treadmill walk', '', '1 × 20min', '—'], ['Rower', 'Moderate', '1 × 20min', '—'],
@@ -987,7 +987,7 @@ const REC_W3 = {
       ],
     },
     {
-      id: 'r3_tue', label: 'Tue 18 Aug', title: 'Threshold (machine)', type: 'session', rpe: 8,
+      id: 'r3_tue', label: 'Tue 25 Aug', title: 'Threshold (machine)', type: 'session', rpe: 8,
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [['Bike', 'Easy', '1 × 10min', '—']] },
         { id: 'threshold', title: 'Threshold', ex: [
@@ -1000,7 +1000,7 @@ const REC_W3 = {
       notes: [STOP_RULE],
     },
     {
-      id: 'r3_wed', label: 'Wed 19 Aug', title: 'Pull', type: 'session',
+      id: 'r3_wed', label: 'Wed 26 Aug', title: 'Pull', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Ski erg', '', '1 × 20min', '—'], ['Treadmill walk', '', '1 × 20min', '—'],
@@ -1016,17 +1016,17 @@ const REC_W3 = {
       ],
     },
     {
-      id: 'r3_thu', label: 'Thu 20 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
+      id: 'r3_thu', label: 'Thu 27 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
       summary: 'Norwegian 4 × 4 @ RPE 9–10, alternating machines. Push genuinely hard.',
       workouts: [{ id: 'vo2', title: 'VO2 — Norwegian 4×4', ex: [['Norwegian 4×4 (alternate machines)', 'RPE 9–10', '4 × 4min', '3min']] }],
     },
     {
-      id: 'r3_fri', label: 'Fri 21 Aug', title: 'Rest', type: 'rest',
+      id: 'r3_fri', label: 'Fri 28 Aug', title: 'Rest', type: 'rest',
       summary: 'Isometrics + stretching. Incline walk 15 min @ 6–8%.',
       items: [['Isometrics + stretch', 'As the daily routine', '—'], ['Incline walk', '15 min @ 6–8%', '—']],
     },
     {
-      id: 'r3_sat', label: 'Sat 22 Aug', title: 'Sled + Strength', type: 'session',
+      id: 'r3_sat', label: 'Sat 29 Aug', title: 'Sled + Strength', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Incline walk', '@ 8%', '1 × 20min', '—'], ['Bike', '', '1 × 20min', '—'],
@@ -1042,7 +1042,7 @@ const REC_W3 = {
       ],
     },
     {
-      id: 'r3_sun', label: 'Sun 23 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 8,
+      id: 'r3_sun', label: 'Sun 30 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 8,
       summary: 'Full machine simulation, 5 rounds, RPE 7–8. Still no running.',
       workouts: [{ id: 'sim', title: 'Circuit × 5', ex: [['Machine Hyrox circuit', 'RPE 7–8', '5 rounds', '—']] }],
       notes: ['GATE TO RUNNING: pain-free resisted flexion + loaded hinge + full-range curl. All three, or running waits.'],
@@ -1051,7 +1051,7 @@ const REC_W3 = {
 };
 
 const REC_W4 = {
-  id: 'r_w4', title: 'Week 4 — Running returns', subtitle: 'Mon 24 – Sun 30 Aug · runs Tue + Sat, Zone 2',
+  id: 'r_w4', title: 'Week 4 — Running returns', subtitle: 'Mon 31 Aug – Sun 6 Sep · runs Tue + Sat, Zone 2',
   purpose: 'Running reintroduced — Tuesday and Saturday only, 48h apart, Zone 2. Frequency before volume.',
   meta: [
     { label: 'Isometrics', value: '85% effort' },
@@ -1066,7 +1066,7 @@ const REC_W4 = {
   },
   days: [
     {
-      id: 'r4_mon', label: 'Mon 24 Aug', title: 'Lower + Push', type: 'session',
+      id: 'r4_mon', label: 'Mon 31 Aug', title: 'Lower + Push', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
           ['Treadmill walk', '', '1 × 20min', '—'], ['Bike', '', '1 × 20min', '—'],
@@ -1081,7 +1081,7 @@ const REC_W4 = {
       ],
     },
     {
-      id: 'r4_tue', label: 'Tue 25 Aug', title: 'RUN 1 🏃', type: 'session',
+      id: 'r4_tue', label: 'Tue 1 Sep', title: 'RUN 1 🏃', type: 'session',
       summary: 'The first run back. Nothing else this session beyond the run and its tempo RDL.',
       workouts: [
         { id: 'warmup', title: 'Warm-up', ex: [['Treadmill', 'Easy (walk into jog) + dynamic prep', '1 × 10min', '—']] },
@@ -1093,7 +1093,7 @@ const REC_W4 = {
       notes: ['Stop immediately on diffuse shin ache or any pull behind the knee — that run is over. The tibia is the slowest tissue and gives little warning.'],
     },
     {
-      id: 'r4_wed', label: 'Wed 26 Aug', title: 'Pull (no leg work)', type: 'session',
+      id: 'r4_wed', label: 'Wed 2 Sep', title: 'Pull (no leg work)', type: 'session',
       summary: 'Recovery from the run — no leg work.',
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [
@@ -1109,17 +1109,17 @@ const REC_W4 = {
       ],
     },
     {
-      id: 'r4_thu', label: 'Thu 27 Aug', title: 'VO2 max (machines only)', type: 'session', rpe: 10,
+      id: 'r4_thu', label: 'Thu 3 Sep', title: 'VO2 max (machines only)', type: 'session', rpe: 10,
       summary: 'Machine-based — do NOT run it. Your two runs (Tue + Sat) are the only running this week.',
       workouts: [{ id: 'vo2', title: 'VO2 — machines', ex: [['VO2 intervals (bike / ski / rower)', 'RPE 9–10', '4 × 4min', '3min']] }],
     },
     {
-      id: 'r4_fri', label: 'Fri 28 Aug', title: 'Rest', type: 'rest',
+      id: 'r4_fri', label: 'Fri 4 Sep', title: 'Rest', type: 'rest',
       summary: 'Isometrics + stretching. Easy walk.',
       items: [['Isometrics + stretch', 'As the daily routine', '—'], ['Walk', 'Easy', '—']],
     },
     {
-      id: 'r4_sat', label: 'Sat 29 Aug', title: 'RUN 2 🏃 + Sled', type: 'session',
+      id: 'r4_sat', label: 'Sat 5 Sep', title: 'RUN 2 🏃 + Sled', type: 'session',
       summary: '48h after Run 1 — runs are Tuesday and Saturday only, never consecutive days.',
       workouts: [{ id: 'run', title: 'Run + Sled', ex: [
         ['Run — 3 × 1km easy', 'Zone 2, same as Tuesday', '3 × 1km', '2min'],
@@ -1129,7 +1129,7 @@ const REC_W4 = {
       ] }],
     },
     {
-      id: 'r4_sun', label: 'Sun 30 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
+      id: 'r4_sun', label: 'Sun 6 Sep', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
       summary: 'Machines + sled, RPE 7. Keep running OUT of the sim — your two runs are enough load.',
       workouts: [{ id: 'sim', title: 'Circuit × 5', ex: [['Machine + sled Hyrox circuit', 'RPE 7', '5 rounds', '—']] }],
       notes: ['Then Hyrox Training: add one running variable per week — +1km OR a third run, never both. Speed and hills come last.'],
@@ -1382,7 +1382,7 @@ const PAUL_PLAN = {
   ],
   blocks: [
     {
-      id: 'recovery', tag: 'Recovery', title: 'Recovery Build', dates: 'Fri 31 Jul – Sun 30 Aug',
+      id: 'recovery', tag: 'Recovery', title: 'Recovery Build', dates: 'Fri 7 Aug – Sun 6 Sep',
       purpose: 'Surgeon-cleared hamstring rehab back to full training — volume → load → strength → running.',
       weeks: [REC_W1, REC_W2, REC_W3, REC_W4],
     },
