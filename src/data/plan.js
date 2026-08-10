@@ -777,7 +777,7 @@ const REC_W1 = {
       id: 'r1_tue', label: 'Tue 11 Aug', title: 'Threshold (machine only)', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [['Bike', 'Easy', '1 × 15min', '—']] },
-        { id: 'threshold', title: 'Threshold', ex: [
+        { id: 'threshold', title: 'Threshold', summary: 'Intervals first and complete, then the strength as straight sets with full rests — not a circuit. Core pair can superset.', ex: [
           ['Ski erg intervals', 'RPE 7', '5 × 4min', '90s'],
           ['Wall balls', 'Squat pattern is clear', '4 × 15', '—'],
           ["Farmer's carry", 'Heavy', '4 × 40m', '—'],
@@ -887,7 +887,7 @@ const REC_W2 = {
       id: 'r2_tue', label: 'Tue 18 Aug', title: 'Threshold (machine)', type: 'session',
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [['Rower', 'Full slide, moderate', '1 × 15min', '—']] },
-        { id: 'threshold', title: 'Threshold', ex: [
+        { id: 'threshold', title: 'Threshold', summary: 'Intervals first and complete, then the strength as straight sets with full rests — not a circuit. Core pair can superset.', ex: [
           ['Ski erg intervals', 'RPE 7–8', '5 × 4min', '90s'],
           ['Wall balls', '', '5 × 15', '—'],
           ["Farmer's carry", '', '4 × 50m', '—'],
@@ -990,7 +990,7 @@ const REC_W3 = {
       id: 'r3_tue', label: 'Tue 25 Aug', title: 'Threshold (machine)', type: 'session', rpe: 8,
       workouts: [
         { id: 'cardio', title: 'Cardio', ex: [['Bike', 'Easy', '1 × 10min', '—']] },
-        { id: 'threshold', title: 'Threshold', ex: [
+        { id: 'threshold', title: 'Threshold', summary: 'Intervals first and complete, then the strength as straight sets with full rests — not a circuit. Core pair can superset.', ex: [
           ['Rower intervals', 'RPE 8', '4 × 1000m', '2min'],
           ['Wall balls', '', '5 × 20', '—'],
           ['Sandbag / DB carries', '', '4 × 50m', '—'],
