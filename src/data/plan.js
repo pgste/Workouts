@@ -353,46 +353,32 @@ const LEWIS_W1 = {
 
 const LEWIS_W2 = {
   id: 'week2', title: 'Week 2 — Max Strength', subtitle: 'Mon 17 – Sun 23 Aug · heaviest week of the year',
-  purpose: 'The peak of the strength block. Long rest, low reps, high focus. Monday is the riskiest junction in the plan — it is written two ways.',
+  purpose: 'The peak of the strength block. Long rest, low reps, high focus. Rebuilt mid-week: tournament Saturday + 3x3 Sunday earned Mon–Tue as recovery, so the heavy work packs into Thu–Sat off two full rest days.',
   meta: [
-    { label: 'Gate', value: 'Mon AM — post-3x3' },
+    { label: 'Gate', value: 'Cleared — rested Mon–Tue' },
     { label: 'Intensity', value: '82–92% · 2–4 reps' },
     { label: 'Rest', value: '180–240s' },
     { label: 'Plyo contacts', value: '110–130' },
   ],
   rules: {
     do: ['Heaviest lifting of the year', 'Sled accel heavy (15–20m)', 'Lateral bounds join Saturday', 'Long rests, full focus'],
-    dont: ['Going heavy Monday if he pulled up sore', 'Rep-outs', 'GHD (ever)', 'Shooting to fatigue'],
-    note: 'Mon 17 gate: post-3x3 pull-up. Sore or flat → recovery option, heavy moves to Tue/Wed. We move the calendar, not the athlete.',
+    dont: ['Rep-outs', 'Back-to-back heavy squatting', 'GHD (ever)', 'Shooting to fatigue'],
+    note: 'Rebuilt Wed 19 after the competition weekend: heavy lower moves to Thu, sled joins Fri, ATG joins Sat. We move the calendar, not the athlete.',
   },
   days: [
     {
-      id: 'w2_mon', label: 'Mon 17 Aug', title: 'Judgement call — two sessions, pick ONE', type: 'session',
-      summary: 'The call gets made on the morning based on how he pulled up from the 3x3. Springy and clear → Option A. Sore, flat, or any back signal → Option B, and heavy shifts to Tue/Wed.',
-      workouts: [
-        { id: 'optA', title: 'Option A — full heavy (pulled up well)', ex: [
-          ['Spanish squat isometric', '', '5 × 45s', '45s'],
-          ['Back squat', '87.5–90kg', '3 × 2', '3min'],
-          ['Trap bar deadlift', '67.5–70kg/side', '3 × 2', '3min'],
-          ['Heavy-slow calf raise', '', '4 × 6', '90s'],
-          ['Copenhagen plank', '', '3 × 20s each', '60s'],
-        ] },
-        { id: 'optB', title: 'Option B — recovery (sore / flat / back signal)', ex: [
-          ['Easy bike flush', 'Conversational', '1 × 20min', '—'],
-          ['Spanish squat isometric', 'Light', '4 × 30s', '45s'],
-          ['90/90 hip switches', '', '2 × 8 each', '30s'],
-          ['Back Insurance (extended)', 'Full routine, slow', '1 × 12min', '—'],
-        ] },
-      ],
-      notes: ['Going straight from a 3x3 into the heaviest week of the year is exactly how the back pattern surfaces. Any back symptom stops the session — stop, and tell me.'],
+      id: 'w2_mon', label: 'Mon 17 Aug', title: 'Rest — competition weekend banked', type: 'rest',
+      summary: 'Tournament Saturday, 3x3 Sunday — two days of competition was the load. Full rest taken instead of the planned heavy session; nothing is lost, the week absorbs it.',
+      items: [['Readiness log', '', 'AM'], ['Back Insurance', '8 min', 'PM']],
     },
     {
-      id: 'w2_tue', label: 'Tue 18 Aug', title: 'COD at intent + shooting', type: 'session',
-      summary: 'If Monday was Option B, today absorbs the heavy lower session instead.',
-      workouts: [{ id: 'court', title: 'Court', ex: [
-        ['COD at intent', '', '4 rounds', '2min'],
-        ['Lateral first-step', '', '4 × 3 each', '90s'],
-        ['Shooting off movement', 'Capped', '1 × 20min', '—'],
+      id: 'w2_tue', label: 'Tue 18 Aug', title: 'Stretch + mobility', type: 'session',
+      summary: 'Second recovery day after the double competition weekend. Long easy stretching, nothing loaded.',
+      workouts: [{ id: 'mobility', title: 'Mobility', ex: [
+        ['90/90 hip switches', '', '2 × 8 each', '30s'],
+        ['Couch stretch', 'Long, easy', '2 × 60s each', '—'],
+        ['Hamstring stretch', 'Long, easy', '2 × 60s each', '—'],
+        ['Back Insurance (extended)', 'Full routine, slow', '1 × 12min', '—'],
       ] }],
     },
     {
@@ -408,42 +394,51 @@ const LEWIS_W2 = {
       notes: [RIR_RULE],
     },
     {
-      id: 'w2_thu', label: 'Thu 20 Aug', title: 'ATG loaded + heavy sled', type: 'session',
+      id: 'w2_thu', label: 'Thu 20 Aug', title: 'Lower — HEAVY (moved from Monday)', type: 'session',
+      summary: 'The year-heaviest lower session, run fresh off two rest days. Weights are the priority today — court stays light.',
       workouts: [
-        { id: 'tendon', title: 'ATG + tendon', ex: [
-          ['ATG split squat', 'Loaded (L first)', '3 × 6 each', '2min'],
-          ['Poliquin step-down', '', '3 × 8 each', '90s'],
-          ['Tibialis raise', '', '3 × 20', '45s'],
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', '', '5 × 45s', '45s']] },
+        { id: 'lift', title: 'Lower — heavy', ex: [
+          ['Back squat', '87.5–90kg', '3 × 2', '3min'],
+          ['Trap bar deadlift', '67.5–70kg/side', '3 × 2', '3min'],
           ['Heavy-slow calf raise', '', '4 × 6', '90s'],
+          ['Copenhagen plank', '', '3 × 20s each', '60s'],
+        ] },
+      ],
+      notes: ['Any back symptom stops the session — stop, and tell me.', RIR_RULE],
+    },
+    {
+      id: 'w2_fri', label: 'Fri 21 Aug', title: 'Full-body — peak cleans + sled', type: 'session',
+      summary: AFTER_SKILLS,
+      workouts: [
+        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', '', '4 × 40s', '45s']] },
+        { id: 'lift', title: 'Full-body', ex: [
+          ['Power clean', '55–57.5kg — bar speed governs', '4 × 2', '3min'],
+          ['Push press', '47.5–50kg', '3 × 3', '3min'],
+          ['Nordic curl', 'Full reps now', '3 × 5', '90s'],
+          ['Muscle snatch', 'Slow eccentric, light', '3 × 3', '2min'],
         ] },
         { id: 'sled', title: 'Sled accel — heavy', ex: [
           ['Heavy sled acceleration', '15–20m, full recovery', '6 × 15–20m', '3min'],
           ['Standing knee drive above 90°', 'Cable', '3 × 8 each', '45s'],
         ] },
       ],
+      notes: ['Front squat comes out this week — the squat pattern went heavy on Thursday, and back-to-back heavy squatting is the one compression we refuse. Olympic lifts sit lower in the range on purpose — at his training age bar speed governs the adaptation, not load.'],
     },
     {
-      id: 'w2_fri', label: 'Fri 21 Aug', title: 'Full-body — peak loads', type: 'session',
-      summary: AFTER_SKILLS,
+      id: 'w2_sat', label: 'Sat 22 Aug', title: 'Jumps + ATG + skills — 110–130 contacts', type: 'session',
       workouts: [
-        { id: 'iso', title: 'Pre-lift tendon', ex: [['Spanish squat isometric', '', '5 × 45s', '45s']] },
-        { id: 'lift', title: 'Full-body', ex: [
-          ['Front squat', '70–75kg', '3 × 3', '3min'],
-          ['Power clean', '55–57.5kg — bar speed governs', '4 × 2', '3min'],
-          ['Push press', '47.5–50kg', '3 × 3', '3min'],
-          ['Nordic curl', 'Full reps now', '3 × 5', '90s'],
-          ['Muscle snatch', 'Slow eccentric, light', '3 × 3', '2min'],
+        { id: 'plyo', title: 'Plyos', summary: '110–130 total contacts', ex: [
+          ['Hurdle hop', '', '4 × 5', '2min'],
+          ['Lateral bound', 'Joins this week — stick the landing', '4 × 4 each', '2min'],
+          ['Pogo hops', '', '3 × 10', '60s'],
+        ] },
+        { id: 'gym', title: 'ATG block', summary: 'Picks up Thursday\'s displaced tendon work at reduced volume.', ex: [
+          ['ATG split squat', 'Loaded (L first)', '2 × 6 each', '2min'],
+          ['Poliquin step-down', '', '2 × 8 each', '90s'],
+          ['Tibialis raise', '', '2 × 20', '45s'],
         ] },
       ],
-      notes: ['Olympic lifts sit lower in the range on purpose — at his training age bar speed governs the adaptation, not load.'],
-    },
-    {
-      id: 'w2_sat', label: 'Sat 22 Aug', title: 'Jumps + skills — 110–130 contacts', type: 'session',
-      workouts: [{ id: 'plyo', title: 'Plyos', summary: '110–130 total contacts', ex: [
-        ['Hurdle hop', '', '4 × 5', '2min'],
-        ['Lateral bound', 'Joins this week — stick the landing', '4 × 4 each', '2min'],
-        ['Pogo hops', '', '3 × 10', '60s'],
-      ] }],
       notes: ['Then skills. Count the contacts.'],
     },
     {
