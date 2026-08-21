@@ -10,7 +10,7 @@ export const AMBER = '#f5a524';
 
 export const ATHLETES = [
   { id: 'lewis', name: 'Lewis', sub: 'Preseason · 3x3 Scotland Sun 16 Aug' },
-  { id: 'paul', name: 'Paul', sub: 'Hamstring rehab · return to Hyrox' },
+  { id: 'paul', name: 'Paul', sub: 'Morning base build · Hyrox from 14 Sep' },
   { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
 ];
 
@@ -846,289 +846,183 @@ const REC_W1 = {
   ],
 };
 
-const REC_W2 = {
-  id: 'r_w2', title: 'Week 2 — Load through range', subtitle: 'Mon 17 – Sun 23 Aug · iso 80% · tempo RDL enters',
-  purpose: 'Introduce the tempo RDL (4s eccentric) — the key rebuild lift. Treat it as medicine, not training.',
+// ── Morning Block — Thu 20 Aug – Sun 13 Sep. Every morning 40 min of
+// two-machine cardio (20 steady + 20 working: 5 min build then 1-min-hard
+// repeats), then one muscle pair, exercise picks rotating A/B visit to visit.
+// Replaced the back half of the Recovery Build; the tempo RDL and hamstring
+// caps carry forward inside it. Hyrox re-enters from the fitness this builds.
+
+const MB_HAM_CAP = 'Hamstring work capped at RPE 7 — it is still earning trust.';
+
+const mbCardio = (steady, work, tight) => ({
+  id: 'cardio', title: 'Cardio — 40 min, two machines',
+  summary: 'Steady machine first, then the working machine: 5 min build into ' +
+    (tight ? '6 × 1 min hard / 90s easy' : '5 × 1 min hard / 2 min easy') +
+    '. Easy means still moving, holding form.',
+  ex: [
+    [steady + ' — steady', 'Zone 2, conversational', '1 × 20min', '—'],
+    [work + ' — build', 'Smooth ramp toward threshold', '1 × 5min', '—'],
+    [work + ' — 1 min hard', 'Easy between reps is the rest timer — keep moving', (tight ? '6' : '5') + ' × 1min', tight ? '90s' : '2min'],
+  ],
+});
+
+const MB_PP_A = { id: 'pair', title: 'Push / Pull — A', ex: [
+  ['DB bench press', '', '3 × 8', '90s'],
+  ['Cable row', '', '3 × 10', '90s'],
+  ['Ring push-up', '', '3 × 10', '60s'],
+  ['Chin-up', '', '3 × 6', '90s'],
+] };
+const MB_PP_B = { id: 'pair', title: 'Push / Pull — B', ex: [
+  ['Incline DB press', '', '3 × 10', '90s'],
+  ['Single-arm DB row', '', '3 × 10 each', '60s'],
+  ['Cable chest press', '', '3 × 12', '60s'],
+  ['Ring row', 'Feet forward to load', '3 × 12', '60s'],
+] };
+const MB_QH_A = { id: 'pair', title: 'Quads / Hams — A', ex: [
+  ['Goblet squat', '', '3 × 10', '90s'],
+  ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 10 each', '60s'],
+  ['Box step-up', '', '3 × 8 each', '60s'],
+  ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '3 × 8', '90s'],
+] };
+const MB_QH_B = { id: 'pair', title: 'Quads / Hams — B', ex: [
+  ['ATG split squat', 'Bodyweight → light DBs', '3 × 6 each', '90s'],
+  ['Nordic curl', 'Assisted, short range — RPE 7 cap', '3 × 4', '90s'],
+  ['Wall sit', '', '3 × 45s', '60s'],
+  ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 12 each', '60s'],
+] };
+const MB_ASC_A = { id: 'pair', title: 'Abs / Shoulders / Calves — A', ex: [
+  ['Cable crunch', '', '3 × 12', '45s'],
+  ['DB shoulder press', '', '3 × 8', '90s'],
+  ['DB lateral raise', '', '3 × 12', '45s'],
+  ['Calf raise', '', '3 × 15', '45s'],
+] };
+const MB_ASC_B = { id: 'pair', title: 'Abs / Shoulders / Calves — B', ex: [
+  ['Hanging knee raise', 'On the rings', '3 × 10', '60s'],
+  ['Hollow hold', '', '3 × 30s', '45s'],
+  ['Cable lateral raise', '', '3 × 15', '45s'],
+  ['Reverse fly (cable)', '', '3 × 15', '45s'],
+  ['Single-leg calf raise', '', '3 × 12 each', '45s'],
+] };
+const MB_BT_A = { id: 'pair', title: 'Biceps / Triceps — A', ex: [
+  ['Barbell curl', '', '3 × 10', '60s'],
+  ['Tricep pushdown', '', '3 × 12', '60s'],
+  ['Hammer curl', '', '3 × 12', '45s'],
+  ['Overhead cable ext', '', '3 × 12', '45s'],
+] };
+const MB_BT_B = { id: 'pair', title: 'Biceps / Triceps — B', ex: [
+  ['Ring curl', '', '3 × 8', '60s'],
+  ['Close-grip push-up', '', '3 × 12', '60s'],
+  ['DB curl', '', '3 × 10', '45s'],
+  ['Overhead DB extension', '', '3 × 10', '60s'],
+] };
+
+const mbDay = (id, label, steady, work, pair, opts = {}) => ({
+  id, label, type: 'session',
+  title: 'Cardio 40 + ' + pair.title,
+  workouts: [mbCardio(steady, work, opts.tight), pair],
+  ...(opts.notes ? { notes: opts.notes } : {}),
+});
+
+const mbSunday = (id, label) => ({
+  id, label, title: 'Cardio only + stretch', type: 'session',
+  summary: 'No lifting. Two easy machines, then long stretching.',
+  workouts: [
+    { id: 'cardio', title: 'Cardio — 40 min easy', ex: [
+      ['Row — steady', 'Easy, RPE 4', '1 × 20min', '—'],
+      ['Bike — steady', 'Easy, RPE 4', '1 × 20min', '—'],
+    ] },
+    { id: 'stretch', title: 'Stretch (15 min)', ex: [
+      ['Couch stretch', '', '1 × 60s each', '—'],
+      ['Supine hamstring', 'Gentle', '1 × 45s each', '—'],
+      ['90/90 hip switches', '', '1 × 10 each', '—'],
+      ['Pigeon', '', '1 × 60s each', '—'],
+      ['Cat-cow', '', '1 × 10', '—'],
+    ] },
+  ],
+});
+
+const MB_RAMP = 'Ramp — leave 3 in reserve; 2 sets is plenty today.';
+
+const MB_W1 = {
+  id: 'mb_w1', title: 'Week 1 — Ramp-in + rotation begins', subtitle: 'Thu 20 – Sun 30 Aug · every morning 40 cardio + one pair',
+  purpose: 'The daily rhythm starts: 20 min steady on one machine, 20 min working on another, then one muscle pair. Ramp weekend to calibrate, then the full rotation.',
   meta: [
-    { label: 'Isometrics', value: '80% effort' },
-    { label: 'Key lift', value: 'Tempo RDL (4s ecc)' },
-    { label: 'Runs', value: 'Not yet' },
-    { label: 'Gate to Wk3', value: 'RDL comfortable light' },
+    { label: 'Cardio', value: '20 steady + 20 working' },
+    { label: 'Intervals', value: '5 × 1min / 2min easy' },
+    { label: 'Pairs', value: 'One per day, rotating' },
+    { label: 'Hams', value: 'RPE 7 cap' },
   ],
   rules: {
-    do: ['Tempo RDL (4s ecc)', 'Forward sled push', 'Full-slide rowing', 'Incline walking', 'Wall balls', 'Carries'],
-    dont: ['Running', 'Heavy hinge', 'Jumping burpees', 'Nordics / GHD', 'Speed work'],
-    note: 'Gate to Week 3: tempo RDL comfortable at light load, no next-morning response.',
+    do: ['Both machines every morning', 'Different exercise picks each visit (A/B)', 'Tempo RDL stays — it is the rehab thread', 'Note the interval numbers'],
+    dont: ['Hard running — treadmill is a steady incline walk', 'Hinge PRs', 'Skipping the steady 20', 'Pushing hamstrings past RPE 7'],
+    note: 'Gate unchanged: any next-morning hamstring or knee soreness = hold, repeat, do not progress.',
   },
   days: [
     {
-      id: 'r2_mon', label: 'Mon 17 Aug', title: 'Lower + Push', type: 'session',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
-          ['Treadmill walk', '', '1 × 20min', '—'], ['Bike', '', '1 × 20min', '—'],
-        ] },
-        { id: 'lift', title: 'Lower + Push', ex: [
-          ['Tempo RDL', 'Very light (empty bar / 20kg), 4s eccentric', '3 × 8', '2min'],
-          ['Backward sled drag', 'Moderate', '8 × 20m', '60s'],
-          ['Goblet squat', '', '4 × 12', '90s'],
-          ['Split squat', '', '3 × 10 each', '90s'],
-          ['Incline DB press', '', '4 × 8', '90s'],
-          ['DB overhead press', '', '3 × 10', '90s'],
-          ['Lateral raise', '', '3 × 15', '45s'],
-        ], cues: { 'Tempo RDL': 'The main event. 4-second lower, feel the hamstring lengthen under control. Medicine, not training — range and control, not load.' } },
-      ],
+      id: 'mb1_thu', label: 'Thu 20 Aug', title: 'Cardio 40 — calibrate', type: 'session',
+      summary: 'First morning: find the steady pace (conversational) and a repeatable 1-min hard effort. Note the numbers — they are the block baseline.',
+      workouts: [mbCardio('Bike', 'Row')],
     },
-    {
-      id: 'r2_tue', label: 'Tue 18 Aug', title: 'Threshold (machine)', type: 'session',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', ex: [['Rower', 'Full slide, moderate', '1 × 15min', '—']] },
-        { id: 'threshold', title: 'Threshold', summary: 'Intervals first and complete, then the strength as straight sets with full rests — not a circuit. Core pair can superset.', ex: [
-          ['Ski erg intervals', 'RPE 7–8', '5 × 4min', '90s'],
-          ['Wall balls', '', '5 × 15', '—'],
-          ["Farmer's carry", '', '4 × 50m', '—'],
-          ['Hanging leg raise', '', '3 × 12', '—'],
-        ] },
-      ],
-      notes: [STOP_RULE],
-    },
-    {
-      id: 'r2_wed', label: 'Wed 19 Aug', title: 'Pull', type: 'session',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
-          ['Rower', 'Full slide, moderate', '1 × 20min', '—'], ['Treadmill walk', '', '1 × 20min', '—'],
-        ] },
-        { id: 'pull', title: 'Pull', ex: [
-          ['Pull-ups', '', '4 × 7', '90s'],
-          ['Lat pulldown', '', '3 × 10', '90s'],
-          ['DB row', '', '4 × 10', '60s'],
-          ['Back extension', 'Bodyweight, short range', '3 × 10', '60s'],
-          ['Face pulls', '', '3 × 15', '45s'],
-          ['Rear delt fly', '', '3 × 15', '45s'],
-        ] },
-      ],
-    },
-    {
-      id: 'r2_thu', label: 'Thu 20 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
-      summary: '30/30 shuttle: 30s @ RPE 9–10 / 30s easy × 12, rest 3 min, repeat × 2 blocks.',
-      workouts: [{ id: 'vo2', title: 'VO2 — 30/30', ex: [['30/30 intervals (bike / ski / rower)', 'RPE 9–10', '2 × 12', '3min']] }],
-      notes: ['Machines only. Do not run this.'],
-    },
-    {
-      id: 'r2_fri', label: 'Fri 21 Aug', title: 'Rest', type: 'rest',
-      summary: 'Isometrics + stretching. Incline walk 10 min @ 5–6% if the shin is quiet.',
-      items: [['Isometrics + stretch', 'As the daily routine', '—'], ['Incline walk', '10 min @ 5–6%, only if shin quiet', '—']],
-    },
-    {
-      id: 'r2_sat', label: 'Sat 22 Aug', title: 'Sled + Strength', type: 'session',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
-          ['Incline walk', '@ 6%', '1 × 15min', '—'], ['Bike', '', '1 × 25min', '—'],
-        ] },
-        { id: 'lift', title: 'Sled + Strength', ex: [
-          ['Forward sled push', 'Moderate — returns this week', '6 × 20m', '90s'],
-          ['Backward sled drag', '', '8 × 20m', '60s'],
-          ['Box step-ups', '', '4 × 10 each', '90s'],
-          ['Tempo RDL', 'Light, 4s eccentric', '3 × 8', '2min'],
-          ['Pull-ups', '', '3 × 8', '90s'],
-          ['DB press', '', '3 × 10', '90s'],
-          ['Bicep curl', '', '3 × 12', '45s'],
-        ] },
-      ],
-    },
-    {
-      id: 'r2_sun', label: 'Sun 23 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
-      summary: 'Same structure as Week 1, 4 rounds at RPE 7. Swap one bike block for rower 500m; add 10 step-back burpees per round.',
-      workouts: [{ id: 'sim', title: 'Circuit × 4', ex: [
-        ['Bike / rower 1km → 10 wall balls', 'RPE 7', '4 rounds', '—'],
-        ['Ski erg 500m → backward sled drag 40m', 'RPE 7', '4 rounds', '—'],
-        ['Treadmill walk 5 min → 20 farmer carry steps', 'RPE 7', '4 rounds', '—'],
-        ['Step-back burpees (no jump)', 'Per round', '4 × 10', '—'],
-      ] }],
-      notes: ['Gate to Week 3: tempo RDL comfortable at light load, no next-morning response.'],
-    },
+    mbDay('mb1_fri', 'Fri 21 Aug', 'Treadmill (incline walk)', 'Ski erg', MB_PP_A, { notes: [MB_RAMP] }),
+    mbDay('mb1_sat', 'Sat 22 Aug', 'Row', 'Bike', MB_QH_A, { notes: [MB_RAMP, MB_HAM_CAP] }),
+    mbSunday('mb1_sun', 'Sun 23 Aug'),
+    mbDay('mb1_mon', 'Mon 24 Aug', 'Bike', 'Row', MB_PP_B),
+    mbDay('mb1_tue', 'Tue 25 Aug', 'Treadmill (incline walk)', 'Ski erg', MB_QH_B, { notes: [MB_HAM_CAP] }),
+    mbDay('mb1_wed', 'Wed 26 Aug', 'Row', 'Bike', MB_ASC_A),
+    mbDay('mb1_thu2', 'Thu 27 Aug', 'Bike', 'Ski erg', MB_BT_A),
+    mbDay('mb1_fri2', 'Fri 28 Aug', 'Treadmill (incline walk)', 'Row', MB_PP_A),
+    mbDay('mb1_sat2', 'Sat 29 Aug', 'Ski erg', 'Bike', MB_QH_A, { notes: [MB_HAM_CAP] }),
+    mbSunday('mb1_sun2', 'Sun 30 Aug'),
   ],
 };
 
-const REC_W3 = {
-  id: 'r_w3', title: 'Week 3 — Strength & full range', subtitle: 'Mon 24 – Sun 30 Aug · iso 85% · curls return',
-  purpose: 'Full-range hamstring work returns; build load. The gate to running sits at week end.',
+const MB_W2 = {
+  id: 'mb_w2', title: 'Week 2 — Other pairs lead', subtitle: 'Mon 31 Aug – Sun 6 Sep · same rhythm, rotation offset',
+  purpose: 'Identical daily rhythm; the 4-day pair cycle starts from the other half so every group keeps landing three times a fortnight.',
   meta: [
-    { label: 'Isometrics', value: '85% effort' },
-    { label: 'Theme', value: 'Full-range ham work' },
-    { label: 'Runs', value: 'Not yet' },
-    { label: 'Gate', value: '3 pain-free tests → run' },
+    { label: 'Cardio', value: '20 steady + 20 working' },
+    { label: 'Intervals', value: '5 × 1min / 2min easy' },
+    { label: 'Pairs', value: 'Cycle offset — A/S/C leads' },
+    { label: 'Hams', value: 'RPE 7 cap' },
   ],
   rules: {
-    do: ['Tempo RDL building', 'Hamstring curl (full range)', 'Front squat', 'Forward sled heavier', 'Incline walk 6–8%'],
-    dont: ['Running (until the 3-part gate)', 'Speed work / hills', 'Jumping'],
-    note: 'Gate to running: pain-free resisted flexion + loaded hinge + full-range curl. All three.',
+    do: ['Nudge the steady pace if RPE has drifted down', 'Add a little load where last week was clean'],
+    dont: ['Hard running yet', 'Turning the steady 20 into a second interval session'],
+    note: 'Same gate. Progress load only on groups that produced no next-morning complaints.',
   },
   days: [
-    {
-      id: 'r3_mon', label: 'Mon 24 Aug', title: 'Lower + Push', type: 'session',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
-          ['Treadmill walk', '', '1 × 20min', '—'], ['Rower', 'Moderate', '1 × 20min', '—'],
-        ] },
-        { id: 'lift', title: 'Lower + Push', ex: [
-          ['Tempo RDL', 'Build load, 3s eccentric', '4 × 8', '2min'],
-          ['Hamstring curl', 'Monkey foot on cable, light — full range returns', '3 × 12', '90s'],
-          ['Backward sled drag', '', '8 × 25m', '60s'],
-          ['Front squat or goblet', 'Moderate', '4 × 8', '2min'],
-          ['Incline DB press', '', '4 × 8', '90s'],
-          ['DB overhead press', '', '4 × 8', '90s'],
-          ['Lateral raise', '', '3 × 15', '45s'],
-        ], cues: { 'Hamstring curl': 'Full range but light — the first full-range flexion load. Earn the range before the load.' } },
-      ],
-    },
-    {
-      id: 'r3_tue', label: 'Tue 25 Aug', title: 'Threshold (machine)', type: 'session', rpe: 8,
-      workouts: [
-        { id: 'cardio', title: 'Cardio', ex: [['Bike', 'Easy', '1 × 10min', '—']] },
-        { id: 'threshold', title: 'Threshold', summary: 'Intervals first and complete, then the strength as straight sets with full rests — not a circuit. Core pair can superset.', ex: [
-          ['Rower intervals', 'RPE 8', '4 × 1000m', '2min'],
-          ['Wall balls', '', '5 × 20', '—'],
-          ['Sandbag / DB carries', '', '4 × 50m', '—'],
-          ['Core circuit', '', '3 rounds', '—'],
-        ] },
-      ],
-      notes: [STOP_RULE],
-    },
-    {
-      id: 'r3_wed', label: 'Wed 26 Aug', title: 'Pull', type: 'session',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
-          ['Ski erg', '', '1 × 20min', '—'], ['Treadmill walk', '', '1 × 20min', '—'],
-        ] },
-        { id: 'pull', title: 'Pull', ex: [
-          ['Pull-ups', '', '4 × 8', '90s'],
-          ['Weighted lat pulldown', '', '4 × 8', '90s'],
-          ['DB row', '', '4 × 12', '60s'],
-          ['Back extension', 'Full range', '3 × 12', '60s'],
-          ['Face pulls', '', '3 × 15', '45s'],
-          ['Bicep curl', '', '3 × 15', '45s'],
-        ] },
-      ],
-    },
-    {
-      id: 'r3_thu', label: 'Thu 27 Aug', title: 'VO2 max (machines)', type: 'session', rpe: 10,
-      summary: 'Norwegian 4 × 4 @ RPE 9–10, alternating machines. Push genuinely hard.',
-      workouts: [{ id: 'vo2', title: 'VO2 — Norwegian 4×4', ex: [['Norwegian 4×4 (alternate machines)', 'RPE 9–10', '4 × 4min', '3min']] }],
-    },
-    {
-      id: 'r3_fri', label: 'Fri 28 Aug', title: 'Rest', type: 'rest',
-      summary: 'Isometrics + stretching. Incline walk 15 min @ 6–8%.',
-      items: [['Isometrics + stretch', 'As the daily routine', '—'], ['Incline walk', '15 min @ 6–8%', '—']],
-    },
-    {
-      id: 'r3_sat', label: 'Sat 29 Aug', title: 'Sled + Strength', type: 'session',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
-          ['Incline walk', '@ 8%', '1 × 20min', '—'], ['Bike', '', '1 × 20min', '—'],
-        ] },
-        { id: 'lift', title: 'Sled + Strength', ex: [
-          ['Forward sled push', 'Heavier', '8 × 20m', '90s'],
-          ['Backward sled drag', '', '8 × 25m', '60s'],
-          ['Tempo RDL', 'Moderate load, 3s eccentric', '4 × 6', '2min'],
-          ['Box step-ups', '', '4 × 12', '90s'],
-          ['Calf raise', '', '4 × 15', '60s'],
-          ['Upper accessory', 'Your choice', '3 × 12', '—'],
-        ] },
-      ],
-    },
-    {
-      id: 'r3_sun', label: 'Sun 30 Aug', title: 'Half-Hyrox simulation', type: 'session', rpe: 8,
-      summary: 'Full machine simulation, 5 rounds, RPE 7–8. Still no running.',
-      workouts: [{ id: 'sim', title: 'Circuit × 5', ex: [['Machine Hyrox circuit', 'RPE 7–8', '5 rounds', '—']] }],
-      notes: ['GATE TO RUNNING: pain-free resisted flexion + loaded hinge + full-range curl. All three, or running waits.'],
-    },
+    mbDay('mb2_mon', 'Mon 31 Aug', 'Bike', 'Row', MB_ASC_B),
+    mbDay('mb2_tue', 'Tue 1 Sep', 'Treadmill (incline walk)', 'Ski erg', MB_BT_B),
+    mbDay('mb2_wed', 'Wed 2 Sep', 'Row', 'Bike', MB_PP_B),
+    mbDay('mb2_thu', 'Thu 3 Sep', 'Bike', 'Ski erg', MB_QH_B, { notes: [MB_HAM_CAP] }),
+    mbDay('mb2_fri', 'Fri 4 Sep', 'Treadmill (incline walk)', 'Row', MB_ASC_A),
+    mbDay('mb2_sat', 'Sat 5 Sep', 'Ski erg', 'Bike', MB_BT_A),
+    mbSunday('mb2_sun', 'Sun 6 Sep'),
   ],
 };
 
-const REC_W4 = {
-  id: 'r_w4', title: 'Week 4 — Running returns', subtitle: 'Mon 31 Aug – Sun 6 Sep · runs Tue + Sat, Zone 2',
-  purpose: 'Running reintroduced — Tuesday and Saturday only, 48h apart, Zone 2. Frequency before volume.',
+const MB_W3 = {
+  id: 'mb_w3', title: 'Week 3 — Intervals tighten', subtitle: 'Mon 7 – Sun 13 Sep · 6 × 1min / 90s easy',
+  purpose: 'Final week before Hyrox re-entry: the working 20 tightens to 6 × 1 min hard / 90s easy. Same pair rotation, heavier picks where clean.',
   meta: [
-    { label: 'Isometrics', value: '85% effort' },
-    { label: 'Theme', value: 'Running returns' },
-    { label: 'Run days', value: 'Tue + Sat only' },
-    { label: 'Rule', value: '48h apart, Zone 2' },
+    { label: 'Cardio', value: '20 steady + 20 working' },
+    { label: 'Intervals', value: '6 × 1min / 90s easy' },
+    { label: 'Pairs', value: 'One per day, rotating' },
+    { label: 'Next', value: 'Hyrox from Mon 14 Sep' },
   ],
   rules: {
-    do: ['Running Tue + Sat (Zone 2)', 'Tempo RDL', 'Hamstring curl', 'Sled', 'Machine VO2'],
-    dont: ['Runs on consecutive days', 'Running the VO2 session', 'Speed work / hills', 'Running inside the Sunday sim'],
-    note: 'Runs 48h apart — Tuesday and Saturday only. Never Tues + Thurs.',
+    do: ['Hold the hard-minute output across all 6 reps', 'Bank clean sessions — Hyrox starts Monday'],
+    dont: ['Racing the last morning', 'New exercises this week — repeat the known ones'],
+    note: 'Hyrox re-enters Mon 14 Sep at week-2 fitness, not from zero — this week earns that.',
   },
   days: [
-    {
-      id: 'r4_mon', label: 'Mon 31 Aug', title: 'Lower + Push', type: 'session',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', summary: '40 min', ex: [
-          ['Treadmill walk', '', '1 × 20min', '—'], ['Bike', '', '1 × 20min', '—'],
-        ] },
-        { id: 'lift', title: 'Lower + Push', ex: [
-          ['Tempo RDL', 'Building, 3s eccentric', '4 × 6', '2min'],
-          ['Hamstring curl', 'Monkey foot on cable', '3 × 12', '90s'],
-          ['Backward sled drag', '', '8 × 25m', '60s'],
-          ['Squat', 'Moderate', '4 × 6', '2min'],
-          ['Full push session', 'Incline press / OHP / lateral raise', '3 × 10', '90s'],
-        ] },
-      ],
-    },
-    {
-      id: 'r4_tue', label: 'Tue 1 Sep', title: 'RUN 1 🏃', type: 'session',
-      summary: 'The first run back. Nothing else this session beyond the run and its tempo RDL.',
-      workouts: [
-        { id: 'warmup', title: 'Warm-up', ex: [['Treadmill', 'Easy (walk into jog) + dynamic prep', '1 × 10min', '—']] },
-        { id: 'run', title: 'Run + Lower', ex: [
-          ['Run — 3 × 1km easy', 'Zone 2, conversational, 2 min walk between', '3 × 1km', '2min'],
-          ['Tempo RDL (kept in)', '', '3 × 8', '2min'],
-        ], cues: { 'Run — 3 × 1km easy': 'Zone 2 — conversational, not threshold. Frequency before volume; this is the first run back.' } },
-      ],
-      notes: ['Stop immediately on diffuse shin ache or any pull behind the knee — that run is over. The tibia is the slowest tissue and gives little warning.'],
-    },
-    {
-      id: 'r4_wed', label: 'Wed 2 Sep', title: 'Pull (no leg work)', type: 'session',
-      summary: 'Recovery from the run — no leg work.',
-      workouts: [
-        { id: 'cardio', title: 'Cardio', ex: [
-          ['Rower', '', '1 × 20min', '—'], ['Ski erg', '', '1 × 20min', '—'],
-        ] },
-        { id: 'pull', title: 'Pull', ex: [
-          ['Pull-ups', '', '4 × 8', '90s'],
-          ['Weighted lat pulldown', '', '4 × 8', '90s'],
-          ['DB row', '', '4 × 12', '60s'],
-          ['Back extension', '', '3 × 12', '60s'],
-          ['Face pulls', '', '3 × 15', '45s'],
-        ] },
-      ],
-    },
-    {
-      id: 'r4_thu', label: 'Thu 3 Sep', title: 'VO2 max (machines only)', type: 'session', rpe: 10,
-      summary: 'Machine-based — do NOT run it. Your two runs (Tue + Sat) are the only running this week.',
-      workouts: [{ id: 'vo2', title: 'VO2 — machines', ex: [['VO2 intervals (bike / ski / rower)', 'RPE 9–10', '4 × 4min', '3min']] }],
-    },
-    {
-      id: 'r4_fri', label: 'Fri 4 Sep', title: 'Rest', type: 'rest',
-      summary: 'Isometrics + stretching. Easy walk.',
-      items: [['Isometrics + stretch', 'As the daily routine', '—'], ['Walk', 'Easy', '—']],
-    },
-    {
-      id: 'r4_sat', label: 'Sat 5 Sep', title: 'RUN 2 🏃 + Sled', type: 'session',
-      summary: '48h after Run 1 — runs are Tuesday and Saturday only, never consecutive days.',
-      workouts: [{ id: 'run', title: 'Run + Sled', ex: [
-        ['Run — 3 × 1km easy', 'Zone 2, same as Tuesday', '3 × 1km', '2min'],
-        ['Backward sled drag', '', '8 × 20m', '60s'],
-        ['Tempo RDL', '', '3 × 8', '2min'],
-        ['Light upper accessory', 'Your choice', '3 × 12', '—'],
-      ] }],
-    },
-    {
-      id: 'r4_sun', label: 'Sun 6 Sep', title: 'Half-Hyrox simulation', type: 'session', rpe: 7,
-      summary: 'Machines + sled, RPE 7. Keep running OUT of the sim — your two runs are enough load.',
-      workouts: [{ id: 'sim', title: 'Circuit × 5', ex: [['Machine + sled Hyrox circuit', 'RPE 7', '5 rounds', '—']] }],
-      notes: ['Then Hyrox Training: add one running variable per week — +1km OR a third run, never both. Speed and hills come last.'],
-    },
+    mbDay('mb3_mon', 'Mon 7 Sep', 'Bike', 'Row', MB_PP_A, { tight: true }),
+    mbDay('mb3_tue', 'Tue 8 Sep', 'Treadmill (incline walk)', 'Ski erg', MB_QH_A, { tight: true, notes: [MB_HAM_CAP] }),
+    mbDay('mb3_wed', 'Wed 9 Sep', 'Row', 'Bike', MB_ASC_B, { tight: true }),
+    mbDay('mb3_thu', 'Thu 10 Sep', 'Bike', 'Ski erg', MB_BT_B, { tight: true }),
+    mbDay('mb3_fri', 'Fri 11 Sep', 'Treadmill (incline walk)', 'Row', MB_PP_B, { tight: true }),
+    mbDay('mb3_sat', 'Sat 12 Sep', 'Ski erg', 'Bike', MB_QH_B, { tight: true, notes: [MB_HAM_CAP] }),
+    mbSunday('mb3_sun', 'Sun 13 Sep'),
   ],
 };
 
@@ -1326,26 +1220,19 @@ function hyroxWeek(n, o) {
   };
 }
 
+// Re-levelled after the Morning Block: entry is the old week-2 (3×1km), not
+// the from-zero 3×800m — a month of daily 40-min cardio has already been banked.
 const HYROX_WEEKS = [
   hyroxWeek(1, {
-    tag: 'Build', subtitle: 'Tue 3×800m · bike subs Sunday runs', tueLabel: '3 × 800m RPE 7', sunLabel: 'Bike subs runs',
-    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7 — short sentences only. ~15–20 min inc. walks.', ex: [
-      ['Run — 3 × 800m', 'RPE 7, 90 sec walk between', '3 × 800m', '90s'],
+    tag: 'Build', subtitle: 'Tue 3×1km · bike subs Sunday runs', tueLabel: '3 × 1km RPE 7', sunLabel: 'Bike subs runs',
+    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7 — short sentences only. First real running since the injury — the engine is there, let the hamstring catch up.', ex: [
+      ['Run — 3 × 1km', 'RPE 7, 90 sec walk between', '3 × 1km', '90s'],
       ['Bike', 'Easy — flush the legs before lifting', '1 × 20min', '—'],
     ] },
     sunSummary: 'RPE 5–6. Bike subs all runs. 4 rounds; stations rotate: ski 500m · sled push 25m · row 500m · farmers 50m · wall balls 20 · sled drag 25m · lunges 20m.',
     sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (bike subs runs)', ex: [['Bike 1km → station', 'RPE 5–6', '4 rounds', '—']] },
   }),
   hyroxWeek(2, {
-    tag: 'Build', subtitle: 'Tue 3×1km · bike subs Sunday runs', tueLabel: '3 × 1km RPE 7', sunLabel: 'Bike subs runs',
-    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7 — short sentences only.', ex: [
-      ['Run — 3 × 1km', 'RPE 7, 90 sec walk between', '3 × 1km', '90s'],
-      ['Bike', 'Easy — flush the legs', '1 × 20min', '—'],
-    ] },
-    sunSummary: 'RPE 5–6. Bike subs all runs. 4 rounds, stations rotating.',
-    sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (bike subs runs)', ex: [['Bike 1km → station', 'RPE 5–6', '4 rounds', '—']] },
-  }),
-  hyroxWeek(3, {
     tag: 'Progress', subtitle: 'Tue 4×1km · real runs enter Sunday', tueLabel: '4 × 1km RPE 7–8', sunLabel: '500m real runs',
     tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7–8, sustainable.', ex: [
       ['Run — 4 × 1km', 'RPE 7–8, 90 sec walk between', '4 × 1km', '90s'],
@@ -1354,7 +1241,7 @@ const HYROX_WEEKS = [
     sunSummary: 'RPE 5–6. Add 500m REAL runs between 2 of the stations; bike the rest. 4 rounds.',
     sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (500m real runs ×2)', ex: [['1km bike/run → station', 'RPE 5–6', '4 rounds', '—']] },
   }),
-  hyroxWeek(4, {
+  hyroxWeek(3, {
     tag: 'Progress', subtitle: 'Tue 2×2km continuous · 1km real runs Sunday', tueLabel: '2 × 2km RPE 7', sunLabel: '1km real runs',
     tueRun: { id: 'run', title: 'Run — continuous threshold', summary: 'RPE 7, continuous.', ex: [
       ['Run — 2 × 2km continuous', 'RPE 7', '2 × 2km', '3min'],
@@ -1363,10 +1250,19 @@ const HYROX_WEEKS = [
     sunSummary: 'RPE 5–6. 1km REAL runs between 4 stations; build toward full 8×1km over coming weeks.',
     sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (1km real runs)', ex: [['1km run → station', 'RPE 5–6', '4 rounds', '—']] },
   }),
+  hyroxWeek(4, {
+    tag: 'Peak', subtitle: 'Tue 5×1km · all Sunday runs real', tueLabel: '5 × 1km RPE 7–8', sunLabel: 'All runs real',
+    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7–8, sustainable — biggest run volume of the build.', ex: [
+      ['Run — 5 × 1km', 'RPE 7–8, 90 sec walk between', '5 × 1km', '90s'],
+      ['Bike', 'Easy — flush the legs', '1 × 20min', '—'],
+    ] },
+    sunSummary: 'RPE 6. Every station preceded by a REAL 1km run — the full half-Hyrox pattern, no bike subs.',
+    sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (all runs real)', ex: [['1km run → station', 'RPE 6', '4 rounds', '—']] },
+  }),
 ];
 
 const PAUL_PLAN = {
-  countdown: 'Recovery build → Hyrox · gate on next-morning soreness',
+  countdown: 'Morning block → Hyrox from Mon 14 Sep · gate on next-morning soreness',
   gateHeading: 'Gate — next-morning response (hamstring or knee)',
   daily: PAUL_DAILY,
   readiness: ['Next-AM soreness 1–10', 'Hamstring', 'Knee', 'Swelling', 'Sleep (h)', 'Bodyweight', 'Notes'],
@@ -1377,13 +1273,18 @@ const PAUL_PLAN = {
   ],
   blocks: [
     {
-      id: 'recovery', tag: 'Recovery', title: 'Recovery Build', dates: 'Fri 7 Aug – Sun 6 Sep',
-      purpose: 'Surgeon-cleared hamstring rehab back to full training — volume → load → strength → running.',
-      weeks: [REC_W1, REC_W2, REC_W3, REC_W4],
+      id: 'recovery', tag: 'Recovery', title: 'Recovery Build', dates: 'Fri 7 – Sun 16 Aug',
+      purpose: 'Surgeon-cleared hamstring rehab — volume and load rebuilt. Handed over early to the Morning Block on 19 Aug; the tempo RDL and hamstring caps carry forward inside it.',
+      weeks: [REC_W1],
     },
     {
-      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Post-holiday · 4-week build',
-      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift.',
+      id: 'morning', tag: 'Base', title: 'Morning Block', dates: 'Thu 20 Aug – Sun 13 Sep',
+      purpose: 'Every morning: 40 minutes of two-machine cardio (20 steady + 20 working), then one muscle pair with the exercise picks rotating visit to visit. Builds the engine and all-round base the Hyrox block re-enters from.',
+      weeks: [MB_W1, MB_W2, MB_W3],
+    },
+    {
+      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 14 Sep – Sun 11 Oct',
+      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift. Re-entered off the Morning Block engine: week 1 starts at the old week-2 level, no from-zero ramp.',
       weeks: HYROX_WEEKS,
     },
   ],
