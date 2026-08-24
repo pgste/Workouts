@@ -848,7 +848,8 @@ const REC_W1 = {
 
 // ── Morning Block — Thu 20 Aug – Sun 13 Sep. Every morning 40 min of
 // two-machine cardio (20 steady + 20 working: 5 min build then 1-min-hard
-// repeats), then one muscle pair, exercise picks rotating A/B visit to visit.
+// repeats), then TOTAL BODY: four supersets (push+pull, quads+hams,
+// shoulders+abs, arms) from three rotating menus — C is the calisthenics day.
 // Replaced the back half of the Recovery Build; the tempo RDL and hamstring
 // caps carry forward inside it. Hyrox re-enters from the fitness this builds.
 
@@ -866,60 +867,77 @@ const mbCardio = (steady, work, tight) => ({
   ],
 });
 
-const MB_PP_A = { id: 'pair', title: 'Push / Pull — A', ex: [
-  ['DB bench press', '', '3 × 8', '90s'],
-  ['Cable row', '', '3 × 10', '90s'],
-  ['Ring push-up', '', '3 × 10', '60s'],
-  ['Chin-up', '', '3 × 6', '90s'],
+// Total body every day: four supersets — push+pull, quads+hams, shoulders+abs,
+// arms — with three rotating menus so the exercise picks change visit to visit.
+// Menu C is the calisthenics intro: skill positions first (fresh), then the
+// same four supersets done on rings and bodyweight.
+const MB_TB_A = { name: 'Total body A', workouts: [
+  { id: 'ss1', title: 'Superset 1 — Push + Pull', summary: 'Alternate the pair; short rest after the push, full rest after the pull.', ex: [
+    ['DB bench press', '', '3 × 8', '30s'],
+    ['Cable row', '', '3 × 10', '60s'],
+  ] },
+  { id: 'ss2', title: 'Superset 2 — Quads + Hams (+ calves)', ex: [
+    ['Goblet squat', '', '3 × 10', '30s'],
+    ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 10 each', '30s'],
+    ['Calf raise', '', '3 × 15', '60s'],
+  ] },
+  { id: 'ss3', title: 'Superset 3 — Shoulders + Abs', ex: [
+    ['DB shoulder press', '', '3 × 8', '30s'],
+    ['Cable crunch', '', '3 × 12', '60s'],
+  ] },
+  { id: 'ss4', title: 'Superset 4 — Arms', ex: [
+    ['Barbell curl', '', '3 × 10', '30s'],
+    ['Tricep pushdown', '', '3 × 12', '60s'],
+  ] },
 ] };
-const MB_PP_B = { id: 'pair', title: 'Push / Pull — B', ex: [
-  ['Incline DB press', '', '3 × 10', '90s'],
-  ['Single-arm DB row', '', '3 × 10 each', '60s'],
-  ['Cable chest press', '', '3 × 12', '60s'],
-  ['Ring row', 'Feet forward to load', '3 × 12', '60s'],
+const MB_TB_B = { name: 'Total body B', workouts: [
+  { id: 'ss1', title: 'Superset 1 — Push + Pull', summary: 'Alternate the pair; short rest after the push, full rest after the pull.', ex: [
+    ['Incline DB press', '', '3 × 10', '30s'],
+    ['Single-arm DB row', '', '3 × 10 each', '60s'],
+  ] },
+  { id: 'ss2', title: 'Superset 2 — Quads + Hams', ex: [
+    ['ATG split squat', 'Bodyweight → light DBs', '3 × 6 each', '30s'],
+    ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '3 × 8', '60s'],
+  ] },
+  { id: 'ss3', title: 'Superset 3 — Shoulders + Abs', ex: [
+    ['DB lateral raise', '', '3 × 12', '30s'],
+    ['Hanging knee raise', 'On the rings', '3 × 10', '60s'],
+  ] },
+  { id: 'ss4', title: 'Superset 4 — Arms (+ calves)', ex: [
+    ['Hammer curl', '', '3 × 12', '30s'],
+    ['Overhead DB extension', '', '3 × 10', '30s'],
+    ['Single-leg calf raise', '', '3 × 12 each', '60s'],
+  ] },
 ] };
-const MB_QH_A = { id: 'pair', title: 'Quads / Hams — A', ex: [
-  ['Goblet squat', '', '3 × 10', '90s'],
-  ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 10 each', '60s'],
-  ['Box step-up', '', '3 × 8 each', '60s'],
-  ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '3 × 8', '90s'],
-] };
-const MB_QH_B = { id: 'pair', title: 'Quads / Hams — B', ex: [
-  ['ATG split squat', 'Bodyweight → light DBs', '3 × 6 each', '90s'],
-  ['Nordic curl', 'Assisted, short range — RPE 7 cap', '3 × 4', '90s'],
-  ['Wall sit', '', '3 × 45s', '60s'],
-  ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 12 each', '60s'],
-] };
-const MB_ASC_A = { id: 'pair', title: 'Abs / Shoulders / Calves — A', ex: [
-  ['Cable crunch', '', '3 × 12', '45s'],
-  ['DB shoulder press', '', '3 × 8', '90s'],
-  ['DB lateral raise', '', '3 × 12', '45s'],
-  ['Calf raise', '', '3 × 15', '45s'],
-] };
-const MB_ASC_B = { id: 'pair', title: 'Abs / Shoulders / Calves — B', ex: [
-  ['Hanging knee raise', 'On the rings', '3 × 10', '60s'],
-  ['Hollow hold', '', '3 × 30s', '45s'],
-  ['Cable lateral raise', '', '3 × 15', '45s'],
-  ['Reverse fly (cable)', '', '3 × 15', '45s'],
-  ['Single-leg calf raise', '', '3 × 12 each', '45s'],
-] };
-const MB_BT_A = { id: 'pair', title: 'Biceps / Triceps — A', ex: [
-  ['Barbell curl', '', '3 × 10', '60s'],
-  ['Tricep pushdown', '', '3 × 12', '60s'],
-  ['Hammer curl', '', '3 × 12', '45s'],
-  ['Overhead cable ext', '', '3 × 12', '45s'],
-] };
-const MB_BT_B = { id: 'pair', title: 'Biceps / Triceps — B', ex: [
-  ['Ring curl', '', '3 × 8', '60s'],
-  ['Close-grip push-up', '', '3 × 12', '60s'],
-  ['DB curl', '', '3 × 10', '45s'],
-  ['Overhead DB extension', '', '3 × 10', '60s'],
+const MB_TB_C = { name: 'Total body C (calisthenics)', workouts: [
+  { id: 'skill', title: 'Calisthenics intro — skill first, fresh', summary: 'Quality positions, never to failure. This is practice, not work.', ex: [
+    ['Wall handstand hold', 'Chest to wall', '3 × 20s', '60s'],
+    ['L-sit tuck hold', 'Floor or rings', '3 × 10s', '60s'],
+    ['Ring support hold', 'Top of dip, rings turned out', '3 × 15s', '60s'],
+  ] },
+  { id: 'ss1', title: 'Superset 1 — Push + Pull', ex: [
+    ['Ring push-up', '', '3 × 10', '30s'],
+    ['Chin-up', '', '3 × 6', '60s'],
+  ] },
+  { id: 'ss2', title: 'Superset 2 — Quads + Hams (+ calves)', ex: [
+    ['Pistol squat to box', 'Sit back to the box — skip if the knee grumbles', '3 × 5 each', '30s'],
+    ['Nordic curl', 'Assisted, short range — RPE 7 cap', '3 × 4', '30s'],
+    ['Single-leg calf raise', 'Slow, full range off a step', '3 × 12 each', '60s'],
+  ] },
+  { id: 'ss3', title: 'Superset 3 — Shoulders + Abs', ex: [
+    ['Pike push-up', '', '3 × 6', '30s'],
+    ['Hollow hold', '', '3 × 30s', '60s'],
+  ] },
+  { id: 'ss4', title: 'Superset 4 — Arms', ex: [
+    ['Ring dip', '', '3 × 6', '30s'],
+    ['Ring curl', '', '3 × 8', '60s'],
+  ] },
 ] };
 
-const mbDay = (id, label, steady, work, pair, opts = {}) => ({
+const mbDay = (id, label, steady, work, tb, opts = {}) => ({
   id, label, type: 'session',
-  title: 'Cardio 40 + ' + pair.title,
-  workouts: [mbCardio(steady, work, opts.tight), pair],
+  title: 'Cardio 40 + ' + tb.name,
+  workouts: [mbCardio(steady, work, opts.tight), ...tb.workouts],
   ...(opts.notes ? { notes: opts.notes } : {}),
 });
 
@@ -945,15 +963,15 @@ const MB_RAMP = 'Ramp — leave 3 in reserve; 2 sets is plenty today.';
 
 const MB_W1 = {
   id: 'mb_w1', title: 'Week 1 — Ramp-in + rotation begins', subtitle: 'Thu 20 – Sun 30 Aug · every morning 40 cardio + one pair',
-  purpose: 'The daily rhythm starts: 20 min steady on one machine, 20 min working on another, then one muscle pair. Ramp weekend to calibrate, then the full rotation.',
+  purpose: 'The daily rhythm: 20 min steady on one machine, 20 min working on another, then TOTAL BODY — four supersets covering push+pull, quads+hams, shoulders+abs and arms, with three rotating menus (C is the calisthenics day). Ramp weekend done as single pairs; total body from Monday.',
   meta: [
     { label: 'Cardio', value: '20 steady + 20 working' },
     { label: 'Intervals', value: '5 × 1min / 2min easy' },
-    { label: 'Pairs', value: 'One per day, rotating' },
+    { label: 'Strength', value: 'Total body — 4 supersets' },
     { label: 'Hams', value: 'RPE 7 cap' },
   ],
   rules: {
-    do: ['Both machines every morning', 'Different exercise picks each visit (A/B)', 'Tempo RDL stays — it is the rehab thread', 'Note the interval numbers'],
+    do: ['Both machines every morning', 'Every group every day — push+pull, quads+hams, shoulders+abs, arms', 'Rotate the A / B / C menus (C = calisthenics)', 'Tempo RDL stays — it is the rehab thread'],
     dont: ['Hard running — treadmill is a steady incline walk', 'Hinge PRs', 'Skipping the steady 20', 'Pushing hamstrings past RPE 7'],
     note: 'Gate unchanged: any next-morning hamstring or knee soreness = hold, repeat, do not progress.',
   },
@@ -963,51 +981,69 @@ const MB_W1 = {
       summary: 'First morning: find the steady pace (conversational) and a repeatable 1-min hard effort. Note the numbers — they are the block baseline.',
       workouts: [mbCardio('Bike', 'Row')],
     },
-    mbDay('mb1_fri', 'Fri 21 Aug', 'Treadmill (incline walk)', 'Ski erg', MB_PP_A, { notes: [MB_RAMP] }),
-    mbDay('mb1_sat', 'Sat 22 Aug', 'Row', 'Bike', MB_QH_A, { notes: [MB_RAMP, MB_HAM_CAP] }),
+    {
+      id: 'mb1_fri', label: 'Fri 21 Aug', title: 'Cardio 40 + Push / Pull — A', type: 'session',
+      workouts: [mbCardio('Treadmill (incline walk)', 'Ski erg'), { id: 'pair', title: 'Push / Pull — A', ex: [
+        ['DB bench press', '', '3 × 8', '90s'],
+        ['Cable row', '', '3 × 10', '90s'],
+        ['Ring push-up', '', '3 × 10', '60s'],
+        ['Chin-up', '', '3 × 6', '90s'],
+      ] }],
+      notes: [MB_RAMP],
+    },
+    {
+      id: 'mb1_sat', label: 'Sat 22 Aug', title: 'Cardio 40 + Quads / Hams — A', type: 'session',
+      workouts: [mbCardio('Row', 'Bike'), { id: 'pair', title: 'Quads / Hams — A', ex: [
+        ['Goblet squat', '', '3 × 10', '90s'],
+        ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 10 each', '60s'],
+        ['Box step-up', '', '3 × 8 each', '60s'],
+        ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '3 × 8', '90s'],
+      ] }],
+      notes: [MB_RAMP, MB_HAM_CAP],
+    },
     mbSunday('mb1_sun', 'Sun 23 Aug'),
-    mbDay('mb1_mon', 'Mon 24 Aug', 'Bike', 'Row', MB_PP_B),
-    mbDay('mb1_tue', 'Tue 25 Aug', 'Treadmill (incline walk)', 'Ski erg', MB_QH_B, { notes: [MB_HAM_CAP] }),
-    mbDay('mb1_wed', 'Wed 26 Aug', 'Row', 'Bike', MB_ASC_A),
-    mbDay('mb1_thu2', 'Thu 27 Aug', 'Bike', 'Ski erg', MB_BT_A),
-    mbDay('mb1_fri2', 'Fri 28 Aug', 'Treadmill (incline walk)', 'Row', MB_PP_A),
-    mbDay('mb1_sat2', 'Sat 29 Aug', 'Ski erg', 'Bike', MB_QH_A, { notes: [MB_HAM_CAP] }),
+    mbDay('mb1_mon', 'Mon 24 Aug', 'Bike', 'Row', MB_TB_A),
+    mbDay('mb1_tue', 'Tue 25 Aug', 'Treadmill (incline walk)', 'Ski erg', MB_TB_B),
+    mbDay('mb1_wed', 'Wed 26 Aug', 'Row', 'Bike', MB_TB_C),
+    mbDay('mb1_thu2', 'Thu 27 Aug', 'Bike', 'Ski erg', MB_TB_A),
+    mbDay('mb1_fri2', 'Fri 28 Aug', 'Treadmill (incline walk)', 'Row', MB_TB_B),
+    mbDay('mb1_sat2', 'Sat 29 Aug', 'Ski erg', 'Bike', MB_TB_C),
     mbSunday('mb1_sun2', 'Sun 30 Aug'),
   ],
 };
 
 const MB_W2 = {
-  id: 'mb_w2', title: 'Week 2 — Other pairs lead', subtitle: 'Mon 31 Aug – Sun 6 Sep · same rhythm, rotation offset',
-  purpose: 'Identical daily rhythm; the 4-day pair cycle starts from the other half so every group keeps landing three times a fortnight.',
+  id: 'mb_w2', title: 'Week 2 — Same rhythm, add load', subtitle: 'Mon 31 Aug – Sun 6 Sep · total body daily, A/B/C rotating',
+  purpose: 'Identical daily rhythm — cardio 40, then the four total-body supersets. Nudge loads and reps where last week was clean; the calisthenics day chases better positions, not more reps.',
   meta: [
     { label: 'Cardio', value: '20 steady + 20 working' },
     { label: 'Intervals', value: '5 × 1min / 2min easy' },
-    { label: 'Pairs', value: 'Cycle offset — A/S/C leads' },
+    { label: 'Strength', value: 'Total body — 4 supersets' },
     { label: 'Hams', value: 'RPE 7 cap' },
   ],
   rules: {
-    do: ['Nudge the steady pace if RPE has drifted down', 'Add a little load where last week was clean'],
+    do: ['Nudge the steady pace if RPE has drifted down', 'Add a little load where last week was clean', 'Longer skill holds before extra reps on C days'],
     dont: ['Hard running yet', 'Turning the steady 20 into a second interval session'],
     note: 'Same gate. Progress load only on groups that produced no next-morning complaints.',
   },
   days: [
-    mbDay('mb2_mon', 'Mon 31 Aug', 'Bike', 'Row', MB_ASC_B),
-    mbDay('mb2_tue', 'Tue 1 Sep', 'Treadmill (incline walk)', 'Ski erg', MB_BT_B),
-    mbDay('mb2_wed', 'Wed 2 Sep', 'Row', 'Bike', MB_PP_B),
-    mbDay('mb2_thu', 'Thu 3 Sep', 'Bike', 'Ski erg', MB_QH_B, { notes: [MB_HAM_CAP] }),
-    mbDay('mb2_fri', 'Fri 4 Sep', 'Treadmill (incline walk)', 'Row', MB_ASC_A),
-    mbDay('mb2_sat', 'Sat 5 Sep', 'Ski erg', 'Bike', MB_BT_A),
+    mbDay('mb2_mon', 'Mon 31 Aug', 'Bike', 'Row', MB_TB_A),
+    mbDay('mb2_tue', 'Tue 1 Sep', 'Treadmill (incline walk)', 'Ski erg', MB_TB_B),
+    mbDay('mb2_wed', 'Wed 2 Sep', 'Row', 'Bike', MB_TB_C),
+    mbDay('mb2_thu', 'Thu 3 Sep', 'Bike', 'Ski erg', MB_TB_A),
+    mbDay('mb2_fri', 'Fri 4 Sep', 'Treadmill (incline walk)', 'Row', MB_TB_B),
+    mbDay('mb2_sat', 'Sat 5 Sep', 'Ski erg', 'Bike', MB_TB_C),
     mbSunday('mb2_sun', 'Sun 6 Sep'),
   ],
 };
 
 const MB_W3 = {
   id: 'mb_w3', title: 'Week 3 — Intervals tighten', subtitle: 'Mon 7 – Sun 13 Sep · 6 × 1min / 90s easy',
-  purpose: 'Final week before Hyrox re-entry: the working 20 tightens to 6 × 1 min hard / 90s easy. Same pair rotation, heavier picks where clean.',
+  purpose: 'Final week before Hyrox re-entry: the working 20 tightens to 6 × 1 min hard / 90s easy. Same total-body rotation, heavier where clean.',
   meta: [
     { label: 'Cardio', value: '20 steady + 20 working' },
     { label: 'Intervals', value: '6 × 1min / 90s easy' },
-    { label: 'Pairs', value: 'One per day, rotating' },
+    { label: 'Strength', value: 'Total body — 4 supersets' },
     { label: 'Next', value: 'Hyrox from Mon 14 Sep' },
   ],
   rules: {
@@ -1016,12 +1052,12 @@ const MB_W3 = {
     note: 'Hyrox re-enters Mon 14 Sep at week-2 fitness, not from zero — this week earns that.',
   },
   days: [
-    mbDay('mb3_mon', 'Mon 7 Sep', 'Bike', 'Row', MB_PP_A, { tight: true }),
-    mbDay('mb3_tue', 'Tue 8 Sep', 'Treadmill (incline walk)', 'Ski erg', MB_QH_A, { tight: true, notes: [MB_HAM_CAP] }),
-    mbDay('mb3_wed', 'Wed 9 Sep', 'Row', 'Bike', MB_ASC_B, { tight: true }),
-    mbDay('mb3_thu', 'Thu 10 Sep', 'Bike', 'Ski erg', MB_BT_B, { tight: true }),
-    mbDay('mb3_fri', 'Fri 11 Sep', 'Treadmill (incline walk)', 'Row', MB_PP_B, { tight: true }),
-    mbDay('mb3_sat', 'Sat 12 Sep', 'Ski erg', 'Bike', MB_QH_B, { tight: true, notes: [MB_HAM_CAP] }),
+    mbDay('mb3_mon', 'Mon 7 Sep', 'Bike', 'Row', MB_TB_A, { tight: true }),
+    mbDay('mb3_tue', 'Tue 8 Sep', 'Treadmill (incline walk)', 'Ski erg', MB_TB_B, { tight: true }),
+    mbDay('mb3_wed', 'Wed 9 Sep', 'Row', 'Bike', MB_TB_C, { tight: true }),
+    mbDay('mb3_thu', 'Thu 10 Sep', 'Bike', 'Ski erg', MB_TB_A, { tight: true }),
+    mbDay('mb3_fri', 'Fri 11 Sep', 'Treadmill (incline walk)', 'Row', MB_TB_B, { tight: true }),
+    mbDay('mb3_sat', 'Sat 12 Sep', 'Ski erg', 'Bike', MB_TB_C, { tight: true }),
     mbSunday('mb3_sun', 'Sun 13 Sep'),
   ],
 };
@@ -1279,7 +1315,7 @@ const PAUL_PLAN = {
     },
     {
       id: 'morning', tag: 'Base', title: 'Morning Block', dates: 'Thu 20 Aug – Sun 13 Sep',
-      purpose: 'Every morning: 40 minutes of two-machine cardio (20 steady + 20 working), then one muscle pair with the exercise picks rotating visit to visit. Builds the engine and all-round base the Hyrox block re-enters from.',
+      purpose: 'Every morning: 40 minutes of two-machine cardio (20 steady + 20 working), then a total-body strength block — four supersets covering push+pull, quads+hams, shoulders+abs and arms, from three rotating menus including a calisthenics day. Builds the engine and all-round base the Hyrox block re-enters from.',
       weeks: [MB_W1, MB_W2, MB_W3],
     },
     {
