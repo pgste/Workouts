@@ -903,9 +903,10 @@ const MB_TB_B = { name: 'Total body B', workouts: [
     ['DB lateral raise', '', '3 × 12', '30s'],
     ['Hanging knee raise', 'On the rings', '3 × 10', '60s'],
   ] },
-  { id: 'ss4', title: 'Superset 4 — Arms', ex: [
+  { id: 'ss4', title: 'Superset 4 — Arms (+ calves)', ex: [
     ['Hammer curl', '', '3 × 12', '30s'],
-    ['Overhead DB extension', '', '3 × 10', '60s'],
+    ['Overhead DB extension', '', '3 × 10', '30s'],
+    ['Single-leg calf raise', '', '3 × 12 each', '60s'],
   ] },
 ] };
 const MB_TB_C = { name: 'Total body C (calisthenics)', workouts: [
@@ -918,9 +919,10 @@ const MB_TB_C = { name: 'Total body C (calisthenics)', workouts: [
     ['Ring push-up', '', '3 × 10', '30s'],
     ['Chin-up', '', '3 × 6', '60s'],
   ] },
-  { id: 'ss2', title: 'Superset 2 — Quads + Hams', ex: [
+  { id: 'ss2', title: 'Superset 2 — Quads + Hams (+ calves)', ex: [
     ['Pistol squat to box', 'Sit back to the box — skip if the knee grumbles', '3 × 5 each', '30s'],
-    ['Nordic curl', 'Assisted, short range — RPE 7 cap', '3 × 4', '60s'],
+    ['Nordic curl', 'Assisted, short range — RPE 7 cap', '3 × 4', '30s'],
+    ['Single-leg calf raise', 'Slow, full range off a step', '3 × 12 each', '60s'],
   ] },
   { id: 'ss3', title: 'Superset 3 — Shoulders + Abs', ex: [
     ['Pike push-up', '', '3 × 6', '30s'],
