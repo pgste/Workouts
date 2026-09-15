@@ -10,7 +10,7 @@ export const AMBER = '#f5a524';
 
 export const ATHLETES = [
   { id: 'lewis', name: 'Lewis', sub: 'In-season · Gladiators Pro + Blues' },
-  { id: 'paul', name: 'Paul', sub: 'Morning base build · Hyrox from 14 Sep' },
+  { id: 'paul', name: 'Paul', sub: 'Functional reboot · Hyrox from 19 Oct' },
   { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
 ];
 
@@ -1079,221 +1079,213 @@ const REC_W1 = {
   ],
 };
 
-// ── Morning Block — Thu 20 Aug – Sun 13 Sep. Every morning 40 min of
-// two-machine cardio (20 steady + 20 working: 5 min build then 1-min-hard
-// repeats), then TOTAL BODY: four supersets (push+pull, quads+hams,
-// shoulders+abs, arms) from three rotating menus — C is the calisthenics day.
-// Replaced the back half of the Recovery Build; the tempo RDL and hamstring
-// caps carry forward inside it. Hyrox re-enters from the fitness this builds.
+// ── Functional Reboot — ease-in Wed 16 – Fri 18 Sep, reboot proper from
+// Sat 19 Sep. The Morning Block never happened, so this restarts honestly:
+// three gentle days back into it, then four weeks built around MOVEMENT, not
+// static lifts — rings, crawls, flows, carries, get-ups, deep ranges. Same
+// exercise names every week so history stacks; progression comes from the
+// week rules (reps → holds → load), not new lists. Hamstring caps and the
+// tempo RDL medicine carry forward. Hyrox re-enters Mon 19 Oct, from the
+// gentle end.
 
-const MB_HAM_CAP = 'Hamstring work capped at RPE 7 — it is still earning trust.';
+const RB_HAM_CAP = 'Hamstring work capped at RPE 7 — it never got the rebuild, so it has not yet earned more.';
 
-const mbCardio = (steady, work, tight) => ({
-  id: 'cardio', title: 'Cardio — 40 min, two machines',
-  summary: 'Steady machine first, then the working machine: 5 min build into ' +
-    (tight ? '6 × 1 min hard / 90s easy' : '5 × 1 min hard / 2 min easy') +
-    '. Easy means still moving, holding form.',
-  ex: [
-    [steady + ' — steady', 'Zone 2, conversational', '1 × 20min', '—'],
-    [work + ' — build', 'Smooth ramp toward threshold', '1 × 5min', '—'],
-    [work + ' — 1 min hard', 'Easy between reps is the rest timer — keep moving', (tight ? '6' : '5') + ' × 1min', tight ? '90s' : '2min'],
-  ],
+const rbWarm = (machine, mins) => ({ id: 'warm', title: 'Warm-up', ex: [
+  [machine + ' — easy', 'RPE 4–5, conversational', '1 × ' + mins + 'min', '—'],
+] });
+
+const RB_MOVE_A = [
+  rbWarm('Bike', 10),
+  { id: 'skill', title: 'Skill — holds first, fresh', summary: 'Practice, not work. Quality positions, never to failure.', ex: [
+    ['Ring support hold', 'Rings turned out', '3 × 15s', '60s'],
+    ['Bar hang', 'Relax into the shoulders', '3 × 20s', '60s'],
+    ['Wall handstand hold', 'Belly to wall', '3 × 15s', '60s'],
+  ] },
+  { id: 'rings', title: 'Rings — push & pull', ex: [
+    ['Ring push-up', '', '3 × 8', '60s'],
+    ['Ring row', 'Feet forward to load', '3 × 10', '60s'],
+    ['Ring dip', 'Band assist if needed', '3 × 5', '90s'],
+    ['Chin-up', '', '3 × 5', '90s'],
+  ] },
+  { id: 'core', title: 'Core', ex: [
+    ['Hollow hold', '', '3 × 20s', '45s'],
+    ['Arch hold', '', '3 × 15s', '45s'],
+  ] },
+];
+
+const RB_LOCO = [
+  { id: 'cardio', title: 'Cardio — long easy', ex: [
+    ['Bike — easy', 'Conversational', '1 × 20min', '—'],
+    ['Row — easy', '', '1 × 20min', '—'],
+  ] },
+  { id: 'flow', title: 'Locomotion — quality over pace', summary: 'Ground work: smooth, quiet, controlled. Rest whenever form frays.', ex: [
+    ['Bear crawl', 'Forward + backward', '4 × 15m', '45s'],
+    ['Beast hold + shoulder tap', '', '3 × 20s', '45s'],
+    ['Crab reach', '', '3 × 6 each', '45s'],
+    ['Lateral monkey travel', '', '3 × 10m', '45s'],
+    ['Deep squat hold + rotation', '', '3 × 45s', '45s'],
+    ['Cossack rocks', 'Bodyweight, easy depth', '2 × 8 each', '45s'],
+  ] },
+];
+
+const RB_LEGS = [
+  rbWarm('Ski erg', 10),
+  { id: 'legs', title: 'Functional legs — full range', ex: [
+    ['Cossack squat', 'Bodyweight → light DB', '3 × 6 each', '60s'],
+    ['ATG split squat', 'L first', '3 × 8 each', '90s'],
+    ['Box step-up', 'Control the way down', '3 × 8 each', '60s'],
+    ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '3 × 8', '90s'],
+    ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 10 each', '60s'],
+    ['Single-leg calf raise', 'Full range off a step', '3 × 12 each', '45s'],
+  ] },
+];
+
+const RB_CARRY = [
+  rbWarm('Row', 10),
+  { id: 'sled', title: 'Sled + carries — functional strong', ex: [
+    ['Sled push', 'Moderate, smooth', '6 × 20m', '90s'],
+    ['Backward sled drag', '', '4 × 20m', '90s'],
+    ['Farmer carry', 'Heavy, tall posture', '4 × 30m', '90s'],
+    ['Suitcase carry', '', '3 × 20m each', '60s'],
+    ['Wall balls', 'Light, find the rhythm', '3 × 10', '60s'],
+  ] },
+  { id: 'core', title: 'Core', ex: [
+    ['Pallof press', '', '3 × 10 each', '45s'],
+    ['Dead bug', '', '2 × 8 each', '45s'],
+  ] },
+];
+
+const RB_RECOVERY = [
+  { id: 'cardio', title: 'Cardio — easy spin', ex: [
+    ['Bike — easy', 'RPE 4, nothing more', '1 × 30min', '—'],
+  ] },
+  { id: 'mobility', title: 'Mobility (15 min)', ex: [
+    ['Couch stretch', '', '1 × 60s each', '—'],
+    ['Supine hamstring', 'Gentle', '1 × 45s each', '—'],
+    ['90/90 hip switches', '', '1 × 10 each', '—'],
+    ['Pigeon', '', '1 × 60s each', '—'],
+    ['Deep squat hold', '', '3 × 20s', '—'],
+    ['Cat-cow', '', '1 × 10', '—'],
+  ] },
+];
+
+const RB_FLOW_B = [
+  rbWarm('Bike', 10),
+  { id: 'getup', title: 'Get-ups + hanging', ex: [
+    ['Turkish get-up', 'Light DB — slow and perfect', '3 × 3 each', '90s'],
+    ['Hanging knee raise', 'Controlled, no swing', '3 × 8', '60s'],
+  ] },
+  { id: 'flow', title: 'Ground flow — 3 smooth rounds', summary: 'Move through as a circuit, transitions count as much as the exercises.', ex: [
+    ['Bear crawl', '', '3 × 10m', '—'],
+    ["World's greatest stretch", 'Flow through', '3 × 4 each', '—'],
+    ['Push-up to down dog', '', '3 × 6', '—'],
+    ['Deep squat to stand', '', '3 × 6', '60s'],
+  ] },
+];
+
+const rbRest = (id, label) => ({
+  id, label, title: 'Rest', type: 'rest',
+  summary: 'Nothing today. Back Insurance in the evening.',
+  items: [['Back Insurance', '8 min', 'PM']],
 });
 
-// Total body every day: four supersets — push+pull, quads+hams, shoulders+abs,
-// arms — with three rotating menus so the exercise picks change visit to visit.
-// Menu C is the calisthenics intro: skill positions first (fresh), then the
-// same four supersets done on rings and bodyweight.
-const MB_TB_A = { name: 'Total body A', workouts: [
-  { id: 'ss1', title: 'Superset 1 — Push + Pull', summary: 'Alternate the pair; short rest after the push, full rest after the pull.', ex: [
-    ['DB bench press', '', '3 × 8', '30s'],
-    ['Cable row', '', '3 × 10', '60s'],
-  ] },
-  { id: 'ss2', title: 'Superset 2 — Quads + Hams (+ calves)', ex: [
-    ['Goblet squat', '', '3 × 10', '30s'],
-    ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 10 each', '30s'],
-    ['Calf raise', '', '3 × 15', '60s'],
-  ] },
-  { id: 'ss3', title: 'Superset 3 — Shoulders + Abs', ex: [
-    ['DB shoulder press', '', '3 × 8', '30s'],
-    ['Cable crunch', '', '3 × 12', '60s'],
-  ] },
-  { id: 'ss4', title: 'Superset 4 — Arms', ex: [
-    ['Barbell curl', '', '3 × 10', '30s'],
-    ['Tricep pushdown', '', '3 × 12', '60s'],
-  ] },
-] };
-const MB_TB_B = { name: 'Total body B', workouts: [
-  { id: 'ss1', title: 'Superset 1 — Push + Pull', summary: 'Alternate the pair; short rest after the push, full rest after the pull.', ex: [
-    ['Incline DB press', '', '3 × 10', '30s'],
-    ['Single-arm DB row', '', '3 × 10 each', '60s'],
-  ] },
-  { id: 'ss2', title: 'Superset 2 — Quads + Hams', ex: [
-    ['ATG split squat', 'Bodyweight → light DBs', '3 × 6 each', '30s'],
-    ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '3 × 8', '60s'],
-  ] },
-  { id: 'ss3', title: 'Superset 3 — Shoulders + Abs', ex: [
-    ['DB lateral raise', '', '3 × 12', '30s'],
-    ['Hanging knee raise', 'On the rings', '3 × 10', '60s'],
-  ] },
-  { id: 'ss4', title: 'Superset 4 — Arms (+ calves)', ex: [
-    ['Hammer curl', '', '3 × 12', '30s'],
-    ['Overhead DB extension', '', '3 × 10', '30s'],
-    ['Single-leg calf raise', '', '3 × 12 each', '60s'],
-  ] },
-] };
-const MB_TB_C = { name: 'Total body C (calisthenics)', workouts: [
-  { id: 'skill', title: 'Calisthenics intro — skill first, fresh', summary: 'Quality positions, never to failure. This is practice, not work.', ex: [
-    ['Wall handstand hold', 'Chest to wall', '3 × 20s', '60s'],
-    ['L-sit tuck hold', 'Floor or rings', '3 × 10s', '60s'],
-    ['Ring support hold', 'Top of dip, rings turned out', '3 × 15s', '60s'],
-  ] },
-  { id: 'ss1', title: 'Superset 1 — Push + Pull', ex: [
-    ['Ring push-up', '', '3 × 10', '30s'],
-    ['Chin-up', '', '3 × 6', '60s'],
-  ] },
-  { id: 'ss2', title: 'Superset 2 — Quads + Hams (+ calves)', ex: [
-    ['Pistol squat to box', 'Sit back to the box — skip if the knee grumbles', '3 × 5 each', '30s'],
-    ['Nordic curl', 'Assisted, short range — RPE 7 cap', '3 × 4', '30s'],
-    ['Single-leg calf raise', 'Slow, full range off a step', '3 × 12 each', '60s'],
-  ] },
-  { id: 'ss3', title: 'Superset 3 — Shoulders + Abs', ex: [
-    ['Pike push-up', '', '3 × 6', '30s'],
-    ['Hollow hold', '', '3 × 30s', '60s'],
-  ] },
-  { id: 'ss4', title: 'Superset 4 — Arms', ex: [
-    ['Ring dip', '', '3 × 6', '30s'],
-    ['Ring curl', '', '3 × 8', '60s'],
-  ] },
-] };
-
-const mbDay = (id, label, steady, work, tb, opts = {}) => ({
-  id, label, type: 'session',
-  title: 'Cardio 40 + ' + tb.name,
-  workouts: [mbCardio(steady, work, opts.tight), ...tb.workouts],
+const rbDay = (id, label, title, workouts, opts = {}) => ({
+  id, label, title, type: 'session', workouts,
+  ...(opts.summary ? { summary: opts.summary } : {}),
   ...(opts.notes ? { notes: opts.notes } : {}),
 });
 
-const mbSunday = (id, label) => ({
-  id, label, title: 'Cardio only + stretch', type: 'session',
-  summary: 'No lifting. Two easy machines, then long stretching.',
-  workouts: [
-    { id: 'cardio', title: 'Cardio — 40 min easy', ex: [
-      ['Row — steady', 'Easy, RPE 4', '1 × 20min', '—'],
-      ['Bike — steady', 'Easy, RPE 4', '1 × 20min', '—'],
-    ] },
-    { id: 'stretch', title: 'Stretch (15 min)', ex: [
-      ['Couch stretch', '', '1 × 60s each', '—'],
-      ['Supine hamstring', 'Gentle', '1 × 45s each', '—'],
-      ['90/90 hip switches', '', '1 × 10 each', '—'],
-      ['Pigeon', '', '1 × 60s each', '—'],
-      ['Cat-cow', '', '1 × 10', '—'],
-    ] },
-  ],
-});
+function rebootWeek(n, labels, sub, progression) {
+  const id = (d) => 'rb' + n + '_' + d;
+  return {
+    id: 'rb_w' + n, title: 'Week ' + n + ' — ' + sub, subtitle: labels[0] + ' – ' + labels[6] + ' · ' + progression,
+    purpose: 'Same six sessions, same names — the progression is ' + progression.toLowerCase() + '. Movement quality is the load.',
+    meta: [
+      { label: 'Progression', value: progression },
+      { label: 'Hams', value: 'RPE 7 cap' },
+      { label: 'Rhythm', value: '6 days + Fri off' },
+      { label: 'Next', value: n === 4 ? 'Hyrox — Mon 19 Oct' : 'Week ' + (n + 1) },
+    ],
+    rules: {
+      do: ['Quality of movement over load', 'Full ranges — deep squat, ATG, hang', 'Skill holds fresh, never to failure', 'Stop a flow when it gets ragged'],
+      dont: ['Grinding reps', 'Running — Hyrox brings it back', 'Pushing hamstrings past RPE 7', 'Turning flows into cardio'],
+      note: 'Gate unchanged: any next-morning hamstring or knee soreness = hold, repeat, do not progress.',
+    },
+    days: [
+      rbDay(id('mon'), labels[0], 'Functional legs', RB_LEGS, { notes: [RB_HAM_CAP] }),
+      rbDay(id('tue'), labels[1], 'Sled, carries + core', RB_CARRY),
+      rbDay(id('wed'), labels[2], 'Recovery — easy spin + mobility', RB_RECOVERY),
+      rbDay(id('thu'), labels[3], 'Movement B — get-ups & flows', RB_FLOW_B),
+      rbRest(id('fri'), labels[4]),
+      rbDay(id('sat'), labels[5], 'Movement A — rings & holds', RB_MOVE_A),
+      rbDay(id('sun'), labels[6], 'Locomotion + long easy cardio', RB_LOCO),
+    ],
+  };
+}
 
-const MB_RAMP = 'Ramp — leave 3 in reserve; 2 sets is plenty today.';
-
-const MB_W1 = {
-  id: 'mb_w1', title: 'Week 1 — Ramp-in + rotation begins', subtitle: 'Thu 20 – Sun 30 Aug · every morning 40 cardio + one pair',
-  purpose: 'The daily rhythm: 20 min steady on one machine, 20 min working on another, then TOTAL BODY — four supersets covering push+pull, quads+hams, shoulders+abs and arms, with three rotating menus (C is the calisthenics day). Ramp weekend done as single pairs; total body from Monday.',
+const RB_W0 = {
+  id: 'rb_w0', title: 'Ease-in — three gentle days', subtitle: 'Wed 16 – Fri 18 Sep · RPE 5–6, stop fresh',
+  purpose: 'Nothing has happened for a month, so nothing heavy happens this week. Three short mornings to get the body moving again; the reboot proper starts Saturday.',
   meta: [
-    { label: 'Cardio', value: '20 steady + 20 working' },
-    { label: 'Intervals', value: '5 × 1min / 2min easy' },
-    { label: 'Strength', value: 'Total body — 4 supersets' },
+    { label: 'Effort', value: 'RPE 5–6, stop fresh' },
+    { label: 'Goal', value: 'Show up three times' },
+    { label: 'Reboot', value: 'Sat 19 Sep' },
     { label: 'Hams', value: 'RPE 7 cap' },
   ],
   rules: {
-    do: ['Both machines every morning', 'Every group every day — push+pull, quads+hams, shoulders+abs, arms', 'Rotate the A / B / C menus (C = calisthenics)', 'Tempo RDL stays — it is the rehab thread'],
-    dont: ['Hard running — treadmill is a steady incline walk', 'Hinge PRs', 'Skipping the steady 20', 'Pushing hamstrings past RPE 7'],
-    note: 'Gate unchanged: any next-morning hamstring or knee soreness = hold, repeat, do not progress.',
+    do: ['Short and easy', 'Leave wanting more', 'Back Insurance every evening'],
+    dont: ['Making up for lost weeks', 'Anything that needs a rest timer', 'Soreness'],
+    note: 'The only job this week is to make Saturday feel easy to start.',
   },
   days: [
-    {
-      id: 'mb1_thu', label: 'Thu 20 Aug', title: 'Cardio 40 — calibrate', type: 'session',
-      summary: 'First morning: find the steady pace (conversational) and a repeatable 1-min hard effort. Note the numbers — they are the block baseline.',
-      workouts: [mbCardio('Bike', 'Row')],
-    },
-    {
-      id: 'mb1_fri', label: 'Fri 21 Aug', title: 'Cardio 40 + Push / Pull — A', type: 'session',
-      workouts: [mbCardio('Treadmill (incline walk)', 'Ski erg'), { id: 'pair', title: 'Push / Pull — A', ex: [
-        ['DB bench press', '', '3 × 8', '90s'],
-        ['Cable row', '', '3 × 10', '90s'],
-        ['Ring push-up', '', '3 × 10', '60s'],
-        ['Chin-up', '', '3 × 6', '90s'],
-      ] }],
-      notes: [MB_RAMP],
-    },
-    {
-      id: 'mb1_sat', label: 'Sat 22 Aug', title: 'Cardio 40 + Quads / Hams — A', type: 'session',
-      workouts: [mbCardio('Row', 'Bike'), { id: 'pair', title: 'Quads / Hams — A', ex: [
-        ['Goblet squat', '', '3 × 10', '90s'],
-        ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 10 each', '60s'],
-        ['Box step-up', '', '3 × 8 each', '60s'],
-        ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '3 × 8', '90s'],
-      ] }],
-      notes: [MB_RAMP, MB_HAM_CAP],
-    },
-    mbSunday('mb1_sun', 'Sun 23 Aug'),
-    mbDay('mb1_mon', 'Mon 24 Aug', 'Bike', 'Row', MB_TB_A),
-    mbDay('mb1_tue', 'Tue 25 Aug', 'Treadmill (incline walk)', 'Ski erg', MB_TB_B),
-    mbDay('mb1_wed', 'Wed 26 Aug', 'Row', 'Bike', MB_TB_C),
-    mbDay('mb1_thu2', 'Thu 27 Aug', 'Bike', 'Ski erg', MB_TB_A),
-    mbDay('mb1_fri2', 'Fri 28 Aug', 'Treadmill (incline walk)', 'Row', MB_TB_B),
-    mbDay('mb1_sat2', 'Sat 29 Aug', 'Ski erg', 'Bike', MB_TB_C),
-    mbSunday('mb1_sun2', 'Sun 30 Aug'),
+    rbDay('rb0_wed', 'Wed 16 Sep', 'Ease-in 1 — spin + mobility', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 4–5, conversational', '1 × 30min', '—']] },
+      RB_RECOVERY[1],
+    ]),
+    rbDay('rb0_thu', 'Thu 17 Sep', 'Ease-in 2 — machines + ground basics', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [
+        ['Row — easy', 'RPE 5', '1 × 20min', '—'],
+        ['Ski erg — easy', '', '1 × 10min', '—'],
+      ] },
+      { id: 'ground', title: 'Ground basics — re-learn the floor', ex: [
+        ['Deep squat hold', 'Hold something if needed', '3 × 30s', '45s'],
+        ['Bear crawl', 'Slow', '3 × 10m', '45s'],
+        ['Bar hang', '', '3 × 20s', '60s'],
+        ['Cat-cow', '', '2 × 10', '—'],
+        ['90/90 hip switches', '', '2 × 8 each', '—'],
+      ] },
+    ]),
+    rbDay('rb0_fri', 'Fri 18 Sep', 'Ease-in 3 — light circuit', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 5', '1 × 20min', '—']] },
+      { id: 'circuit', title: 'Light circuit — everything easy', ex: [
+        ['Ring row', '', '2 × 8', '60s'],
+        ['Incline push-up', 'Hands on box', '2 × 10', '60s'],
+        ['ATG split squat', 'Bodyweight, L first', '2 × 6 each', '60s'],
+        ['Glute bridge', '', '2 × 10', '45s'],
+        ['Dead bug', '', '2 × 8 each', '45s'],
+      ] },
+    ], { summary: 'Everything at RPE 5–6. Tomorrow the block starts properly.' }),
   ],
 };
 
-const MB_W2 = {
-  id: 'mb_w2', title: 'Week 2 — Same rhythm, add load', subtitle: 'Mon 31 Aug – Sun 6 Sep · total body daily, A/B/C rotating',
-  purpose: 'Identical daily rhythm — cardio 40, then the four total-body supersets. Nudge loads and reps where last week was clean; the calisthenics day chases better positions, not more reps.',
-  meta: [
-    { label: 'Cardio', value: '20 steady + 20 working' },
-    { label: 'Intervals', value: '5 × 1min / 2min easy' },
-    { label: 'Strength', value: 'Total body — 4 supersets' },
-    { label: 'Hams', value: 'RPE 7 cap' },
-  ],
-  rules: {
-    do: ['Nudge the steady pace if RPE has drifted down', 'Add a little load where last week was clean', 'Longer skill holds before extra reps on C days'],
-    dont: ['Hard running yet', 'Turning the steady 20 into a second interval session'],
-    note: 'Same gate. Progress load only on groups that produced no next-morning complaints.',
-  },
-  days: [
-    mbDay('mb2_mon', 'Mon 31 Aug', 'Bike', 'Row', MB_TB_A),
-    mbDay('mb2_tue', 'Tue 1 Sep', 'Treadmill (incline walk)', 'Ski erg', MB_TB_B),
-    mbDay('mb2_wed', 'Wed 2 Sep', 'Row', 'Bike', MB_TB_C),
-    mbDay('mb2_thu', 'Thu 3 Sep', 'Bike', 'Ski erg', MB_TB_A),
-    mbDay('mb2_fri', 'Fri 4 Sep', 'Treadmill (incline walk)', 'Row', MB_TB_B),
-    mbDay('mb2_sat', 'Sat 5 Sep', 'Ski erg', 'Bike', MB_TB_C),
-    mbSunday('mb2_sun', 'Sun 6 Sep'),
-  ],
-};
+const RB_W1 = (() => {
+  const w = rebootWeek(1, ['Mon 21 Sep', 'Tue 22 Sep', 'Wed 23 Sep', 'Thu 24 Sep', 'Fri 25 Sep', 'Sat 26 Sep', 'Sun 27 Sep'], 'Learn the shapes', 'RPE 6 — everything in the tank');
+  w.subtitle = 'Sat 19 – Sun 27 Sep · reboot weekend + week 1';
+  w.days = [
+    rbDay('rb1_sat0', 'Sat 19 Sep', 'REBOOT — Movement A: rings & holds', RB_MOVE_A, { summary: 'Day one of the block proper. First time on the rings in a while — band assist freely, log what is real.' }),
+    rbDay('rb1_sun0', 'Sun 20 Sep', 'Locomotion + long easy cardio', RB_LOCO),
+    ...w.days,
+  ];
+  return w;
+})();
 
-const MB_W3 = {
-  id: 'mb_w3', title: 'Week 3 — Intervals tighten', subtitle: 'Mon 7 – Sun 13 Sep · 6 × 1min / 90s easy',
-  purpose: 'Final week before Hyrox re-entry: the working 20 tightens to 6 × 1 min hard / 90s easy. Same total-body rotation, heavier where clean.',
-  meta: [
-    { label: 'Cardio', value: '20 steady + 20 working' },
-    { label: 'Intervals', value: '6 × 1min / 90s easy' },
-    { label: 'Strength', value: 'Total body — 4 supersets' },
-    { label: 'Next', value: 'Hyrox from Mon 14 Sep' },
-  ],
-  rules: {
-    do: ['Hold the hard-minute output across all 6 reps', 'Bank clean sessions — Hyrox starts Monday'],
-    dont: ['Racing the last morning', 'New exercises this week — repeat the known ones'],
-    note: 'Hyrox re-enters Mon 14 Sep at week-2 fitness, not from zero — this week earns that.',
-  },
-  days: [
-    mbDay('mb3_mon', 'Mon 7 Sep', 'Bike', 'Row', MB_TB_A, { tight: true }),
-    mbDay('mb3_tue', 'Tue 8 Sep', 'Treadmill (incline walk)', 'Ski erg', MB_TB_B, { tight: true }),
-    mbDay('mb3_wed', 'Wed 9 Sep', 'Row', 'Bike', MB_TB_C, { tight: true }),
-    mbDay('mb3_thu', 'Thu 10 Sep', 'Bike', 'Ski erg', MB_TB_A, { tight: true }),
-    mbDay('mb3_fri', 'Fri 11 Sep', 'Treadmill (incline walk)', 'Row', MB_TB_B, { tight: true }),
-    mbDay('mb3_sat', 'Sat 12 Sep', 'Ski erg', 'Bike', MB_TB_C, { tight: true }),
-    mbSunday('mb3_sun', 'Sun 13 Sep'),
-  ],
-};
+const PAUL_REBOOT_WEEKS = [
+  RB_W0,
+  RB_W1,
+  rebootWeek(2, ['Mon 28 Sep', 'Tue 29 Sep', 'Wed 30 Sep', 'Thu 1 Oct', 'Fri 2 Oct', 'Sat 3 Oct', 'Sun 4 Oct'], 'Add a little', 'One more rep, 5s more on holds'),
+  rebootWeek(3, ['Mon 5 Oct', 'Tue 6 Oct', 'Wed 7 Oct', 'Thu 8 Oct', 'Fri 9 Oct', 'Sat 10 Oct', 'Sun 11 Oct'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles'),
+  rebootWeek(4, ['Mon 12 Oct', 'Tue 13 Oct', 'Wed 14 Oct', 'Thu 15 Oct', 'Fri 16 Oct', 'Sat 17 Oct', 'Sun 18 Oct'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh'),
+];
 
 // ── Hyrox Training (Integrated Program v2). Shared weekly template; only the
 // Tuesday run intervals and Sunday half-Hyrox progress week to week.
@@ -1489,19 +1481,28 @@ function hyroxWeek(n, o) {
   };
 }
 
-// Re-levelled after the Morning Block: entry is the old week-2 (3×1km), not
-// the from-zero 3×800m — a month of daily 40-min cardio has already been banked.
+// Entry restored to the gentle end (3×800m first): the base the re-levelled
+// version assumed was never banked. The Reboot hands over on Mon 19 Oct.
 const HYROX_WEEKS = [
   hyroxWeek(1, {
-    tag: 'Build', subtitle: 'Tue 3×1km · bike subs Sunday runs', tueLabel: '3 × 1km RPE 7', sunLabel: 'Bike subs runs',
-    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7 — short sentences only. First real running since the injury — the engine is there, let the hamstring catch up.', ex: [
-      ['Run — 3 × 1km', 'RPE 7, 90 sec walk between', '3 × 1km', '90s'],
+    tag: 'Build', subtitle: 'Tue 3×800m · bike subs Sunday runs', tueLabel: '3 × 800m RPE 7', sunLabel: 'Bike subs runs',
+    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7 — short sentences only. First real running since the injury: ~15–20 min including walks.', ex: [
+      ['Run — 3 × 800m', 'RPE 7, 90 sec walk between', '3 × 800m', '90s'],
       ['Bike', 'Easy — flush the legs before lifting', '1 × 20min', '—'],
     ] },
     sunSummary: 'RPE 5–6. Bike subs all runs. 4 rounds; stations rotate: ski 500m · sled push 25m · row 500m · farmers 50m · wall balls 20 · sled drag 25m · lunges 20m.',
     sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (bike subs runs)', ex: [['Bike 1km → station', 'RPE 5–6', '4 rounds', '—']] },
   }),
   hyroxWeek(2, {
+    tag: 'Build', subtitle: 'Tue 3×1km · bike subs Sunday runs', tueLabel: '3 × 1km RPE 7', sunLabel: 'Bike subs runs',
+    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7 — short sentences only.', ex: [
+      ['Run — 3 × 1km', 'RPE 7, 90 sec walk between', '3 × 1km', '90s'],
+      ['Bike', 'Easy — flush the legs', '1 × 20min', '—'],
+    ] },
+    sunSummary: 'RPE 5–6. Bike subs all runs. 4 rounds, stations rotating.',
+    sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (bike subs runs)', ex: [['Bike 1km → station', 'RPE 5–6', '4 rounds', '—']] },
+  }),
+  hyroxWeek(3, {
     tag: 'Progress', subtitle: 'Tue 4×1km · real runs enter Sunday', tueLabel: '4 × 1km RPE 7–8', sunLabel: '500m real runs',
     tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7–8, sustainable.', ex: [
       ['Run — 4 × 1km', 'RPE 7–8, 90 sec walk between', '4 × 1km', '90s'],
@@ -1510,7 +1511,7 @@ const HYROX_WEEKS = [
     sunSummary: 'RPE 5–6. Add 500m REAL runs between 2 of the stations; bike the rest. 4 rounds.',
     sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (500m real runs ×2)', ex: [['1km bike/run → station', 'RPE 5–6', '4 rounds', '—']] },
   }),
-  hyroxWeek(3, {
+  hyroxWeek(4, {
     tag: 'Progress', subtitle: 'Tue 2×2km continuous · 1km real runs Sunday', tueLabel: '2 × 2km RPE 7', sunLabel: '1km real runs',
     tueRun: { id: 'run', title: 'Run — continuous threshold', summary: 'RPE 7, continuous.', ex: [
       ['Run — 2 × 2km continuous', 'RPE 7', '2 × 2km', '3min'],
@@ -1519,19 +1520,10 @@ const HYROX_WEEKS = [
     sunSummary: 'RPE 5–6. 1km REAL runs between 4 stations; build toward full 8×1km over coming weeks.',
     sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (1km real runs)', ex: [['1km run → station', 'RPE 5–6', '4 rounds', '—']] },
   }),
-  hyroxWeek(4, {
-    tag: 'Peak', subtitle: 'Tue 5×1km · all Sunday runs real', tueLabel: '5 × 1km RPE 7–8', sunLabel: 'All runs real',
-    tueRun: { id: 'run', title: 'Run intervals — threshold', summary: 'RPE 7–8, sustainable — biggest run volume of the build.', ex: [
-      ['Run — 5 × 1km', 'RPE 7–8, 90 sec walk between', '5 × 1km', '90s'],
-      ['Bike', 'Easy — flush the legs', '1 × 20min', '—'],
-    ] },
-    sunSummary: 'RPE 6. Every station preceded by a REAL 1km run — the full half-Hyrox pattern, no bike subs.',
-    sunWorkout: { id: 'sim', title: 'Half-Hyrox × 4 (all runs real)', ex: [['1km run → station', 'RPE 6', '4 rounds', '—']] },
-  }),
 ];
 
 const PAUL_PLAN = {
-  countdown: 'Morning block → Hyrox from Mon 14 Sep · gate on next-morning soreness',
+  countdown: 'Functional reboot from Sat 19 Sep → Hyrox from Mon 19 Oct · gate on next-morning soreness',
   gateHeading: 'Gate — next-morning response (hamstring or knee)',
   daily: PAUL_DAILY,
   readiness: ['Next-AM soreness 1–10', 'Hamstring', 'Knee', 'Swelling', 'Sleep (h)', 'Bodyweight', 'Notes'],
@@ -1547,13 +1539,13 @@ const PAUL_PLAN = {
       weeks: [REC_W1],
     },
     {
-      id: 'morning', tag: 'Base', title: 'Morning Block', dates: 'Thu 20 Aug – Sun 13 Sep',
-      purpose: 'Every morning: 40 minutes of two-machine cardio (20 steady + 20 working), then a total-body strength block — four supersets covering push+pull, quads+hams, shoulders+abs and arms, from three rotating menus including a calisthenics day. Builds the engine and all-round base the Hyrox block re-enters from.',
-      weeks: [MB_W1, MB_W2, MB_W3],
+      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Wed 16 Sep – Sun 18 Oct',
+      purpose: 'Restart from zero, honestly: three gentle ease-in days, then the reboot proper from Sat 19 Sep. Built around movement rather than static lifts — rings, crawls, flows, carries, get-ups, deep ranges. Six sessions a week with the same names every week; progression is reps → holds → load. Functional and strong, then Hyrox.',
+      weeks: PAUL_REBOOT_WEEKS,
     },
     {
-      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 14 Sep – Sun 11 Oct',
-      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift. Re-entered off the Morning Block engine: week 1 starts at the old week-2 level, no from-zero ramp.',
+      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 19 Oct – Sun 15 Nov',
+      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift. Enters from the gentle end (3×800m) — the Reboot builds the base, the runs rebuild here.',
       weeks: HYROX_WEEKS,
     },
   ],

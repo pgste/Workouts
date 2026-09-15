@@ -19,7 +19,8 @@ function findToday(PLANS, planId) {
   for (const b of plan.blocks) {
     for (const w of b.weeks || []) {
       for (const d of w.days || []) {
-        if (ymd(planDate(d.label)) === today) return { block: b.id, week: w.id, day: d.id };
+        const dt = planDate(d.label);
+        if (dt && ymd(dt) === today) return { block: b.id, week: w.id, day: d.id };
       }
     }
   }
