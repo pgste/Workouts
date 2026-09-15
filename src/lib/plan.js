@@ -1,9 +1,9 @@
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
-/** "Wed 29 Jul" -> a Date in the plan's year. */
+/** "Wed 29 Jul" -> a Date in the plan's year; null for undated labels like "Mon". */
 export function planDate(label, year = 2026) {
   const m = label.match(/(\d{1,2})\s+([A-Za-z]{3})/);
-  if (!m) return new Date();
+  if (!m) return null;
   return new Date(year, MONTHS.indexOf(m[2].toLowerCase()), parseInt(m[1], 10), 12);
 }
 
