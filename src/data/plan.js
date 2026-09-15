@@ -1101,11 +1101,13 @@ const RB_MOVE_A = [
     ['Bar hang', 'Relax into the shoulders', '3 × 20s', '60s'],
     ['Wall handstand hold', 'Belly to wall', '3 × 15s', '60s'],
   ] },
-  { id: 'rings', title: 'Rings — push & pull', ex: [
-    ['Ring push-up', '', '3 × 8', '60s'],
-    ['Ring row', 'Feet forward to load', '3 × 10', '60s'],
-    ['Ring dip', 'Band assist if needed', '3 × 5', '90s'],
-    ['Chin-up', '', '3 × 5', '90s'],
+  { id: 'ss1', title: 'Superset for time — Ring push + pull (8 min)', summary: 'One running clock: alternate 8 ring push-ups and 10 ring rows. Rest only as needed; a set ends the moment quality drops.', ex: [
+    ['Ring push-up', '8 a round', '1 × 8min', '—'],
+    ['Ring row', '10 a round — feet forward to load', '1 × 8min', '—'],
+  ] },
+  { id: 'ss2', title: 'Superset for time — Dip + chin (6 min)', summary: 'Same clock: alternate 4–5 dips and 4–5 chins.', ex: [
+    ['Ring dip', 'Band assist if needed', '1 × 6min', '—'],
+    ['Chin-up', '', '1 × 6min', '—'],
   ] },
   { id: 'core', title: 'Core', ex: [
     ['Hollow hold', '', '3 × 20s', '45s'],
@@ -1130,6 +1132,9 @@ const RB_LOCO = [
 
 const RB_LEGS = [
   rbWarm('Ski erg', 10),
+  { id: 'lift', title: 'Static anchor — hinge', summary: 'The one proper lift of the day. Moderate, crisp, never grinding.', ex: [
+    ['Trap bar deadlift', 'Moderate — the bar moves fast', '3 × 5', '2min'],
+  ] },
   { id: 'legs', title: 'Functional legs — full range', ex: [
     ['Cossack squat', 'Bodyweight → light DB', '3 × 6 each', '60s'],
     ['ATG split squat', 'L first', '3 × 8 each', '90s'],
@@ -1142,6 +1147,9 @@ const RB_LEGS = [
 
 const RB_CARRY = [
   rbWarm('Row', 10),
+  { id: 'lift', title: 'Static anchor — overhead', summary: 'Moderate, crisp — then everything moves.', ex: [
+    ['Push press', 'Moderate — the bar moves fast', '3 × 5', '2min'],
+  ] },
   { id: 'sled', title: 'Sled + carries — functional strong', ex: [
     ['Sled push', 'Moderate, smooth', '6 × 20m', '90s'],
     ['Backward sled drag', '', '4 × 20m', '90s'],
@@ -1207,7 +1215,7 @@ function rebootWeek(n, labels, sub, progression) {
       { label: 'Next', value: n === 4 ? 'Hyrox — Mon 19 Oct' : 'Week ' + (n + 1) },
     ],
     rules: {
-      do: ['Quality of movement over load', 'Full ranges — deep squat, ATG, hang', 'Skill holds fresh, never to failure', 'Stop a flow when it gets ragged'],
+      do: ['Quality of movement over load', 'Static anchors small and crisp — 3 × 5, bar moves fast', 'Supersets run on the clock — quality ends a set, not the timer', 'Full ranges — deep squat, ATG, hang', 'Skill holds fresh, never to failure'],
       dont: ['Grinding reps', 'Running — Hyrox brings it back', 'Pushing hamstrings past RPE 7', 'Turning flows into cardio'],
       note: 'Gate unchanged: any next-morning hamstring or knee soreness = hold, repeat, do not progress.',
     },
@@ -1540,7 +1548,7 @@ const PAUL_PLAN = {
     },
     {
       id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Wed 16 Sep – Sun 18 Oct',
-      purpose: 'Restart from zero, honestly: three gentle ease-in days, then the reboot proper from Sat 19 Sep. Built around movement rather than static lifts — rings, crawls, flows, carries, get-ups, deep ranges. Six sessions a week with the same names every week; progression is reps → holds → load. Functional and strong, then Hyrox.',
+      purpose: 'Restart from zero, honestly: three gentle ease-in days, then the reboot proper from Sat 19 Sep. Movement is the spine — rings, crawls, flows, carries, get-ups, deep ranges — with one small static anchor on each strength day (trap bar Monday, push press Tuesday) and the paired work run as supersets for time. Six sessions a week, same names every week; progression is reps → holds → load. Functional and strong, then Hyrox.',
       weeks: PAUL_REBOOT_WEEKS,
     },
     {
