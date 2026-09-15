@@ -9,7 +9,7 @@
 export const AMBER = '#f5a524';
 
 export const ATHLETES = [
-  { id: 'lewis', name: 'Lewis', sub: 'Preseason · 3x3 Scotland Sun 16 Aug' },
+  { id: 'lewis', name: 'Lewis', sub: 'In-season · Gladiators Pro + Blues' },
   { id: 'paul', name: 'Paul', sub: 'Morning base build · Hyrox from 14 Sep' },
   { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
 ];
@@ -641,15 +641,243 @@ const LEWIS_W4 = {
   ],
 };
 
+// ── In-season (from Tue 15 Sep). Two-way player: Gladiators Pro + Blues.
+// Three lifts a week in the 18:30–19:30 slot before Blues practice — this hour
+// REPLACES the Blues S&C session (their staff should know). Hard stop 19:25:
+// every session has a cut order, cut from the bottom. Loading is by rep
+// anchors ("use your 6-rep weight for sets of 3"), so a tired week gets
+// lighter automatically; Olympic lifts are governed by bar speed, never rep
+// maxes. Weekly cycle A → B → C → D repeats; D doubles as the dump slot for
+// congested fixtures.
+
+const IS_STOP = 'Hard stop 19:25 — he walks onto court primed, not emptied.';
+const IS_GAME_RULES = 'Fixtures: Sunday game → skip the Saturday block. Friday game → Thursday becomes prime + plyo + one light snatch. Friday AND Sunday games → automatic Week D. Three games in eight days → Week D wherever the cycle sits. Away travel → cut Thursday. If one session has to go, it is Thursday.';
+const IS_BAR_SPEED = 'Fastest heavy — load up until the bar stops snapping, then back off one jump. A slow rep is too heavy, whatever last week said.';
+
+const IS_ANCHORS = {
+  A: { tag: 'Heavy', anchor: '6-rep weight', scheme: '4 × 3', fsScheme: '3 × 3', feel: 'Solid, never grinding' },
+  B: { tag: 'Moderate', anchor: '8-rep weight', scheme: '4 × 4', fsScheme: '3 × 4', feel: 'Comfortably fast' },
+  C: { tag: 'Peak', anchor: '5-rep weight', scheme: '4 × 2', fsScheme: '3 × 2', feel: 'Heavy, still crisp' },
+  D: { tag: 'Deload', anchor: '12-rep weight', scheme: '3 × 4', fsScheme: '3 × 4', feel: 'Easy on purpose' },
+};
+
+const IS_PRIME_LOWER = { id: 'prime', title: 'A · Prime — doubles as practice warm-up', ex: [
+  ['Spanish squat isometric', '', '3 × 30s', '45s'],
+  ['90/90 hip switches', '', '1 × 8 each', '—'],
+  ['Pogo hops', '', '2 × 10', '45s'],
+] };
+
+const IS_MON = (a) => [
+  IS_PRIME_LOWER,
+  { id: 'plyo', title: 'B · Plyometric — vertical · 16 contacts', summary: 'Fresh, before load. Step down off every box — never jump down.', ex: [
+    ['Hurdle hop to stick', '', '3 × 3', '90s'],
+    ['Box jump, step down', '', '3 × 2', '90s'],
+  ] },
+  { id: 'power', title: 'C · Power', ex: [
+    ['Power clean', IS_BAR_SPEED, '4 × 2', '2min'],
+  ] },
+  { id: 'strength', title: 'D · Strength', summary: 'A1/A2 alternate — short rest between them, full rest after the pair.', ex: [
+    ['Trap bar deadlift', a.anchor + ' — ' + a.feel.toLowerCase(), a.scheme, '150s'],
+    ['Bulgarian split squat', '10-rep weight · L first', '3 × 6 each', '45s'],
+    ['Heavy-slow calf raise', '10-rep weight · 3s down', '3 × 6', '90s'],
+  ] },
+  { id: 'armour', title: 'E · Armour', ex: [
+    ['Dead bug', '', '3 × 8 each', '45s'],
+    ['Pallof press', '', '2 × 10 each', '45s'],
+  ] },
+];
+
+const IS_TUE = (a) => [
+  { id: 'prime', title: 'A · Prime', ex: [
+    ['Band pull-apart', '', '2 × 15', '30s'],
+    ['Scap pull-up', '', '2 × 8', '30s'],
+    ['Med ball chest pass to wall', '4kg', '2 × 6', '45s'],
+  ] },
+  { id: 'power', title: 'B · Power', ex: [
+    ['Push press', a.anchor + ' — ' + a.feel.toLowerCase(), a.scheme, '2min'],
+  ] },
+  { id: 'strength', title: 'C · Strength — antagonistic pairs', summary: 'A1/A2 then B1/B2 — short rest inside the pair, full rest after it.', ex: [
+    ['Weighted pull-up', '6-rep weight', '4 × 4', '60s'],
+    ['Weighted dip', '6-rep weight', '4 × 4', '90s'],
+    ['Single-arm DB row', '12-rep weight', '3 × 8 each', '45s'],
+    ['DB incline press', '12-rep weight', '3 × 8', '90s'],
+  ] },
+  { id: 'hip', title: 'D · Hip flexor thread', ex: [
+    ['Standing knee drive above 90°', 'Monkey foot · 10-rep weight', '3 × 6 each', '45s'],
+    ['Hanging knee raise', 'Hold at the top', '3 × 10s each', '45s'],
+  ] },
+  { id: 'armour', title: 'E · Armour', ex: [
+    ['Copenhagen plank', '', '2 × 20s each', '45s'],
+    ['Suitcase carry', '', '2 × 20m each', '45s'],
+  ] },
+];
+
+const IS_THU = (a) => [
+  { id: 'prime', title: 'A · Prime', ex: [
+    ['Spanish squat isometric', '', '3 × 30s', '45s'],
+    ['A-skip', '', '2 × 15m', '45s'],
+    ['Lateral line hops', '', '2 × 10 each', '45s'],
+  ] },
+  { id: 'plyo', title: 'B · Plyometric — first step & lateral · 24 contacts', summary: 'Every rep maximal. If distance or height drops, the block is over — regardless of sets remaining.', ex: [
+    ['Lateral bound to stick', '', '3 × 3 each', '90s'],
+    ['Broad jump, single effort', '', '3 × 2', '90s'],
+    ['Split-stance start, 5m', '', '4 × 1 each', '60s'],
+  ] },
+  { id: 'oly', title: 'C · Olympic', ex: [
+    ['Hang snatch', IS_BAR_SPEED, '4 × 2', '2min'],
+    ['Muscle snatch', '3s eccentric — light, technique only', '2 × 3', '90s'],
+  ] },
+  { id: 'strength', title: 'D · Strength', ex: [
+    ['Front squat', a.anchor + ' — ' + a.feel.toLowerCase(), a.fsScheme, '150s'],
+    ['Step-up', 'Knee drive at top · 10-rep weight · L first', '3 × 6 each', '45s'],
+    ['Tibialis raise', '15-rep weight', '3 × 15', '60s'],
+  ] },
+  { id: 'armour', title: 'E · Armour', ex: [
+    ['Dead bug', '', '2 × 8 each', '45s'],
+  ] },
+];
+
+const IS_SAT_BLOCK = { id: 'durability', title: 'Durability — 10 min, after pro practice', summary: 'Two sets of three Nordics IS the whole hamstring prescription — the most protective and most soreness-producing thing in the plan, so it lives at the furthest point from a practice. Skip entirely if there is a Sunday game.', ex: [
+  ['Nordic curl, eccentric only', 'Assist as needed', '2 × 3', '2min'],
+  ['Copenhagen plank', '', '2 × 25s each', '45s'],
+  ['Single-leg RDL', '12-rep weight · L first', '2 × 8 each', '60s'],
+] };
+
+const isRest = (id, label, title, summary) => ({
+  id, label, title, type: 'rest', summary,
+  items: [['Back Insurance', '8 min · left side first', 'PM']],
+});
+
+function inseasonWeek(n, letter, labels) {
+  const a = IS_ANCHORS[letter];
+  const id = (d) => 'is' + n + '_' + d;
+  return {
+    id: 'is_w' + n,
+    title: 'Week ' + letter + ' — ' + a.tag,
+    subtitle: labels[0] + ' – ' + labels[6] + ' · ' + a.anchor + ' → ' + a.scheme,
+    purpose: 'Use the ' + a.anchor + ' for every anchored lift: ' + a.feel.toLowerCase() + '. Tired week → the anchor weight is lighter, so the session is lighter — automatically. Three good sets beat six mediocre ones.',
+    meta: [
+      { label: 'Anchor', value: a.anchor + ' → ' + a.scheme },
+      { label: 'Feel', value: a.feel },
+      { label: 'Lifts', value: 'Mon · Tue · Thu 18:30' },
+      { label: 'Hard stop', value: '19:25' },
+    ],
+    rules: {
+      do: ['Intensity high, volume low', 'Two reps always in reserve', 'Olympic lifts governed by bar speed', 'Left leg leads every unilateral'],
+      dont: ['Failure — ever', 'Grinding or slow-tempo reps', 'Jumping down off boxes', 'GHD (ever)'],
+      note: IS_GAME_RULES,
+    },
+    days: [
+      {
+        id: id('mon'), label: labels[0], title: 'Lower Power & Vertical', type: 'session',
+        summary: 'The best day of the week — no pro session beforehand. Blues practice 19:30.',
+        workouts: IS_MON(a),
+        notes: ['Cut order: E → A2 → A1. Trap bar and cleans never get cut.', IS_STOP],
+      },
+      {
+        id: id('tue'), label: labels[1], title: 'Upper Strength', type: 'session',
+        summary: 'Pro 16:00–18:00 already done, Blues at 19:30 — upper-dominant on purpose. The legs get nothing today.',
+        workouts: IS_TUE(a),
+        notes: ['Cut order: E → B1/B2.', 'Nordics live on Saturday now — loaded eccentric hamstring work five minutes before 90 minutes of sprinting is an injury waiting to happen, especially on the tighter left side.', IS_STOP],
+      },
+      isRest(id('wed'), labels[2], 'Pro (morning) — free afternoon', 'No lift. The only free afternoon of the week.'),
+      {
+        id: id('thu'), label: labels[3], title: 'Olympic, First Step & Lateral', type: 'session',
+        summary: 'The athleticism session. Pro done, Blues at 19:30. Friday game → today is prime + plyo + one light set of hang snatch, nothing else.',
+        workouts: IS_THU(a),
+        notes: ['Cut order: E → A1/A2 → muscle snatch. Front squat is 3 sets deliberately — he plays immediately afterwards.', IS_STOP],
+      },
+      isRest(id('fri'), labels[4], 'Pro · Blues or game', 'No lift.'),
+      {
+        id: id('sat'), label: labels[5], title: 'Durability block — optional', type: 'session',
+        summary: 'Optional but recommended. Only when there is no Sunday game.',
+        workouts: [IS_SAT_BLOCK],
+      },
+      isRest(id('sun'), labels[6], 'Game or rest', 'Congested fixture week? That is what Week D is for — say so and the cycle moves.'),
+    ],
+  };
+}
+
+const IS_INTRO = {
+  id: 'is_w0', title: 'Intro Week — Capture the anchors', subtitle: 'Tue 15 – Sun 20 Sep · find where he actually is',
+  purpose: 'Learn the layout, capture the rep anchors that run the whole season. Work up in 3–4 sets per lift and stop the moment a rep slows or form shifts — no true maxes, no grinding singles. Log every number; retest every 6 weeks. The work proper starts Mon 21.',
+  meta: [
+    { label: 'Goal', value: 'Anchors captured' },
+    { label: 'Lifts', value: 'Tue · Thu 18:30' },
+    { label: 'Hard stop', value: '19:25' },
+    { label: 'Next', value: 'Week A — Mon 21' },
+  ],
+  rules: {
+    do: ['Work up in 3–4 sets, stop when a rep slows', 'Log the weight next to every anchor', 'Two reps in reserve, even here'],
+    dont: ['True maxes', 'Grinding singles', 'Turning capture into a session'],
+    note: 'This hour replaces the Blues S&C session — their staff should know he is running this in their slot, so nobody doubles him up.',
+  },
+  days: [
+    {
+      id: 'is0_tue', label: 'Tue 15 Sep', title: 'Intro — Upper capture', type: 'session',
+      summary: 'First evening in the slot. Feel out the room, then capture the upper-body anchors: the heaviest weight he could manage X reps with if he had to.',
+      workouts: [
+        { id: 'prime', title: 'A · Prime', ex: [
+          ['Band pull-apart', '', '2 × 15', '30s'],
+          ['Scap pull-up', '', '2 × 8', '30s'],
+          ['Med ball chest pass to wall', '4kg', '2 × 6', '45s'],
+        ] },
+        { id: 'capture', title: 'B · Capture — work up, stop when a rep slows', ex: [
+          ['Push press', 'Find the 6- and 8-rep weights', '4 × 3–6', '2min'],
+          ['Weighted pull-up', 'Find the 6-rep weight', '3 × 3–6', '90s'],
+          ['Weighted dip', 'Find the 6-rep weight', '3 × 3–6', '90s'],
+          ['DB incline press', 'Find the 12-rep weight', '2 × 8', '90s'],
+          ['Single-arm DB row', 'Find the 12-rep weight', '2 × 8 each', '60s'],
+        ] },
+      ],
+      notes: ['The number to log is the anchor, not a max — the weight he COULD do X reps with, found without doing them all.', IS_STOP],
+    },
+    isRest('is0_wed', 'Wed 16 Sep', 'Pro (morning) — free afternoon', 'No lift.'),
+    {
+      id: 'is0_thu', label: 'Thu 17 Sep', title: 'Intro — Lower & Olympic capture', type: 'session',
+      summary: 'Capture the lower-body anchors and the Olympic “fastest heavy” weights.',
+      workouts: [
+        IS_PRIME_LOWER,
+        { id: 'oly', title: 'B · Olympic — find the fastest heavy', ex: [
+          ['Power clean', IS_BAR_SPEED, '4 × 2', '2min'],
+          ['Hang snatch', IS_BAR_SPEED, '3 × 2', '2min'],
+        ] },
+        { id: 'capture', title: 'C · Capture — work up, stop when a rep slows', ex: [
+          ['Trap bar deadlift', 'Find the 5-, 6- and 8-rep weights', '4 × 3–6', '150s'],
+          ['Front squat', 'Find the 6-rep weight', '3 × 3–6', '150s'],
+          ['Bulgarian split squat', 'Find the 10-rep weight · L first', '2 × 6 each', '60s'],
+          ['Step-up', 'Find the 10-rep weight · L first', '2 × 6 each', '60s'],
+        ] },
+      ],
+      notes: ['Note the trap bar empty weight while at it — so logged numbers still mean something in March.', IS_STOP],
+    },
+    isRest('is0_fri', 'Fri 18 Sep', 'Pro · Blues or game', 'No lift.'),
+    {
+      id: 'is0_sat', label: 'Sat 19 Sep', title: 'Durability block — optional', type: 'session',
+      summary: 'Optional 10 min after pro practice. Skip if there is a Sunday game.',
+      workouts: [IS_SAT_BLOCK],
+    },
+    isRest('is0_sun', 'Sun 20 Sep', 'Game or rest', 'Week A starts tomorrow.'),
+  ],
+};
+
+const LEWIS_INSEASON_WEEKS = [
+  IS_INTRO,
+  inseasonWeek(1, 'A', ['Mon 21 Sep', 'Tue 22 Sep', 'Wed 23 Sep', 'Thu 24 Sep', 'Fri 25 Sep', 'Sat 26 Sep', 'Sun 27 Sep']),
+  inseasonWeek(2, 'B', ['Mon 28 Sep', 'Tue 29 Sep', 'Wed 30 Sep', 'Thu 1 Oct', 'Fri 2 Oct', 'Sat 3 Oct', 'Sun 4 Oct']),
+  inseasonWeek(3, 'C', ['Mon 5 Oct', 'Tue 6 Oct', 'Wed 7 Oct', 'Thu 8 Oct', 'Fri 9 Oct', 'Sat 10 Oct', 'Sun 11 Oct']),
+  inseasonWeek(4, 'D', ['Mon 12 Oct', 'Tue 13 Oct', 'Wed 14 Oct', 'Thu 15 Oct', 'Fri 16 Oct', 'Sat 17 Oct', 'Sun 18 Oct']),
+];
+
 const LEWIS_PLAN = {
-  countdown: '3x3 Scotland Sun 16 Aug · then building through autumn',
-  gateHeading: 'Gate — decision for Mon 3 Aug',
+  countdown: 'In-season · Gladiators Pro + Blues · Mon/Tue/Thu 18:30, hard stop 19:25',
+  gateHeading: 'Gate — 30 seconds at 18:30, answered honestly',
   daily: LEWIS_DAILY,
   readiness: ['Resting HR', 'Sleep (h)', 'Sleep 1–10', 'Soreness 1–10', 'Motivation 1–10', 'Bodyweight', 'Back', 'L hamstring'],
   gate: [
-    gate(GREEN_C, 'GREEN', 'RHR within 5 of baseline · sleep 8h+ · motivation 7+ · back clear', 'Week 0 runs as written, 65–70%'),
-    gate(AMBER_C, 'AMBER', 'Any two markers off · back tight but not painful', 'Week 0 Day 1 at 55–60%, 4 training days that week only'),
-    gate(RED_C, 'RED', 'RHR +10 · broken sleep · back symptomatic · flat and unmotivated', 'Extend decompression 3 days. We move the calendar, not the athlete'),
+    gate(GREEN_C, 'GREEN', 'Slept 7h+ · no unusual soreness · keen', 'Full session'),
+    gate(AMBER_C, 'AMBER', 'Poor sleep · legs heavy · flat', 'Drop one anchor (8-rep weight where it says 6) · cut all accessories · skip plyos. Amber is normal in-season — roughly one session in three. That is the plan working'),
+    gate(RED_C, 'RED', 'Back talking · tendon pain · genuinely wrecked', 'Prime block only, then practice. Tell me'),
   ],
   blocks: [
     {
@@ -663,6 +891,11 @@ const LEWIS_PLAN = {
         LEWIS_W3,
         LEWIS_W4,
       ],
+    },
+    {
+      id: 'inseason', tag: 'In-season', title: 'In-Season Strength & Power', dates: 'From Tue 15 Sep · Mon/Tue/Thu 18:30–19:30',
+      purpose: 'Two-way player: Gladiators Pro + Blues — a games schedule with training squeezed into it, 15–18 court hours a week. This hour REPLACES the Blues S&C session. Intensity high, volume low, never to failure, minimal eccentrics, tiny plyos, hard stop 19:25 — he leaves primed, not emptied. Loading by rep anchors; cycle A → B → C → D repeats, with D the dump slot for congested fixtures.',
+      weeks: LEWIS_INSEASON_WEEKS,
     },
   ],
 };
