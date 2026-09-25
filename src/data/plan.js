@@ -10,7 +10,7 @@ export const AMBER = '#f5a524';
 
 export const ATHLETES = [
   { id: 'lewis', name: 'Lewis', sub: 'In-season · Gladiators Pro + Blues' },
-  { id: 'paul', name: 'Paul', sub: 'Functional reboot · Hyrox from 19 Oct' },
+  { id: 'paul', name: 'Paul', sub: 'Functional reboot · Hyrox from 26 Oct' },
   { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
 ];
 
@@ -1079,14 +1079,14 @@ const REC_W1 = {
   ],
 };
 
-// ── Functional Reboot — ease-in Wed 16 – Fri 18 Sep, reboot proper from
-// Sat 19 Sep. The Morning Block never happened, so this restarts honestly:
-// three gentle days back into it, then four weeks built around MOVEMENT, not
-// static lifts — rings, crawls, flows, carries, get-ups, deep ranges. Same
-// exercise names every week so history stacks; progression comes from the
-// week rules (reps → holds → load), not new lists. Hamstring caps and the
-// tempo RDL medicine carry forward. Hyrox re-enters Mon 19 Oct, from the
-// gentle end.
+// ── Functional Reboot — ease-in weekend Sat 26 – Sun 27 Sep (back after
+// illness), block proper from Mon 28 Sep. The Morning Block never happened,
+// so this restarts honestly: two gentle days back into it, then four weeks
+// built around MOVEMENT, not static lifts — rings, crawls, flows, carries,
+// get-ups, deep ranges. Same exercise names every week so history stacks;
+// progression comes from the week rules (reps → holds → load), not new
+// lists. Hamstring caps and the tempo RDL medicine carry forward. Hyrox
+// re-enters Mon 26 Oct, from the gentle end.
 
 const RB_HAM_CAP = 'Hamstring work capped at RPE 7 — it never got the rebuild, so it has not yet earned more.';
 
@@ -1212,7 +1212,7 @@ function rebootWeek(n, labels, sub, progression) {
       { label: 'Progression', value: progression },
       { label: 'Hams', value: 'RPE 7 cap' },
       { label: 'Rhythm', value: '6 days + Fri off' },
-      { label: 'Next', value: n === 4 ? 'Hyrox — Mon 19 Oct' : 'Week ' + (n + 1) },
+      { label: 'Next', value: n === 4 ? 'Hyrox — Mon 26 Oct' : 'Week ' + (n + 1) },
     ],
     rules: {
       do: ['Quality of movement over load', 'Static anchors small and crisp — 3 × 5, bar moves fast', 'Supersets run on the clock — quality ends a set, not the timer', 'Full ranges — deep squat, ATG, hang', 'Skill holds fresh, never to failure'],
@@ -1232,25 +1232,25 @@ function rebootWeek(n, labels, sub, progression) {
 }
 
 const RB_W0 = {
-  id: 'rb_w0', title: 'Ease-in — three gentle days', subtitle: 'Wed 16 – Fri 18 Sep · RPE 5–6, stop fresh',
-  purpose: 'Nothing has happened for a month, so nothing heavy happens this week. Three short mornings to get the body moving again; the reboot proper starts Saturday.',
+  id: 'rb_w0', title: 'Ease-in — the weekend back', subtitle: 'Sat 26 – Sun 27 Sep · RPE 4–6, post-illness',
+  purpose: 'Coming back off being ill, so nothing earns anything this weekend. Two short easy mornings to get the body moving again; the block proper starts Monday.',
   meta: [
-    { label: 'Effort', value: 'RPE 5–6, stop fresh' },
-    { label: 'Goal', value: 'Show up three times' },
-    { label: 'Reboot', value: 'Sat 19 Sep' },
+    { label: 'Effort', value: 'RPE 4–6, stop fresh' },
+    { label: 'Goal', value: 'Show up twice' },
+    { label: 'Block starts', value: 'Mon 28 Sep' },
     { label: 'Hams', value: 'RPE 7 cap' },
   ],
   rules: {
     do: ['Short and easy', 'Leave wanting more', 'Back Insurance every evening'],
-    dont: ['Making up for lost weeks', 'Anything that needs a rest timer', 'Soreness'],
-    note: 'The only job this week is to make Saturday feel easy to start.',
+    dont: ['Making up for lost weeks', 'Anything that needs a rest timer', 'Soreness', 'Training through illness symptoms — if it is still in the chest, walk instead'],
+    note: 'The only job this weekend is to make Monday feel easy to start.',
   },
   days: [
-    rbDay('rb0_wed', 'Wed 16 Sep', 'Ease-in 1 — spin + mobility', [
+    rbDay('rb0_sat', 'Sat 26 Sep', 'Ease-in 1 — spin + mobility', [
       { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 4–5, conversational', '1 × 30min', '—']] },
       RB_RECOVERY[1],
-    ]),
-    rbDay('rb0_thu', 'Thu 17 Sep', 'Ease-in 2 — machines + ground basics', [
+    ], { summary: 'First day back after being ill. Easy spin, long stretch, done. Shorter is fine.' }),
+    rbDay('rb0_sun', 'Sun 27 Sep', 'Ease-in 2 — machines, floor + light circuit', [
       { id: 'cardio', title: 'Cardio — easy', ex: [
         ['Row — easy', 'RPE 5', '1 × 20min', '—'],
         ['Ski erg — easy', '', '1 × 10min', '—'],
@@ -1262,13 +1262,9 @@ const RB_W0 = {
         ['Cat-cow', '', '2 × 10', '—'],
         ['90/90 hip switches', '', '2 × 8 each', '—'],
       ] },
-    ]),
-    rbDay('rb0_fri', 'Fri 18 Sep', 'Ease-in 3 — light circuit', [
-      { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 5', '1 × 20min', '—']] },
       { id: 'circuit', title: 'Light circuit — everything easy', ex: [
         ['Ring row', '', '2 × 8', '60s'],
         ['Incline push-up', 'Hands on box', '2 × 10', '60s'],
-        ['ATG split squat', 'Bodyweight, L first', '2 × 6 each', '60s'],
         ['Glute bridge', '', '2 × 10', '45s'],
         ['Dead bug', '', '2 × 8 each', '45s'],
       ] },
@@ -1276,23 +1272,12 @@ const RB_W0 = {
   ],
 };
 
-const RB_W1 = (() => {
-  const w = rebootWeek(1, ['Mon 21 Sep', 'Tue 22 Sep', 'Wed 23 Sep', 'Thu 24 Sep', 'Fri 25 Sep', 'Sat 26 Sep', 'Sun 27 Sep'], 'Learn the shapes', 'RPE 6 — everything in the tank');
-  w.subtitle = 'Sat 19 – Sun 27 Sep · reboot weekend + week 1';
-  w.days = [
-    rbDay('rb1_sat0', 'Sat 19 Sep', 'REBOOT — Movement A: rings & holds', RB_MOVE_A, { summary: 'Day one of the block proper. First time on the rings in a while — band assist freely, log what is real.' }),
-    rbDay('rb1_sun0', 'Sun 20 Sep', 'Locomotion + long easy cardio', RB_LOCO),
-    ...w.days,
-  ];
-  return w;
-})();
-
 const PAUL_REBOOT_WEEKS = [
   RB_W0,
-  RB_W1,
-  rebootWeek(2, ['Mon 28 Sep', 'Tue 29 Sep', 'Wed 30 Sep', 'Thu 1 Oct', 'Fri 2 Oct', 'Sat 3 Oct', 'Sun 4 Oct'], 'Add a little', 'One more rep, 5s more on holds'),
-  rebootWeek(3, ['Mon 5 Oct', 'Tue 6 Oct', 'Wed 7 Oct', 'Thu 8 Oct', 'Fri 9 Oct', 'Sat 10 Oct', 'Sun 11 Oct'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles'),
-  rebootWeek(4, ['Mon 12 Oct', 'Tue 13 Oct', 'Wed 14 Oct', 'Thu 15 Oct', 'Fri 16 Oct', 'Sat 17 Oct', 'Sun 18 Oct'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh'),
+  rebootWeek(1, ['Mon 28 Sep', 'Tue 29 Sep', 'Wed 30 Sep', 'Thu 1 Oct', 'Fri 2 Oct', 'Sat 3 Oct', 'Sun 4 Oct'], 'Learn the shapes', 'RPE 6 — everything in the tank'),
+  rebootWeek(2, ['Mon 5 Oct', 'Tue 6 Oct', 'Wed 7 Oct', 'Thu 8 Oct', 'Fri 9 Oct', 'Sat 10 Oct', 'Sun 11 Oct'], 'Add a little', 'One more rep, 5s more on holds'),
+  rebootWeek(3, ['Mon 12 Oct', 'Tue 13 Oct', 'Wed 14 Oct', 'Thu 15 Oct', 'Fri 16 Oct', 'Sat 17 Oct', 'Sun 18 Oct'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles'),
+  rebootWeek(4, ['Mon 19 Oct', 'Tue 20 Oct', 'Wed 21 Oct', 'Thu 22 Oct', 'Fri 23 Oct', 'Sat 24 Oct', 'Sun 25 Oct'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh'),
 ];
 
 // ── Hyrox Training (Integrated Program v2). Shared weekly template; only the
@@ -1531,7 +1516,7 @@ const HYROX_WEEKS = [
 ];
 
 const PAUL_PLAN = {
-  countdown: 'Functional reboot from Sat 19 Sep → Hyrox from Mon 19 Oct · gate on next-morning soreness',
+  countdown: 'Functional reboot from Mon 28 Sep → Hyrox from Mon 26 Oct · gate on next-morning soreness',
   gateHeading: 'Gate — next-morning response (hamstring or knee)',
   daily: PAUL_DAILY,
   readiness: ['Next-AM soreness 1–10', 'Hamstring', 'Knee', 'Swelling', 'Sleep (h)', 'Bodyweight', 'Notes'],
@@ -1547,12 +1532,12 @@ const PAUL_PLAN = {
       weeks: [REC_W1],
     },
     {
-      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Wed 16 Sep – Sun 18 Oct',
-      purpose: 'Restart from zero, honestly: three gentle ease-in days, then the reboot proper from Sat 19 Sep. Movement is the spine — rings, crawls, flows, carries, get-ups, deep ranges — with one small static anchor on each strength day (trap bar Monday, push press Tuesday) and the paired work run as supersets for time. Six sessions a week, same names every week; progression is reps → holds → load. Functional and strong, then Hyrox.',
+      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Sat 26 Sep – Sun 25 Oct',
+      purpose: 'Restart after illness, honestly: an easy weekend back, then the block proper from Mon 28 Sep. Movement is the spine — rings, crawls, flows, carries, get-ups, deep ranges — with one small static anchor on each strength day (trap bar Monday, push press Tuesday) and the paired work run as supersets for time. Six sessions a week, same names every week; progression is reps → holds → load. Functional and strong, then Hyrox.',
       weeks: PAUL_REBOOT_WEEKS,
     },
     {
-      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 19 Oct – Sun 15 Nov',
+      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 26 Oct – Sun 22 Nov',
       purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift. Enters from the gentle end (3×800m) — the Reboot builds the base, the runs rebuild here.',
       weeks: HYROX_WEEKS,
     },
