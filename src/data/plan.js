@@ -1121,6 +1121,7 @@ const RB_LOCO = [
     ['Row — easy', '', '1 × 20min', '—'],
   ] },
   { id: 'flow', title: 'Locomotion — quality over pace', summary: 'Ground work: smooth, quiet, controlled. Rest whenever form frays.', ex: [
+    ['TGU — roll to elbow', 'Practice touch, not work — shoe or light DB', '2 × 3 each', '45s'],
     ['Bear crawl', 'Forward + backward', '4 × 15m', '45s'],
     ['Beast hold + shoulder tap', '', '3 × 20s', '45s'],
     ['Crab reach', '', '3 × 6 each', '45s'],
@@ -1181,8 +1182,13 @@ const RB_RECOVERY = [
 
 const RB_FLOW_B = [
   rbWarm('Bike', 10),
-  { id: 'getup', title: 'Get-ups + hanging', ex: [
-    ['Turkish get-up', 'Light DB — slow and perfect', '3 × 3 each', '90s'],
+  { id: 'getup', title: 'Turkish get-up — technique', summary: 'Shoe on the fist → light DB. Own a stage, then stack the next; pad under the knee when kneeling.', ex: [
+    ['TGU — roll to elbow', 'Eyes on the fist, slow', '2 × 3 each', '45s'],
+    ['TGU — to tall sit', 'Chest proud, wrist stacked', '2 × 3 each', '45s'],
+    ['TGU — sweep to half-kneel', 'Pad under the knee', '2 × 2 each', '60s'],
+    ['Turkish get-up', 'Full rep — only if every stage was clean', '2 × 1 each', '90s'],
+  ] },
+  { id: 'hang', title: 'Hanging', ex: [
     ['Hanging knee raise', 'Controlled, no swing', '3 × 8', '60s'],
   ] },
   { id: 'flow', title: 'Ground flow — 3 smooth rounds', summary: 'Move through as a circuit, transitions count as much as the exercises.', ex: [
