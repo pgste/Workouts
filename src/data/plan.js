@@ -1182,7 +1182,7 @@ const RB_RECOVERY = [
 
 const RB_FLOW_B = [
   rbWarm('Bike', 10),
-  { id: 'getup', title: 'Get-up school — take all the time it needs', summary: 'Technique IS the session. Start with a shoe balanced on the fist, then a light DB. Own each stage before stacking the next; pad under the knee for every kneeling stage. Stop at the stage that is honest today.', ex: [
+  { id: 'getup', title: 'Turkish get-up — technique', summary: 'Shoe on the fist → light DB. Own a stage, then stack the next; pad under the knee when kneeling.', ex: [
     ['TGU — roll to elbow', 'Eyes on the fist, slow', '2 × 3 each', '45s'],
     ['TGU — to tall sit', 'Chest proud, wrist stacked', '2 × 3 each', '45s'],
     ['TGU — sweep to half-kneel', 'Pad under the knee', '2 × 2 each', '60s'],
