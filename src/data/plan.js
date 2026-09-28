@@ -1130,18 +1130,20 @@ const RB_LOCO = [
   ] },
 ];
 
+const RB_LEG_DOSE = 'The recovering leg sets the dose: one clean set is a pass, the second is a bonus. Stop an exercise the moment the leg wobbles — log what actually happened and we build from there.';
+
 const RB_LEGS = [
   rbWarm('Ski erg', 10),
   { id: 'lift', title: 'Static anchor — hinge', summary: 'The one proper lift of the day. Moderate, crisp, never grinding.', ex: [
     ['Trap bar deadlift', 'Moderate — the bar moves fast', '3 × 5', '2min'],
   ] },
-  { id: 'legs', title: 'Functional legs — full range', ex: [
-    ['Cossack squat', 'Bodyweight → light DB', '3 × 6 each', '60s'],
-    ['ATG split squat', 'L first', '3 × 8 each', '90s'],
-    ['Box step-up', 'Control the way down', '3 × 8 each', '60s'],
-    ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '3 × 8', '90s'],
-    ['Monkey-foot leg curl', 'RPE 7 cap', '3 × 10 each', '60s'],
-    ['Single-leg calf raise', 'Full range off a step', '3 × 12 each', '45s'],
+  { id: 'legs', title: 'Leg rebuild — recovering leg sets the dose', summary: 'Two sets listed, one set expected. Do set 1 of everything; take set 2 only where set 1 was clean. Hold support freely, shorten the range freely — the exercise counts either way.', ex: [
+    ['Cossack squat', 'Hold support, easy depth — L first', '2 × 4 each', '90s'],
+    ['ATG split squat', 'Hold support if needed — L first', '2 × 5 each', '90s'],
+    ['Box step-up', 'Low box, control the way down', '2 × 6 each', '60s'],
+    ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '2 × 8', '90s'],
+    ['Monkey-foot leg curl', 'RPE 7 cap', '2 × 8 each', '60s'],
+    ['Single-leg calf raise', 'Full range off a step', '2 × 10 each', '45s'],
   ] },
 ];
 
@@ -1215,12 +1217,12 @@ function rebootWeek(n, labels, sub, progression) {
       { label: 'Next', value: n === 4 ? 'Hyrox — Mon 26 Oct' : 'Week ' + (n + 1) },
     ],
     rules: {
-      do: ['Quality of movement over load', 'Static anchors small and crisp — 3 × 5, bar moves fast', 'Supersets run on the clock — quality ends a set, not the timer', 'Full ranges — deep squat, ATG, hang', 'Skill holds fresh, never to failure'],
-      dont: ['Grinding reps', 'Running — Hyrox brings it back', 'Pushing hamstrings past RPE 7', 'Turning flows into cardio'],
+      do: ['Quality of movement over load', 'Leg work: recovering leg sets the dose — one clean set is a pass', 'Static anchors small and crisp — 3 × 5, bar moves fast', 'Supersets run on the clock — quality ends a set, not the timer', 'Full ranges — deep squat, ATG, hang', 'Skill holds fresh, never to failure'],
+      dont: ['Grinding reps', 'Chasing listed sets through a wobbling leg', 'Running — Hyrox brings it back', 'Pushing hamstrings past RPE 7', 'Turning flows into cardio'],
       note: 'Gate unchanged: any next-morning hamstring or knee soreness = hold, repeat, do not progress.',
     },
     days: [
-      rbDay(id('mon'), labels[0], 'Functional legs', RB_LEGS, { notes: [RB_HAM_CAP] }),
+      rbDay(id('mon'), labels[0], 'Legs — anchor + rebuild', RB_LEGS, { notes: [RB_LEG_DOSE, RB_HAM_CAP] }),
       rbDay(id('tue'), labels[1], 'Sled, carries + core', RB_CARRY),
       rbDay(id('wed'), labels[2], 'Recovery — easy spin + mobility', RB_RECOVERY),
       rbDay(id('thu'), labels[3], 'Movement B — get-ups & flows', RB_FLOW_B),
