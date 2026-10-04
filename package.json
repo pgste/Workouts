@@ -6,7 +6,7 @@
   "description": "Phone-first basketball strength & load tracker",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/build-api.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

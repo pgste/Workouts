@@ -53,6 +53,22 @@ they exist. Every screen is deep-linkable (`#/paul/hyrox/hx_w1/hx1_mon`,
 
 Exercise names key the history lookups, so keep them identical across weeks.
 
+### JSON API
+
+The build also writes a static JSON mirror of the plans under `/api`, so an
+AI assistant (or anything else) can pull a session without scraping the app:
+
+- `api/plans.json` — every athlete's full plan
+- `api/<athlete>/index.json` — that athlete's dated days
+- `api/<athlete>/<YYYY-MM-DD>.json` — one day in full: workouts, sets, notes,
+  and a deep link back into the app
+
+"Today" is just today's date, e.g.
+`https://pgste.github.io/Workouts/api/paul/2026-10-05.json`. Give an
+assistant that URL pattern plus the date and it has the whole session.
+Regenerated on every deploy by `scripts/build-api.mjs` (part of `npm run
+build`); undated template days are skipped.
+
 ### Storage
 
 Everything lives under `cs.progress.v3` (plus `cs.progress.v3.who` for the
