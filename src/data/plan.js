@@ -1121,6 +1121,7 @@ const RB_LOCO = [
     ['Row — easy', '', '1 × 20min', '—'],
   ] },
   { id: 'flow', title: 'Locomotion — quality over pace', summary: 'Ground work: smooth, quiet, controlled. Rest whenever form frays.', ex: [
+    ['TGU — roll to elbow', 'Practice touch, not work — shoe or light DB', '2 × 3 each', '45s'],
     ['Bear crawl', 'Forward + backward', '4 × 15m', '45s'],
     ['Beast hold + shoulder tap', '', '3 × 20s', '45s'],
     ['Crab reach', '', '3 × 6 each', '45s'],
@@ -1181,8 +1182,13 @@ const RB_RECOVERY = [
 
 const RB_FLOW_B = [
   rbWarm('Bike', 10),
-  { id: 'getup', title: 'Get-ups + hanging', ex: [
-    ['Turkish get-up', 'Light DB — slow and perfect', '3 × 3 each', '90s'],
+  { id: 'getup', title: 'Turkish get-up — technique', summary: 'Shoe on the fist → light DB. Own a stage, then stack the next; pad under the knee when kneeling.', ex: [
+    ['TGU — roll to elbow', 'Eyes on the fist, slow', '2 × 3 each', '45s'],
+    ['TGU — to tall sit', 'Chest proud, wrist stacked', '2 × 3 each', '45s'],
+    ['TGU — sweep to half-kneel', 'Pad under the knee', '2 × 2 each', '60s'],
+    ['Turkish get-up', 'Full rep — only if every stage was clean', '2 × 1 each', '90s'],
+  ] },
+  { id: 'hang', title: 'Hanging', ex: [
     ['Hanging knee raise', 'Controlled, no swing', '3 × 8', '60s'],
   ] },
   { id: 'flow', title: 'Ground flow — 3 smooth rounds', summary: 'Move through as a circuit, transitions count as much as the exercises.', ex: [
@@ -1276,7 +1282,26 @@ const RB_W0 = {
 
 const PAUL_REBOOT_WEEKS = [
   RB_W0,
-  rebootWeek(1, ['Mon 28 Sep', 'Tue 29 Sep', 'Wed 30 Sep', 'Thu 1 Oct', 'Fri 2 Oct', 'Sat 3 Oct', 'Sun 4 Oct'], 'Learn the shapes', 'RPE 6 — everything in the tank'),
+  (() => {
+    // Week 1 one-off: Sat 3 Oct was missed, so Sunday carries both — the
+    // planned cardio, then Saturday's rings work, with the flow as the cut
+    // line. Later weeks keep the normal Sat/Sun split.
+    const w = rebootWeek(1, ['Mon 28 Sep', 'Tue 29 Sep', 'Wed 30 Sep', 'Thu 1 Oct', 'Fri 2 Oct', 'Sat 3 Oct', 'Sun 4 Oct'], 'Learn the shapes', 'RPE 6 — everything in the tank');
+    w.days[5] = {
+      id: 'rb1_sat', label: 'Sat 3 Oct', title: 'Missed — rings moved to Sunday', type: 'rest',
+      summary: 'Life happened. The rings work rolls into Sunday; nothing is lost.',
+      items: [['Back Insurance', '8 min', 'PM']],
+    };
+    w.days[6] = rbDay('rb1_sun', 'Sun 4 Oct', 'Catch-up — cardio, rings + flow', [
+      RB_LOCO[0],
+      ...RB_MOVE_A.slice(1),
+      RB_LOCO[1],
+    ], {
+      summary: 'Saturday and Sunday merged: the easy 40 (bike 20 + row 20), then the rings session in full. The locomotion flow closes it out — that is the cut line if time or energy runs out.',
+      notes: ['Long session by design, easy-hard-easy in shape. Supersets still end on quality, not the clock.'],
+    });
+    return w;
+  })(),
   rebootWeek(2, ['Mon 5 Oct', 'Tue 6 Oct', 'Wed 7 Oct', 'Thu 8 Oct', 'Fri 9 Oct', 'Sat 10 Oct', 'Sun 11 Oct'], 'Add a little', 'One more rep, 5s more on holds'),
   rebootWeek(3, ['Mon 12 Oct', 'Tue 13 Oct', 'Wed 14 Oct', 'Thu 15 Oct', 'Fri 16 Oct', 'Sat 17 Oct', 'Sun 18 Oct'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles'),
   rebootWeek(4, ['Mon 19 Oct', 'Tue 20 Oct', 'Wed 21 Oct', 'Thu 22 Oct', 'Fri 23 Oct', 'Sat 24 Oct', 'Sun 25 Oct'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh'),
