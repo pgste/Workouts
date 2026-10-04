@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Nightly rebuild so api/<athlete>/today.json rolls over to the new day.
+    # 00:20 UTC is past midnight in Europe/London year-round.
+    - cron: '20 0 * * *'
 
 permissions:
   contents: read
