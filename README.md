@@ -62,10 +62,13 @@ AI assistant (or anything else) can pull a session without scraping the app:
 - `api/<athlete>/index.json` — that athlete's dated days
 - `api/<athlete>/<YYYY-MM-DD>.json` — one day in full: workouts, sets, notes,
   and a deep link back into the app
-- `api/<athlete>/today.json` — the current day, at a stable URL. A nightly
-  scheduled deploy (00:20 UTC) rolls it over, so e.g.
-  `https://pgste.github.io/Workouts/api/paul/today.json` always holds today's
-  session — the one URL to give an AI assistant.
+- `api/<athlete>/today.json` — the current day at a stable URL, **plus the
+  next 7 dated days inline in `upcoming`**. Nightly scheduled deploys roll it
+  over, but GitHub runs cron best-effort and can be hours late — so a
+  consumer should trust the `upcoming` entry matching its own date over the
+  top-level `day` when the `date` field is behind. E.g.
+  `https://pgste.github.io/Workouts/api/paul/today.json` is the one URL to
+  give an AI assistant.
 
 Regenerated on every deploy by `scripts/build-api.mjs` (part of `npm run
 build`); undated template days are skipped.

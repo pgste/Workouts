@@ -30,6 +30,7 @@ for (const [athleteId, plan] of Object.entries(PLANS)) {
   const dir = new URL(athleteId + '/', out);
   mkdirSync(dir, { recursive: true });
   const days = [];
+  const allDocs = [];
   let todayDoc = null;
   for (const b of plan.blocks) {
     for (const w of b.weeks || []) {
@@ -47,6 +48,7 @@ for (const [athleteId, plan] of Object.entries(PLANS)) {
           deepLink: site + '#/' + athleteId + '/' + b.id + '/' + w.id + '/' + d.id,
         };
         writeFileSync(new URL(date + '.json', dir), JSON.stringify(doc, null, 2));
+        allDocs.push(doc);
         if (date === todayYmd) todayDoc = doc;
         days.push({ date, id: d.id, title: d.title, type: d.type || 'session', file: 'api/' + athleteId + '/' + date + '.json' });
       }
@@ -54,13 +56,25 @@ for (const [athleteId, plan] of Object.entries(PLANS)) {
   }
   days.sort((a, b2) => a.date.localeCompare(b2.date));
   writeFileSync(new URL('index.json', dir), JSON.stringify({ athlete: athleteId, generated, days }, null, 2));
-  writeFileSync(new URL('today.json', dir), JSON.stringify(todayDoc || {
-    athlete: athleteId,
-    date: todayYmd,
-    generated,
-    day: null,
-    message: 'No dated session today. See index.json for the calendar.',
+  // GitHub runs cron schedules best-effort — the nightly rebuild can land
+  // hours late. today.json therefore also inlines the next 7 dated days, so
+  // a stale file still CONTAINS the right day: consumers should trust the
+  // entry in `upcoming` matching their own date over the top-level `day`.
+  const upcoming = allDocs
+    .filter((doc) => doc.date >= todayYmd)
+    .sort((a, b2) => a.date.localeCompare(b2.date))
+    .slice(0, 7);
+  writeFileSync(new URL('today.json', dir), JSON.stringify({
+    ...(todayDoc || {
+      athlete: athleteId,
+      date: todayYmd,
+      generated,
+      day: null,
+      message: 'No dated session on the build date. Use the `upcoming` entry matching your date.',
+    }),
+    note: 'If `date` is behind your actual date, use the matching entry in `upcoming` — the nightly rebuild can run late.',
+    upcoming,
   }, null, 2));
-  console.log('api/' + athleteId + ': ' + days.length + ' dated days · today=' + (todayDoc ? todayDoc.day.id : 'none'));
+  console.log('api/' + athleteId + ': ' + days.length + ' dated days · today=' + (todayDoc ? todayDoc.day.id : 'none') + ' · upcoming=' + upcoming.length);
 }
 console.log('api generated.');
