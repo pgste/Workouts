@@ -6,8 +6,10 @@ on:
   workflow_dispatch:
   schedule:
     # Nightly rebuild so api/<athlete>/today.json rolls over to the new day.
-    # 00:20 UTC is past midnight in Europe/London year-round.
+    # Two shots at odd minutes: GitHub runs cron best-effort and the busy
+    # slots around midnight UTC can be delayed by hours.
     - cron: '20 0 * * *'
+    - cron: '40 3 * * *'
 
 permissions:
   contents: read
