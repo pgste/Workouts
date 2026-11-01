@@ -1098,6 +1098,7 @@ const RB_MOVE_A = [
   rbWarm('Bike', 10),
   { id: 'skill', title: 'Skill — holds first, fresh', summary: 'Practice, not work. Quality positions, never to failure.', ex: [
     ['Ring support hold', 'Rings turned out', '3 × 15s', '60s'],
+    ['Ring dip', 'ONE practice set — a couple of quality reps, band assist fine. Teaching the shape, not training it', '1 × 2–3', '60s'],
     ['Bar hang', 'Relax into the shoulders', '3 × 20s', '60s'],
     ['Wall handstand hold', 'Belly to wall', '3 × 15s', '60s'],
   ] },
@@ -1105,8 +1106,8 @@ const RB_MOVE_A = [
     ['Ring push-up', '8 a round', '1 × 8min', '—'],
     ['Ring row', '10 a round — feet forward to load', '1 × 8min', '—'],
   ] },
-  { id: 'ss2', title: 'Superset for time — Dip + chin (6 min)', summary: 'Same clock: alternate 4–5 dips and 4–5 chins.', ex: [
-    ['Ring dip', 'Band assist if needed', '1 × 6min', '—'],
+  { id: 'ss2', title: 'Superset for time — Dip + chin (6 min)', summary: 'Same clock: alternate 4–6 dips and 4–5 chins. Strength lives on stable dips for now — the ring version gets its one practice set in the skill block, and takes this slot over when 3 × 5 on it feels crisp.', ex: [
+    ['Dips', 'Bars, box corner or bench — full range, crisp', '1 × 6min', '—'],
     ['Chin-up', '', '1 × 6min', '—'],
   ] },
   { id: 'core', title: 'Core', ex: [
