@@ -1321,13 +1321,22 @@ const PAUL_REBOOT_WEEKS = [
       note: 'Gate unchanged and doing exactly its job: any next-morning knee pain or swelling = hold, repeat, tell me.',
     },
     days: [
-      rbDay('rbr_sun', 'Sun 1 Nov', 'Restart — cardio, movements + rings', [
-        RB_LOCO[0],
-        RB_LOCO[1],
-        ...RB_MOVE_A.slice(1),
+      // What actually happened: a full hour of easy cardio (30 + 30, over the
+      // planned 20 + 20), get-up rolls and bear crawls, then a deliberate
+      // stop — an hour was enough after two weeks immobile, not the knee.
+      // The rest of the flow, the rings and core never happened and came out.
+      rbDay('rbr_sun', 'Sun 1 Nov', 'Restart — an hour of cardio + first ground work', [
+        { id: 'cardio', title: 'Cardio — long easy', ex: [
+          ['Bike — easy', 'Conversational — felt awesome', '1 × 30min', '—'],
+          ['Row — easy', 'Catch fine — had to actively fire the left leg to straighten', '1 × 30min', '—'],
+        ] },
+        { id: 'flow', title: 'Ground work — first touch', ex: [
+          ['TGU — roll to elbow', 'Practice touch, not work — shoe or light DB', '2 × 3 each', '45s'],
+          ['Bear crawl', 'Forward + backward — volume not logged', '4 × 15m', '45s'],
+        ] },
       ], {
-        summary: 'Back after the fall: bike 20 + row 20 easy, the locomotion flow, then the rings work. Knee decides the depth on everything ground-based — shorten range freely.',
-        notes: ['First session in two weeks — RPE 6 cap, supersets end on quality.', 'Any knee signal ends the session. The next morning is the real test.'],
+        summary: 'Back after the fall. Bike 30 + row 30 easy (planned 20 + 20), get-up rolls and bear crawls, then stopped — an hour was plenty after two weeks immobile, not a knee call. Knee felt pretty good. Rest of the flow, rings and core not done.',
+        notes: ['The fall (mid-Oct): twisted the left knee, really sore at the back of the knee, settled with rest — now OK.', 'Row: left leg needs a conscious drive to straighten — keep cueing it. The next morning is the real test.'],
       }),
     ],
   },
