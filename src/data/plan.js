@@ -10,7 +10,7 @@ export const AMBER = '#f5a524';
 
 export const ATHLETES = [
   { id: 'lewis', name: 'Lewis', sub: 'In-season · Gladiators Pro + Blues' },
-  { id: 'paul', name: 'Paul', sub: 'Functional reboot · Hyrox from 26 Oct' },
+  { id: 'paul', name: 'Paul', sub: 'Reboot redo · Hyrox from 30 Nov' },
   { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
 ];
 
@@ -1303,8 +1303,53 @@ const PAUL_REBOOT_WEEKS = [
     return w;
   })(),
   rebootWeek(2, ['Mon 5 Oct', 'Tue 6 Oct', 'Wed 7 Oct', 'Thu 8 Oct', 'Fri 9 Oct', 'Sat 10 Oct', 'Sun 11 Oct'], 'Add a little', 'One more rep, 5s more on holds'),
-  rebootWeek(3, ['Mon 12 Oct', 'Tue 13 Oct', 'Wed 14 Oct', 'Thu 15 Oct', 'Fri 16 Oct', 'Sat 17 Oct', 'Sun 18 Oct'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles'),
-  rebootWeek(4, ['Mon 19 Oct', 'Tue 20 Oct', 'Wed 21 Oct', 'Thu 22 Oct', 'Fri 23 Oct', 'Sat 24 Oct', 'Sun 25 Oct'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh'),
+  {
+    // A fall mid-October meant two weeks of knee rest — the original weeks 3–4
+    // never happened and were removed. The build-up runs again from Mon 2 Nov.
+    id: 'rb_restart', title: 'Restart — back from the fall', subtitle: 'Sun 1 Nov · one combined day, knee on watch',
+    purpose: 'A fall cost two weeks of knee rest. One combined session to come back — the easy 40, the movements, the rings — then the build-up runs again from Monday. Redoing the phase IS the plan, not a setback: the anchors are still in the history.',
+    meta: [
+      { label: 'Knee', value: 'On watch — next-morning check' },
+      { label: 'Effort', value: 'RPE 6, everything in the tank' },
+      { label: 'Redo', value: 'Weeks restart Mon 2 Nov' },
+      { label: 'Hyrox', value: 'Mon 30 Nov' },
+    ],
+    rules: {
+      do: ['Come back like week 1 — nothing earns anything today', 'Knee gets the recovering-leg treatment: one clean effort, stop on any signal', 'Log everything'],
+      dont: ['Picking up where mid-October left off', 'Deep knee flexion under load today', 'Ignoring the next-morning check'],
+      note: 'Gate unchanged and doing exactly its job: any next-morning knee pain or swelling = hold, repeat, tell me.',
+    },
+    days: [
+      rbDay('rbr_sun', 'Sun 1 Nov', 'Restart — cardio, movements + rings', [
+        RB_LOCO[0],
+        RB_LOCO[1],
+        ...RB_MOVE_A.slice(1),
+      ], {
+        summary: 'Back after the fall: bike 20 + row 20 easy, the locomotion flow, then the rings work. Knee decides the depth on everything ground-based — shorten range freely.',
+        notes: ['First session in two weeks — RPE 6 cap, supersets end on quality.', 'Any knee signal ends the session. The next morning is the real test.'],
+      }),
+    ],
+  },
+  (() => {
+    const w = rebootWeek(5, ['Mon 2 Nov', 'Tue 3 Nov', 'Wed 4 Nov', 'Thu 5 Nov', 'Fri 6 Nov', 'Sat 7 Nov', 'Sun 8 Nov'], 'Learn the shapes', 'RPE 6 — everything in the tank');
+    w.title = 'Redo Week 1 — Learn the shapes'; w.meta[3] = { label: 'Next', value: 'Redo Week 2' };
+    return w;
+  })(),
+  (() => {
+    const w = rebootWeek(6, ['Mon 9 Nov', 'Tue 10 Nov', 'Wed 11 Nov', 'Thu 12 Nov', 'Fri 13 Nov', 'Sat 14 Nov', 'Sun 15 Nov'], 'Add a little', 'One more rep, 5s more on holds');
+    w.title = 'Redo Week 2 — Add a little'; w.meta[3] = { label: 'Next', value: 'Redo Week 3' };
+    return w;
+  })(),
+  (() => {
+    const w = rebootWeek(7, ['Mon 16 Nov', 'Tue 17 Nov', 'Wed 18 Nov', 'Thu 19 Nov', 'Fri 20 Nov', 'Sat 21 Nov', 'Sun 22 Nov'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles');
+    w.title = 'Redo Week 3 — Add load'; w.meta[3] = { label: 'Next', value: 'Redo Week 4' };
+    return w;
+  })(),
+  (() => {
+    const w = rebootWeek(8, ['Mon 23 Nov', 'Tue 24 Nov', 'Wed 25 Nov', 'Thu 26 Nov', 'Fri 27 Nov', 'Sat 28 Nov', 'Sun 29 Nov'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh');
+    w.title = 'Redo Week 4 — Consolidate'; w.meta[3] = { label: 'Next', value: 'Hyrox — Mon 30 Nov' };
+    return w;
+  })(),
 ];
 
 // ── Hyrox Training (Integrated Program v2). Shared weekly template; only the
@@ -1543,7 +1588,7 @@ const HYROX_WEEKS = [
 ];
 
 const PAUL_PLAN = {
-  countdown: 'Functional reboot from Mon 28 Sep → Hyrox from Mon 26 Oct · gate on next-morning soreness',
+  countdown: 'Reboot redo from Sun 1 Nov → Hyrox from Mon 30 Nov · knee + hamstring gate on next-morning soreness',
   gateHeading: 'Gate — next-morning response (hamstring or knee)',
   daily: PAUL_DAILY,
   readiness: ['Next-AM soreness 1–10', 'Hamstring', 'Knee', 'Swelling', 'Sleep (h)', 'Bodyweight', 'Notes'],
@@ -1559,12 +1604,12 @@ const PAUL_PLAN = {
       weeks: [REC_W1],
     },
     {
-      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Sat 26 Sep – Sun 25 Oct',
-      purpose: 'Restart after illness, honestly: an easy weekend back, then the block proper from Mon 28 Sep. Movement is the spine — rings, crawls, flows, carries, get-ups, deep ranges — with one small static anchor on each strength day (trap bar Monday, push press Tuesday) and the paired work run as supersets for time. Six sessions a week, same names every week; progression is reps → holds → load. Functional and strong, then Hyrox.',
+      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Sat 26 Sep – Sun 29 Nov · redo after a fall',
+      purpose: 'Restart after illness, then restarted again after a fall cost two weeks of knee rest from mid-October. Weeks 1–2 are banked history; the Sun 1 Nov combined session brings it back and the four-week build-up runs again from Mon 2 Nov, knee on watch. Movement is the spine — rings, crawls, flows, carries, get-ups, deep ranges — with one small static anchor on each strength day and the paired work run as supersets for time. Progression is reps → holds → load. Functional and strong, then Hyrox.',
       weeks: PAUL_REBOOT_WEEKS,
     },
     {
-      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 26 Oct – Sun 22 Nov',
+      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 30 Nov – Sun 27 Dec',
       purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift. Enters from the gentle end (3×800m) — the Reboot builds the base, the runs rebuild here.',
       weeks: HYROX_WEEKS,
     },
