@@ -10,7 +10,7 @@ export const AMBER = '#f5a524';
 
 export const ATHLETES = [
   { id: 'lewis', name: 'Lewis', sub: 'In-season · Gladiators Pro + Blues' },
-  { id: 'paul', name: 'Paul', sub: 'Reboot redo · Hyrox from 30 Nov' },
+  { id: 'paul', name: 'Paul', sub: 'Covid return · Hyrox from 28 Dec' },
   { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
 ];
 
@@ -1281,6 +1281,76 @@ const RB_W0 = {
   ],
 };
 
+const RB_KNEE_BASICS = { id: 'knee', title: 'Knee basics — wake the leg up', summary: 'Three weeks without loading. Isometrics and slow lowering only — the quad relearns control before anything heavier.', ex: [
+  ['Spanish squat hold', 'Band behind the knees, depth that feels fine', '3 × 30s', '60s'],
+  ['Step-down — 2 in', 'L leg, 4s down — clean or stop', '2 × 6 each', '60s'],
+  ['Glute bridge', '', '2 × 12', '45s'],
+  ['Single-leg calf raise', 'Full range off a step', '2 × 10 each', '45s'],
+] };
+
+const RB_COVID_GROUND = { id: 'ground', title: 'Ground basics — re-learn the floor', ex: [
+  ['Deep squat hold', 'Hold something if needed', '3 × 30s', '45s'],
+  ['Bear crawl', 'Slow, short — 5m out + back', '3 × 10m', '60s'],
+  ['Bar hang', '', '3 × 20s', '60s'],
+  ['Cat-cow', '', '2 × 10', '—'],
+  ['90/90 hip switches', '', '2 × 8 each', '—'],
+] };
+
+const RB_COVID_RETURN = {
+  id: 'rb_covid', title: 'Return from Covid — graded week', subtitle: 'Mon 23 – Sun 29 Nov · conversational only, breathing on watch',
+  purpose: 'Weeks of Covid. Feeling better and recovery is green, but breathing is not back yet — so this week rebuilds tolerance before the build-up. Every session is short and conversational; each day earns the next.',
+  meta: [
+    { label: 'Effort', value: 'RPE 3–4 — nose-breathing pace' },
+    { label: 'Breathing', value: 'The gate this week' },
+    { label: 'Knee', value: 'Unloaded 3 weeks — basics only' },
+    { label: 'Next', value: 'Redo Week 1 — Mon 30 Nov' },
+  ],
+  rules: {
+    do: ['Stay where you can talk in full sentences', 'Stop a session early if breathing tightens', 'Check next morning: energy, breathing, knee', 'Back Insurance most evenings'],
+    dont: ['Intervals, sled, anything that makes you gasp', 'Making up for lost weeks', 'Trusting a green recovery score over how the chest feels'],
+    note: 'Progress only if you felt normal the next morning. Symptoms back or unusual fatigue = repeat the previous day. Chest pain, palpitations, breathless at rest or faint = stop and call the GP / 111.',
+  },
+  days: [
+    rbDay('rbc_mon', 'Mon 23 Nov', 'Easy walk + mobility', [
+      { id: 'cardio', title: 'Walk — easy', ex: [['Walk — easy', 'Nose-breathing pace, flat route', '1 × 25min', '—']] },
+      RB_RECOVERY[1],
+    ], { summary: 'First day back after Covid. Walk, long stretch, done. Shorter is fine.' }),
+    rbDay('rbc_tue', 'Tue 24 Nov', 'Easy spin + knee basics', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 3, conversational', '1 × 15min', '—']] },
+      RB_KNEE_BASICS,
+    ], { summary: 'Short spin, then wake the left leg up gently.' }),
+    rbDay('rbc_wed', 'Wed 25 Nov', 'Walk + mobility', [
+      { id: 'cardio', title: 'Walk — easy', ex: [['Walk — easy', 'Nose-breathing pace', '1 × 30min', '—']] },
+      RB_RECOVERY[1],
+    ], { summary: 'Easy day between the two machine days.' }),
+    rbDay('rbc_thu', 'Thu 26 Nov', 'Machines + ground basics', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [
+        ['Bike — easy', 'RPE 3–4', '1 × 15min', '—'],
+        ['Row — easy', 'Short slide, drive the left leg straight', '1 × 10min', '—'],
+      ] },
+      RB_COVID_GROUND,
+    ], { summary: 'A little longer on the machines, then the floor. Crawls stay short — breathing decides, not the distance.' }),
+    rbRest('rbc_fri', 'Fri 27 Nov'),
+    rbDay('rbc_sat', 'Sat 28 Nov', 'Spin + light circuit', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 4, conversational', '1 × 20min', '—']] },
+      { id: 'circuit', title: 'Light circuit — everything easy', ex: [
+        ['Ring row', 'Feet on bench', '2 × 8', '60s'],
+        ['Incline push-up', 'Hands on box', '2 × 10', '60s'],
+        ['TGU — roll to elbow', 'Practice touch, not work — shoe or light DB', '2 × 3 each', '45s'],
+        ['Dead bug', '', '2 × 8 each', '45s'],
+      ] },
+      RB_KNEE_BASICS,
+    ], { summary: 'First upper-body touch since Covid. RPE 5 max — nothing to failure.' }),
+    rbDay('rbc_sun', 'Sun 29 Nov', 'Longer easy cardio + floor', [
+      { id: 'cardio', title: 'Cardio — long easy', ex: [
+        ['Bike — easy', 'Conversational', '1 × 20min', '—'],
+        ['Row — easy', '', '1 × 15min', '—'],
+      ] },
+      RB_COVID_GROUND,
+    ], { summary: 'The test for Monday: if 35 easy minutes and the floor feel normal tomorrow morning, the build-up starts.' }),
+  ],
+};
+
 const PAUL_REBOOT_WEEKS = [
   RB_W0,
   (() => {
@@ -1312,8 +1382,8 @@ const PAUL_REBOOT_WEEKS = [
     meta: [
       { label: 'Knee', value: 'On watch — next-morning check' },
       { label: 'Effort', value: 'RPE 6, everything in the tank' },
-      { label: 'Redo', value: 'Weeks restart Mon 2 Nov' },
-      { label: 'Hyrox', value: 'Mon 30 Nov' },
+      { label: 'Redo', value: 'Covid paused it — reruns Mon 30 Nov' },
+      { label: 'Hyrox', value: 'Mon 28 Dec' },
     ],
     rules: {
       do: ['Come back like week 1 — nothing earns anything today', 'Knee gets the recovering-leg treatment: one clean effort, stop on any signal', 'Log everything'],
@@ -1321,34 +1391,48 @@ const PAUL_REBOOT_WEEKS = [
       note: 'Gate unchanged and doing exactly its job: any next-morning knee pain or swelling = hold, repeat, tell me.',
     },
     days: [
-      rbDay('rbr_sun', 'Sun 1 Nov', 'Restart — cardio, movements + rings', [
-        RB_LOCO[0],
-        RB_LOCO[1],
-        ...RB_MOVE_A.slice(1),
+      // What actually happened: a full hour of easy cardio (30 + 30, over the
+      // planned 20 + 20), get-up rolls and bear crawls, then a deliberate
+      // stop — an hour was enough after two weeks immobile, not the knee.
+      // The rest of the flow, the rings and core never happened and came out.
+      rbDay('rbr_sun', 'Sun 1 Nov', 'Restart — an hour of cardio + first ground work', [
+        { id: 'cardio', title: 'Cardio — long easy', ex: [
+          ['Bike — easy', 'Conversational — felt awesome', '1 × 30min', '—'],
+          ['Row — easy', 'Catch fine — had to actively fire the left leg to straighten', '1 × 30min', '—'],
+        ] },
+        { id: 'flow', title: 'Ground work — first touch', ex: [
+          ['TGU — roll to elbow', 'Practice touch, not work — shoe or light DB', '2 × 3 each', '45s'],
+          ['Bear crawl', 'Forward + backward — volume not logged', '4 × 15m', '45s'],
+        ] },
       ], {
-        summary: 'Back after the fall: bike 20 + row 20 easy, the locomotion flow, then the rings work. Knee decides the depth on everything ground-based — shorten range freely.',
-        notes: ['First session in two weeks — RPE 6 cap, supersets end on quality.', 'Any knee signal ends the session. The next morning is the real test.'],
+        summary: 'Back after the fall. Bike 30 + row 30 easy (planned 20 + 20), get-up rolls and bear crawls, then stopped — an hour was plenty after two weeks immobile, not a knee call. Knee felt pretty good. Rest of the flow, rings and core not done.',
+        notes: ['The fall (mid-Oct): twisted the left knee, really sore at the back of the knee, settled with rest — now OK.', 'Row: left leg needs a conscious drive to straighten — keep cueing it. The next morning is the real test.'],
       }),
     ],
   },
+  // Covid from early November took Redo Weeks 1–4 (2–29 Nov) — none of it
+  // happened, so it came out. A graded return week rebuilds tolerance, then
+  // the same four-week build-up runs again with fresh week numbers.
+  RB_COVID_RETURN,
   (() => {
-    const w = rebootWeek(5, ['Mon 2 Nov', 'Tue 3 Nov', 'Wed 4 Nov', 'Thu 5 Nov', 'Fri 6 Nov', 'Sat 7 Nov', 'Sun 8 Nov'], 'Learn the shapes', 'RPE 6 — everything in the tank');
+    const w = rebootWeek(9, ['Mon 30 Nov', 'Tue 1 Dec', 'Wed 2 Dec', 'Thu 3 Dec', 'Fri 4 Dec', 'Sat 5 Dec', 'Sun 6 Dec'], 'Learn the shapes', 'RPE 6 — everything in the tank');
     w.title = 'Redo Week 1 — Learn the shapes'; w.meta[3] = { label: 'Next', value: 'Redo Week 2' };
+    w.rules.note = 'Two gates now: next-morning knee/hamstring as always, AND breathing — if it gets worse or the chest tightens, drop back to the return week and tell me.';
     return w;
   })(),
   (() => {
-    const w = rebootWeek(6, ['Mon 9 Nov', 'Tue 10 Nov', 'Wed 11 Nov', 'Thu 12 Nov', 'Fri 13 Nov', 'Sat 14 Nov', 'Sun 15 Nov'], 'Add a little', 'One more rep, 5s more on holds');
+    const w = rebootWeek(10, ['Mon 7 Dec', 'Tue 8 Dec', 'Wed 9 Dec', 'Thu 10 Dec', 'Fri 11 Dec', 'Sat 12 Dec', 'Sun 13 Dec'], 'Add a little', 'One more rep, 5s more on holds');
     w.title = 'Redo Week 2 — Add a little'; w.meta[3] = { label: 'Next', value: 'Redo Week 3' };
     return w;
   })(),
   (() => {
-    const w = rebootWeek(7, ['Mon 16 Nov', 'Tue 17 Nov', 'Wed 18 Nov', 'Thu 19 Nov', 'Fri 20 Nov', 'Sat 21 Nov', 'Sun 22 Nov'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles');
+    const w = rebootWeek(11, ['Mon 14 Dec', 'Tue 15 Dec', 'Wed 16 Dec', 'Thu 17 Dec', 'Fri 18 Dec', 'Sat 19 Dec', 'Sun 20 Dec'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles');
     w.title = 'Redo Week 3 — Add load'; w.meta[3] = { label: 'Next', value: 'Redo Week 4' };
     return w;
   })(),
   (() => {
-    const w = rebootWeek(8, ['Mon 23 Nov', 'Tue 24 Nov', 'Wed 25 Nov', 'Thu 26 Nov', 'Fri 27 Nov', 'Sat 28 Nov', 'Sun 29 Nov'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh');
-    w.title = 'Redo Week 4 — Consolidate'; w.meta[3] = { label: 'Next', value: 'Hyrox — Mon 30 Nov' };
+    const w = rebootWeek(12, ['Mon 21 Dec', 'Tue 22 Dec', 'Wed 23 Dec', 'Thu 24 Dec', 'Fri 25 Dec', 'Sat 26 Dec', 'Sun 27 Dec'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh');
+    w.title = 'Redo Week 4 — Consolidate'; w.meta[3] = { label: 'Next', value: 'Hyrox — Mon 28 Dec' };
     return w;
   })(),
 ];
@@ -1589,7 +1673,7 @@ const HYROX_WEEKS = [
 ];
 
 const PAUL_PLAN = {
-  countdown: 'Reboot redo from Sun 1 Nov → Hyrox from Mon 30 Nov · knee + hamstring gate on next-morning soreness',
+  countdown: 'Covid return from Mon 23 Nov → build-up from Mon 30 Nov → Hyrox from Mon 28 Dec · breathing + knee gate on next-morning response',
   gateHeading: 'Gate — next-morning response (hamstring or knee)',
   daily: PAUL_DAILY,
   readiness: ['Next-AM soreness 1–10', 'Hamstring', 'Knee', 'Swelling', 'Sleep (h)', 'Bodyweight', 'Notes'],
@@ -1605,12 +1689,12 @@ const PAUL_PLAN = {
       weeks: [REC_W1],
     },
     {
-      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Sat 26 Sep – Sun 29 Nov · redo after a fall',
-      purpose: 'Restart after illness, then restarted again after a fall cost two weeks of knee rest from mid-October. Weeks 1–2 are banked history; the Sun 1 Nov combined session brings it back and the four-week build-up runs again from Mon 2 Nov, knee on watch. Movement is the spine — rings, crawls, flows, carries, get-ups, deep ranges — with one small static anchor on each strength day and the paired work run as supersets for time. Progression is reps → holds → load. Functional and strong, then Hyrox.',
+      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Sat 26 Sep – Sun 27 Dec · redo after a fall, then Covid',
+      purpose: 'Restart after illness, then restarted again after a fall cost two weeks of knee rest from mid-October. Weeks 1–2 are banked history; the Sun 1 Nov combined session brought it back, then Covid took most of November. A graded return week from Mon 23 Nov, then the four-week build-up runs from Mon 30 Nov, knee and breathing on watch. Movement is the spine — rings, crawls, flows, carries, get-ups, deep ranges — with one small static anchor on each strength day and the paired work run as supersets for time. Progression is reps → holds → load. Functional and strong, then Hyrox.',
       weeks: PAUL_REBOOT_WEEKS,
     },
     {
-      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 30 Nov – Sun 27 Dec',
+      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 28 Dec – Sun 24 Jan',
       purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift. Enters from the gentle end (3×800m) — the Reboot builds the base, the runs rebuild here.',
       weeks: HYROX_WEEKS,
     },
