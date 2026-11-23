@@ -1536,7 +1536,7 @@ const PAUL_REBUILD_WEEKS = [
     meta: p1Meta('Find starting loads', 'Week 2'), rules: p1Rules(),
     lower: { dl: 'Start 40–45 kg — the bar moves fast', dlCap: 'RPE 6 this week.', squatStage: 'stage 1: Spanish squat', squat: P1_SQUAT, stepDown: 'L leg, 4s down — clean or stop' },
     upper: {
-      bench: 'Start around 50 kg — should feel like you could do 10. Log it', benchScheme: '3 × 6',
+      bench: 'Start 40–50 kg — whatever feels like you could do 10. Log it', benchScheme: '3 × 6',
       chinSummary: 'Slow negatives and band volume build the pull before the full reps come.',
       chin: [['Chin-up negative', 'Jump or step up, 5s down', '3 × 2', '90s'], ['Band-assisted chin-up', 'Full range, chin over', '3 × 5', '90s']],
       press: 'Start 25 kg — the bar moves fast', rowScheme: '3 × 8',
@@ -2016,7 +2016,7 @@ const PAUL_PLAN = {
     },
     {
       id: 'rebuild', tag: 'Rebuild', title: 'Rebuild — Phase 1', dates: 'Mon 7 Dec – Sun 3 Jan 2027',
-      purpose: 'The long-term tracks start here: ' + PAUL_GOALS + '. Old bests (pre-injury): squat 100 kg × 8, bench 90 kg × 3, deadlift 140 kg × 2 — these are numbers coming back, not new ground. Four weeks at RPE 6 — the Reboot’s movement work plus bench, chin-up, trap bar and squat tracks at moderate loads, zone 2 cardio only. Left leg sets the dose, one new stressor a week, markers logged in week 4.',
+      purpose: 'The long-term tracks start here: ' + PAUL_GOALS + '. Old bests, from before the knee injury two years ago: squat 100 kg × 8, bench 90 kg × 3, deadlift 140 kg × 2. Two surgeries and a fall since — a long road back, taken in small steps, but they have been done before. Four weeks at RPE 6 — the Reboot’s movement work plus bench, chin-up, trap bar and squat tracks at moderate loads, zone 2 cardio only. Left leg sets the dose, one new stressor a week, markers logged in week 4.',
       weeks: PAUL_REBUILD_WEEKS,
     },
     {
