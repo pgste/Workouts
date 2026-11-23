@@ -1,10 +1,11 @@
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
-/** "Wed 29 Jul" -> a Date in the plan's year; null for undated labels like "Mon". */
+/** "Wed 29 Jul" -> a Date in the plan's year; null for undated labels like "Mon".
+ *  A label may carry its own year ("Mon 4 Jan 2027") once a plan crosses New Year. */
 export function planDate(label, year = 2026) {
-  const m = label.match(/(\d{1,2})\s+([A-Za-z]{3})/);
+  const m = label.match(/(\d{1,2})\s+([A-Za-z]{3})(?:\s+(\d{4}))?/);
   if (!m) return null;
-  return new Date(year, MONTHS.indexOf(m[2].toLowerCase()), parseInt(m[1], 10), 12);
+  return new Date(m[3] ? parseInt(m[3], 10) : year, MONTHS.indexOf(m[2].toLowerCase()), parseInt(m[1], 10), 12);
 }
 
 export function ymd(d) {

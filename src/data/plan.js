@@ -10,7 +10,7 @@ export const AMBER = '#f5a524';
 
 export const ATHLETES = [
   { id: 'lewis', name: 'Lewis', sub: 'In-season · Gladiators Pro + Blues' },
-  { id: 'paul', name: 'Paul', sub: 'Covid return · Hyrox from 28 Dec' },
+  { id: 'paul', name: 'Paul', sub: 'Covid return · Rebuild from 7 Dec' },
   { id: 'coach', name: 'Coach view', sub: 'Read any plan, no logging' },
 ];
 
@@ -1303,7 +1303,7 @@ const RB_COVID_RETURN = {
     { label: 'Effort', value: 'RPE 3–4 — nose-breathing pace' },
     { label: 'Breathing', value: 'The gate this week' },
     { label: 'Knee', value: 'Unloaded 3 weeks — basics only' },
-    { label: 'Next', value: 'Redo Week 1 — Mon 30 Nov' },
+    { label: 'Next', value: 'Return week 2 — Mon 30 Nov' },
   ],
   rules: {
     do: ['Stay where you can talk in full sentences', 'Stop a session early if breathing tightens', 'Check next morning: energy, breathing, knee', 'Back Insurance most evenings'],
@@ -1351,6 +1351,347 @@ const RB_COVID_RETURN = {
   ],
 };
 
+const RB_LIGHT_UPPER = { id: 'upper', title: 'Light upper — everything easy', summary: 'RPE 5 max, nothing near failure. Waking the shoulders up for the bench and chin-up work to come.', ex: [
+  ['Ring row', 'Feet on bench', '2 × 8', '60s'],
+  ['Incline push-up', 'Hands on box', '2 × 10', '60s'],
+  ['Scap pull-up', 'Straight arms — shoulder blades only', '2 × 6', '60s'],
+  ['Bar hang', 'Relax into the shoulders', '3 × 20s', '60s'],
+  ['Dead bug', '', '2 × 8 each', '45s'],
+] };
+
+const RB_COVID_RETURN_2 = {
+  id: 'rb_covid2', title: 'Return from Covid — week 2', subtitle: 'Mon 30 Nov – Sun 6 Dec · RPE 4 cap, a little longer',
+  purpose: 'Phase 0, second week. Same rules — conversational cardio, knee basics, light upper — a few minutes longer. This week decides whether the Rebuild starts on Mon 7 Dec.',
+  meta: [
+    { label: 'Effort', value: 'RPE 4 cap' },
+    { label: 'Breathing', value: 'Still the gate' },
+    { label: 'Knee', value: 'Basics only' },
+    { label: 'Next', value: 'Rebuild — Mon 7 Dec' },
+  ],
+  rules: {
+    do: ['Stay where you can talk in full sentences', 'Check next morning: energy, breathing, knee', 'Watch resting HR + HRV drift back to baseline', 'Back Insurance most evenings'],
+    dont: ['Intervals, sled, heavy lifts', 'Making up for lost weeks', 'Trusting a green recovery score over how the chest feels'],
+    note: 'Gate to the Rebuild: 7+ days symptom-free, no next-day crash, resting HR / HRV back at baseline. Not there by Sunday = this week repeats, tell me. Chest pain, palpitations, disproportionate breathlessness = stop and call the GP / 111.',
+  },
+  days: [
+    rbDay('rbc2_mon', 'Mon 30 Nov', 'Easy spin + knee basics', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 3–4, conversational', '1 × 20min', '—']] },
+      RB_KNEE_BASICS,
+    ]),
+    rbDay('rbc2_tue', 'Tue 1 Dec', 'Easy row + light upper', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [['Row — easy', 'Short slide, drive the left leg straight', '1 × 15min', '—']] },
+      RB_LIGHT_UPPER,
+    ]),
+    rbDay('rbc2_wed', 'Wed 2 Dec', 'Walk + mobility', [
+      { id: 'cardio', title: 'Walk — easy', ex: [['Walk — easy', 'Nose-breathing pace', '1 × 30min', '—']] },
+      RB_RECOVERY[1],
+    ]),
+    rbDay('rbc2_thu', 'Thu 3 Dec', 'Machines + ground basics', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [
+        ['Bike — easy', 'RPE 4', '1 × 15min', '—'],
+        ['Ski erg — easy', 'Tall, relaxed', '1 × 10min', '—'],
+      ] },
+      RB_COVID_GROUND,
+    ]),
+    rbRest('rbc2_fri', 'Fri 4 Dec'),
+    rbDay('rbc2_sat', 'Sat 5 Dec', 'Spin + light upper + knee basics', [
+      { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 4, conversational', '1 × 20min', '—']] },
+      RB_LIGHT_UPPER,
+      RB_KNEE_BASICS,
+    ]),
+    rbDay('rbc2_sun', 'Sun 6 Dec', 'Longer easy cardio + floor', [
+      { id: 'cardio', title: 'Cardio — long easy', ex: [
+        ['Bike — easy', 'Conversational', '1 × 20min', '—'],
+        ['Row — easy', '', '1 × 20min', '—'],
+      ] },
+      RB_COVID_GROUND,
+    ], { summary: 'The test for the Rebuild: 40 easy minutes and the floor, and a normal Monday morning.' }),
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PAUL — long-term tracks. Six goals, built in phases: Phase 0 Covid return
+// (inside the Reboot block), Phase 1 Rebuild, Phase 2 Goal Build. The squat and
+// the run are criteria-gated on the left knee; everything else runs on double
+// progression. Exercise names stay fixed so every track reads as one history.
+// ─────────────────────────────────────────────────────────────────────────────
+const PAUL_GOALS = '6k row + 6k ski erg strong · bench 80 kg for reps · 8–10 strict chin-ups · trap bar 140 kg for reps · back squat 100 kg for reps (knee-gated) · 10k run (knee-gated)';
+const TRACK_MARKERS = 'Markers this week — log them: left step-down height, trap bar load, bench load, chin-ups per set, 20-min row pace + HR, bodyweight.';
+const SQUAT_GATE = 'Squat track: Spanish squat → goblet box squat → front squat to box → back squat. Move up a stage only with no swelling 24 h later, pain 2/10 or less, and clean left-leg control.';
+const RUN_GATE = 'Running stays locked until the return-to-run test passes: single-leg symmetry ~80%+, clean single-leg squats, no swelling. Then walk-run to 30 min continuous, then distance.';
+
+const trackRules = (extraDont = []) => ({
+  do: ['Left leg sets the dose — stop when it wobbles', 'Double progression: top reps on every set, then add load', 'Zone 2 means full sentences', 'One new stressor a week', 'Log every set'],
+  dont: ['Grinding reps', 'Chasing listed sets through a wobbling leg', 'Pushing hamstrings past RPE 7', 'Heavy legs and sled back to back', ...extraDont],
+  note: 'Gate unchanged: next-morning knee swelling or soreness = hold or reduce, do not progress. Ill? Neck check — symptoms below the neck = rest.',
+});
+
+const trackCore = { id: 'core', title: 'Core', ex: [
+  ['Pallof press', '', '3 × 10 each', '45s'],
+  ['Dead bug', '', '2 × 8 each', '45s'],
+] };
+
+const lowerDay = (o) => [
+  rbWarm('Ski erg', 10),
+  { id: 'lift', title: 'Deadlift track — trap bar', summary: 'Goal: 140 kg for reps. Add 5 kg only when all 3 × 5 are crisp. ' + o.dlCap, ex: [
+    ['Trap bar deadlift', o.dl, '3 × 5', '2min'],
+  ] },
+  { id: 'squat', title: 'Squat track — ' + o.squatStage, summary: SQUAT_GATE, ex: [
+    ...o.squat,
+    ['Step-down — 2 in', o.stepDown, '2 × 6 each', '60s'],
+  ] },
+  { id: 'legs', title: 'Single-leg rebuild — recovering leg sets the dose', summary: 'Two sets listed, one set expected. Take set 2 only where set 1 was clean.', ex: [
+    ['Cossack squat', 'Hold support, easy depth — L first', '2 × 4 each', '90s'],
+    ['ATG split squat', 'Hold support if needed — L first', '2 × 5 each', '90s'],
+    ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '2 × 8', '90s'],
+    ['Monkey-foot leg curl', 'RPE 7 cap', '2 × 8 each', '60s'],
+    ['Single-leg calf raise', 'Full range off a step', '2 × 10 each', '45s'],
+  ] },
+];
+
+const upperDay = (o) => [
+  rbWarm('Row', 10),
+  { id: 'bench', title: 'Bench track', summary: 'Goal: 80 kg for reps. Double progression — top reps on every set, then +2.5 kg.', ex: [
+    ['Bench press', o.bench, o.benchScheme, '2min'],
+  ] },
+  { id: 'chin', title: 'Chin-up track — day 1', summary: 'Goal: 8–10 strict. ' + o.chinSummary, ex: o.chin },
+  { id: 'press', title: 'Overhead + pull', ex: [
+    ['Push press', o.press, '3 × 5', '2min'],
+    ['Ring row', 'Feet forward to load', o.rowScheme, '60s'],
+  ] },
+  trackCore,
+];
+
+const zone2Day = (row, ski, rowCue) => [
+  { id: 'cardio', title: 'Zone 2 — row + ski', summary: 'Engine track: 6k row and 6k ski erg. Full sentences the whole way — if you cannot talk, slow down.', ex: [
+    ['Row — easy', rowCue || 'Zone 2, short slide', '1 × ' + row + 'min', '—'],
+    ['Ski erg — easy', 'Zone 2, tall and relaxed', '1 × ' + ski + 'min', '—'],
+  ] },
+  RB_RECOVERY[1],
+];
+
+const movementDay = (chin) => [
+  rbWarm('Bike', 10),
+  RB_FLOW_B[1],
+  RB_MOVE_A[1],
+  { id: 'chin', title: 'Chin-up track — day 2', summary: 'Fresh, crisp, well short of failure. Volume, not a test.', ex: chin },
+  RB_MOVE_A[2],
+];
+
+const functionalDay = (o) => [
+  rbWarm('Row', 10),
+  { id: 'sled', title: 'Sled + carries — functional strong', ex: [
+    ['Sled push', 'Moderate, smooth', o.sled + ' × 20m', '90s'],
+    ['Backward sled drag', '', '4 × 20m', '90s'],
+    ['Farmer carry', 'Heavy, tall posture', o.farmer + ' × 30m', '90s'],
+    ['Suitcase carry', '', '3 × 20m each', '60s'],
+    ['Wall balls', 'Both legs share it — no offloading right', '3 × 10', '60s'],
+  ] },
+  o.engine,
+];
+
+const longDay = (bike, row) => [
+  { id: 'cardio', title: 'Cardio — long easy', ex: [
+    ['Bike — easy', 'Conversational', '1 × ' + bike + 'min', '—'],
+    ['Row — easy', 'Zone 2', '1 × ' + row + 'min', '—'],
+  ] },
+  RB_LOCO[1],
+];
+
+function trackWeek(prefix, n, labels, o) {
+  const id = (d) => prefix + n + '_' + d;
+  return {
+    id: prefix + n, title: 'Week ' + n + ' — ' + o.sub, subtitle: labels[0] + ' – ' + labels[6] + ' · ' + o.progression,
+    purpose: o.purpose,
+    meta: o.meta,
+    rules: o.rules,
+    days: [
+      rbDay(id('mon'), labels[0], 'Lower — trap bar + single-leg rebuild', lowerDay(o.lower), { notes: [RB_LEG_DOSE, RB_HAM_CAP, ...(o.monNotes || [])] }),
+      rbDay(id('tue'), labels[1], 'Upper strength — bench + chin-ups', upperDay(o.upper)),
+      rbDay(id('wed'), labels[2], 'Zone 2 row / ski + mobility', zone2Day(...o.zone2), o.wedNotes ? { notes: o.wedNotes } : {}),
+      rbDay(id('thu'), labels[3], 'Movement — get-ups, rings + chin-ups', movementDay(o.chin2)),
+      rbRest(id('fri'), labels[4]),
+      rbDay(id('sat'), labels[5], o.satTitle, functionalDay(o.functional), o.satNotes ? { notes: o.satNotes } : {}),
+      rbDay(id('sun'), labels[6], 'Long easy cardio + locomotion', longDay(...o.long)),
+    ],
+  };
+}
+
+const P1_SQUAT = [['Spanish squat hold', 'Band behind the knees — sit back, shins vertical', '3 × 30s', '60s']];
+const P1_ENGINE = (mins) => ({ id: 'engine', title: 'Engine — zone 2 only', summary: 'No intervals in the Rebuild. Easy minutes build the base the intervals will stand on.', ex: [
+  ['Ski erg — easy', 'Zone 2', '1 × ' + mins + 'min', '—'],
+] });
+const p1Meta = (progression, next) => [
+  { label: 'Progression', value: progression },
+  { label: 'Cardio', value: 'Zone 2 only' },
+  { label: 'Effort', value: 'RPE 6 — moderate loads' },
+  { label: 'Next', value: next },
+];
+const p1Rules = () => trackRules(['Intervals — Phase 2 brings them', 'Running — locked behind the test']);
+
+const PAUL_REBUILD_WEEKS = [
+  trackWeek('p1w', 1, ['Mon 7 Dec', 'Tue 8 Dec', 'Wed 9 Dec', 'Thu 10 Dec', 'Fri 11 Dec', 'Sat 12 Dec', 'Sun 13 Dec'], {
+    sub: 'Find the loads', progression: 'RPE 6 — everything in the tank',
+    purpose: 'First week of the new shape. The only job is to find starting loads that feel easy and log them — every track builds from these numbers.',
+    meta: p1Meta('Find starting loads', 'Week 2'), rules: p1Rules(),
+    lower: { dl: 'Start 40–45 kg — the bar moves fast', dlCap: 'RPE 6 this week.', squatStage: 'stage 1: Spanish squat', squat: P1_SQUAT, stepDown: 'L leg, 4s down — clean or stop' },
+    upper: {
+      bench: 'Start light — a load you could do for 10. Log it', benchScheme: '3 × 6',
+      chinSummary: 'Slow negatives and band volume build the pull before the full reps come.',
+      chin: [['Chin-up negative', 'Jump or step up, 5s down', '3 × 2', '90s'], ['Band-assisted chin-up', 'Full range, chin over', '3 × 5', '90s']],
+      press: 'Start 25 kg — the bar moves fast', rowScheme: '3 × 8',
+    },
+    zone2: [20, 10],
+    chin2: [['Band-assisted chin-up', 'Full range, smooth', '3 × 5', '90s']],
+    satTitle: 'Hyrox functional — sled, carries + easy engine',
+    functional: { sled: 4, farmer: 3, engine: P1_ENGINE(10) },
+    satNotes: ['First sled since October — lighter than the old 50 kg, smooth pushes. The knee decides.'],
+    long: [20, 20],
+  }),
+  trackWeek('p1w', 2, ['Mon 14 Dec', 'Tue 15 Dec', 'Wed 16 Dec', 'Thu 17 Dec', 'Fri 18 Dec', 'Sat 19 Dec', 'Sun 20 Dec'], {
+    sub: 'Add reps', progression: 'Reps before load',
+    purpose: 'Same loads, more reps. Bench works toward 3 × 8, chin-up volume grows by a rep a set. Trap bar goes up 5 kg only if last week was crisp.',
+    meta: p1Meta('Reps before load', 'Week 3'), rules: p1Rules(),
+    lower: { dl: '+5 kg if last week was crisp, else repeat', dlCap: 'RPE 6–7.', squatStage: 'stage 1: Spanish squat', squat: P1_SQUAT, stepDown: 'L leg, 4s down — clean or stop' },
+    upper: {
+      bench: 'Same load as last week — more reps', benchScheme: '3 × 6–8',
+      chinSummary: 'One more negative, one more rep on the band.',
+      chin: [['Chin-up negative', '5s down', '3 × 3', '90s'], ['Band-assisted chin-up', 'Full range, chin over', '3 × 6', '90s']],
+      press: 'Same load — crisp', rowScheme: '3 × 10',
+    },
+    zone2: [20, 15],
+    chin2: [['Band-assisted chin-up', 'Full range, smooth', '3 × 6', '90s']],
+    satTitle: 'Hyrox functional — sled, carries + easy engine',
+    functional: { sled: 5, farmer: 4, engine: P1_ENGINE(10) },
+    long: [20, 25],
+  }),
+  trackWeek('p1w', 3, ['Mon 21 Dec', 'Tue 22 Dec', 'Wed 23 Dec', 'Thu 24 Dec', 'Fri 25 Dec', 'Sat 26 Dec', 'Sun 27 Dec'], {
+    sub: 'Add load', progression: 'Small jumps where the reps are there',
+    purpose: 'Christmas week. Loads move where the top reps were hit: bench +2.5 kg, trap bar +5 kg, push press +2.5 kg. Miss a day for family and nothing is lost — tell me and I reshuffle.',
+    meta: p1Meta('Load where reps are there', 'Week 4'), rules: p1Rules(),
+    lower: { dl: '+5 kg if 3 × 5 was crisp', dlCap: 'RPE 7 cap.', squatStage: 'stage 1: Spanish squat', squat: [['Spanish squat hold', 'Longer hold, same depth', '3 × 40s', '60s']], stepDown: 'L leg, 4s down — add a light DB if clean' },
+    upper: {
+      bench: '+2.5 kg if you hit 3 × 8, back to 6s', benchScheme: '3 × 6–8',
+      chinSummary: 'First unassisted reps go in — singles, fresh.',
+      chin: [['Chin-up', 'Strict singles, full hang to chin over', '4 × 1', '90s'], ['Band-assisted chin-up', 'Full range', '3 × 6', '90s']],
+      press: '+2.5 kg if all 15 reps flew', rowScheme: '3 × 10',
+    },
+    zone2: [25, 15],
+    chin2: [['Chin-up negative', '5s down', '3 × 3', '90s']],
+    satTitle: 'Hyrox functional — sled, carries + easy engine',
+    functional: { sled: 6, farmer: 4, engine: P1_ENGINE(15) },
+    long: [25, 25],
+  }),
+  trackWeek('p1w', 4, ['Mon 28 Dec', 'Tue 29 Dec', 'Wed 30 Dec', 'Thu 31 Dec', 'Fri 1 Jan 2027', 'Sat 2 Jan 2027', 'Sun 3 Jan 2027'], {
+    sub: 'Consolidate + markers', progression: 'Own week 3, log the markers',
+    purpose: 'No new load. Repeat week 3 cleanly and log the first set of markers — these are the baseline every goal is measured from.',
+    meta: p1Meta('Hold + log markers', 'Goal Build — Mon 4 Jan'), rules: p1Rules(),
+    lower: { dl: 'Same as last week — own it', dlCap: 'RPE 7 cap.', squatStage: 'stage 1: Spanish squat', squat: [['Spanish squat hold', 'Longer hold, same depth', '3 × 40s', '60s']], stepDown: 'MARKER — highest step where the lowering is clean' },
+    monNotes: [TRACK_MARKERS],
+    upper: {
+      bench: 'Same load — all sets to the top of the range', benchScheme: '3 × 6–8',
+      chinSummary: 'MARKER: one fresh strict set, stop a rep short of failure. Log it.',
+      chin: [['Chin-up', 'MARKER — one fresh set, one rep in reserve', '1 × 1–5', '3min'], ['Band-assisted chin-up', 'Full range', '3 × 6', '90s']],
+      press: 'Same load — crisp', rowScheme: '3 × 10',
+    },
+    zone2: [20, 20, 'MARKER — steady zone 2 for 20 min, log average pace + HR'],
+    wedNotes: [TRACK_MARKERS],
+    chin2: [['Chin-up negative', '5s down', '3 × 3', '90s']],
+    satTitle: 'Hyrox functional — sled, carries + easy engine',
+    functional: { sled: 6, farmer: 4, engine: P1_ENGINE(15) },
+    long: [25, 30],
+  }),
+];
+
+const P2_INTERVALS = (machine, reps) => ({ id: 'engine', title: 'Engine — ' + machine.toLowerCase(), summary: 'RPE 7–8: hard but repeatable, every rep at the same pace. Breathing or chest feels wrong = stop and go back to zone 2.', ex: [
+  [machine, 'Even pace across every rep', reps + ' × 4min', '3min'],
+] });
+const p2Meta = (progression, squat, next) => [
+  { label: 'Progression', value: progression },
+  { label: 'Engine', value: '2 × zone 2 + 1 intervals' },
+  { label: 'Squat stage', value: squat },
+  { label: 'Next', value: next },
+];
+const p2Rules = () => trackRules(['Moving up a squat stage on a swollen knee', 'Running before the test is passed']);
+const P2_GOBLET = [['Goblet box squat', 'Sit back to a high box, stand tall — L leg takes its share', '3 × 6', '90s'], ['Spanish squat hold', '', '2 × 40s', '60s']];
+const P2_FRONT = [['Front squat to box', 'Empty bar first. Only if the goblet box squat left no swelling', '3 × 5', '2min'], ['Spanish squat hold', '', '2 × 40s', '60s']];
+
+const PAUL_GOAL_WEEKS = [
+  trackWeek('p2w', 1, ['Mon 4 Jan 2027', 'Tue 5 Jan 2027', 'Wed 6 Jan 2027', 'Thu 7 Jan 2027', 'Fri 8 Jan 2027', 'Sat 9 Jan 2027', 'Sun 10 Jan 2027'], {
+    sub: 'Intervals arrive', progression: 'New stressor: row intervals',
+    purpose: 'The one new thing this week is Saturday’s row intervals. Lifts carry on by double progression; the squat track moves to the goblet box squat if the knee has been quiet.',
+    meta: p2Meta('Intervals in', 'Goblet box squat', 'Week 2'), rules: p2Rules(),
+    lower: { dl: '+5 kg when 3 × 5 is crisp', dlCap: 'RPE 7–8 cap.', squatStage: 'stage 2: goblet box squat', squat: P2_GOBLET, stepDown: 'Load before height — light DB' },
+    monNotes: [SQUAT_GATE],
+    upper: {
+      bench: 'Top reps on all sets → +2.5 kg', benchScheme: '4 × 5–8',
+      chinSummary: 'Total-rep target: 12 strict reps in as many small sets as it takes.',
+      chin: [['Chin-up', '12 total — sets of 2, never to failure', '6 × 2', '90s']],
+      press: 'Double progression, +2.5 kg', rowScheme: '3 × 10',
+    },
+    zone2: [25, 20],
+    chin2: [['Chin-up negative', '5s down', '3 × 3', '90s'], ['Band-assisted chin-up', 'Full range', '2 × 8', '90s']],
+    satTitle: 'Hyrox functional + row intervals',
+    functional: { sled: 4, farmer: 3, engine: P2_INTERVALS('Row intervals', 4) },
+    satNotes: ['Sled volume drops to make room for the intervals. Short slide on the row — stop before the shins go vertical.'],
+    long: [25, 30],
+  }),
+  trackWeek('p2w', 2, ['Mon 11 Jan 2027', 'Tue 12 Jan 2027', 'Wed 13 Jan 2027', 'Thu 14 Jan 2027', 'Fri 15 Jan 2027', 'Sat 16 Jan 2027', 'Sun 17 Jan 2027'], {
+    sub: 'Build', progression: 'Ski intervals, chin-up total up',
+    purpose: 'Intervals move to the ski erg. Chin-up total climbs to 15. Everything else progresses only where the reps were hit.',
+    meta: p2Meta('Volume up', 'Goblet box squat', 'Week 3'), rules: p2Rules(),
+    lower: { dl: '+5 kg when 3 × 5 is crisp', dlCap: 'RPE 7–8 cap.', squatStage: 'stage 2: goblet box squat', squat: P2_GOBLET, stepDown: 'Load before height — light DB' },
+    upper: {
+      bench: 'Top reps on all sets → +2.5 kg', benchScheme: '4 × 5–8',
+      chinSummary: 'Total-rep target: 15.',
+      chin: [['Chin-up', '15 total — sets of 3, never to failure', '5 × 3', '90s']],
+      press: 'Double progression, +2.5 kg', rowScheme: '3 × 10',
+    },
+    zone2: [25, 20],
+    chin2: [['Chin-up negative', '5s down', '3 × 3', '90s'], ['Band-assisted chin-up', 'Full range', '2 × 8', '90s']],
+    satTitle: 'Hyrox functional + ski intervals',
+    functional: { sled: 4, farmer: 3, engine: P2_INTERVALS('Ski erg intervals', 4) },
+    long: [30, 30],
+  }),
+  trackWeek('p2w', 3, ['Mon 18 Jan 2027', 'Tue 19 Jan 2027', 'Wed 20 Jan 2027', 'Thu 21 Jan 2027', 'Fri 22 Jan 2027', 'Sat 23 Jan 2027', 'Sun 24 Jan 2027'], {
+    sub: 'Squat moves up', progression: 'New stressor: front squat to box',
+    purpose: 'The one new thing is the front squat to a box — and only if two weeks of goblet box squats left the knee quiet. If not, stay on the goblet and nothing is lost.',
+    meta: p2Meta('Squat stage 3', 'Front squat to box', 'Week 4'), rules: p2Rules(),
+    lower: { dl: '+5 kg when 3 × 5 is crisp', dlCap: 'RPE 7–8 cap.', squatStage: 'stage 3: front squat to box', squat: P2_FRONT, stepDown: 'Load before height — light DB' },
+    monNotes: [SQUAT_GATE],
+    upper: {
+      bench: 'Top reps on all sets → +2.5 kg', benchScheme: '4 × 5–8',
+      chinSummary: 'Total-rep target: 18.',
+      chin: [['Chin-up', '18 total — sets of 3, never to failure', '6 × 3', '90s']],
+      press: 'Double progression, +2.5 kg', rowScheme: '3 × 10',
+    },
+    zone2: [30, 20],
+    chin2: [['Chin-up negative', '5s down', '3 × 3', '90s'], ['Band-assisted chin-up', 'Full range', '2 × 8', '90s']],
+    satTitle: 'Hyrox functional + row intervals',
+    functional: { sled: 4, farmer: 3, engine: P2_INTERVALS('Row intervals', 5) },
+    long: [30, 30],
+  }),
+  trackWeek('p2w', 4, ['Mon 25 Jan 2027', 'Tue 26 Jan 2027', 'Wed 27 Jan 2027', 'Thu 28 Jan 2027', 'Fri 29 Jan 2027', 'Sat 30 Jan 2027', 'Sun 31 Jan 2027'], {
+    sub: 'Markers + run test', progression: 'Hold loads, log markers, test the knee for running',
+    purpose: 'No new load. Second set of markers against the 3 Jan baseline, and the return-to-run test. Pass it and the walk-run progression gets written into the next block.',
+    meta: p2Meta('Hold + markers', 'Front squat to box', 'Next block — written from the markers'), rules: p2Rules(),
+    lower: { dl: 'Same as last week — own it', dlCap: 'RPE 7–8 cap.', squatStage: 'stage 3: front squat to box', squat: P2_FRONT, stepDown: 'MARKER — highest step where the lowering is clean' },
+    monNotes: [TRACK_MARKERS, RUN_GATE],
+    upper: {
+      bench: 'Same load — all sets to the top of the range', benchScheme: '4 × 5–8',
+      chinSummary: 'MARKER: one fresh strict set, one rep in reserve. Log it.',
+      chin: [['Chin-up', 'MARKER — one fresh set, one rep in reserve', '1 × 1–8', '3min']],
+      press: 'Same load — crisp', rowScheme: '3 × 10',
+    },
+    zone2: [20, 20, 'MARKER — same zone 2 HR as 30 Dec for 20 min, log average pace + HR'],
+    wedNotes: [TRACK_MARKERS],
+    chin2: [['Band-assisted chin-up', 'Full range', '2 × 8', '90s']],
+    satTitle: 'Hyrox functional + ski intervals',
+    functional: { sled: 4, farmer: 3, engine: P2_INTERVALS('Ski erg intervals', 5) },
+    long: [30, 30],
+  }),
+];
+
 const PAUL_REBOOT_WEEKS = [
   RB_W0,
   (() => {
@@ -1382,8 +1723,8 @@ const PAUL_REBOOT_WEEKS = [
     meta: [
       { label: 'Knee', value: 'On watch — next-morning check' },
       { label: 'Effort', value: 'RPE 6, everything in the tank' },
-      { label: 'Redo', value: 'Covid paused it — reruns Mon 30 Nov' },
-      { label: 'Hyrox', value: 'Mon 28 Dec' },
+      { label: 'Redo', value: 'Covid paused it' },
+      { label: 'Next', value: 'Rebuild — Mon 7 Dec' },
     ],
     rules: {
       do: ['Come back like week 1 — nothing earns anything today', 'Knee gets the recovering-leg treatment: one clean effort, stop on any signal', 'Log everything'],
@@ -1411,30 +1752,10 @@ const PAUL_REBOOT_WEEKS = [
     ],
   },
   // Covid from early November took Redo Weeks 1–4 (2–29 Nov) — none of it
-  // happened, so it came out. A graded return week rebuilds tolerance, then
-  // the same four-week build-up runs again with fresh week numbers.
+  // happened, so it came out. Two graded return weeks (Phase 0) close the
+  // Reboot; the Rebuild block (Phase 1) takes over from Mon 7 Dec.
   RB_COVID_RETURN,
-  (() => {
-    const w = rebootWeek(9, ['Mon 30 Nov', 'Tue 1 Dec', 'Wed 2 Dec', 'Thu 3 Dec', 'Fri 4 Dec', 'Sat 5 Dec', 'Sun 6 Dec'], 'Learn the shapes', 'RPE 6 — everything in the tank');
-    w.title = 'Redo Week 1 — Learn the shapes'; w.meta[3] = { label: 'Next', value: 'Redo Week 2' };
-    w.rules.note = 'Two gates now: next-morning knee/hamstring as always, AND breathing — if it gets worse or the chest tightens, drop back to the return week and tell me.';
-    return w;
-  })(),
-  (() => {
-    const w = rebootWeek(10, ['Mon 7 Dec', 'Tue 8 Dec', 'Wed 9 Dec', 'Thu 10 Dec', 'Fri 11 Dec', 'Sat 12 Dec', 'Sun 13 Dec'], 'Add a little', 'One more rep, 5s more on holds');
-    w.title = 'Redo Week 2 — Add a little'; w.meta[3] = { label: 'Next', value: 'Redo Week 3' };
-    return w;
-  })(),
-  (() => {
-    const w = rebootWeek(11, ['Mon 14 Dec', 'Tue 15 Dec', 'Wed 16 Dec', 'Thu 17 Dec', 'Fri 18 Dec', 'Sat 19 Dec', 'Sun 20 Dec'], 'Add load', 'DBs on cossacks/step-ups, lower ring angles');
-    w.title = 'Redo Week 3 — Add load'; w.meta[3] = { label: 'Next', value: 'Redo Week 4' };
-    return w;
-  })(),
-  (() => {
-    const w = rebootWeek(12, ['Mon 21 Dec', 'Tue 22 Dec', 'Wed 23 Dec', 'Thu 24 Dec', 'Fri 25 Dec', 'Sat 26 Dec', 'Sun 27 Dec'], 'Consolidate', 'Own week 3 — arrive at Hyrox fresh');
-    w.title = 'Redo Week 4 — Consolidate'; w.meta[3] = { label: 'Next', value: 'Hyrox — Mon 28 Dec' };
-    return w;
-  })(),
+  RB_COVID_RETURN_2,
 ];
 
 // ── Hyrox Training (Integrated Program v2). Shared weekly template; only the
@@ -1673,10 +1994,10 @@ const HYROX_WEEKS = [
 ];
 
 const PAUL_PLAN = {
-  countdown: 'Covid return from Mon 23 Nov → build-up from Mon 30 Nov → Hyrox from Mon 28 Dec · breathing + knee gate on next-morning response',
+  countdown: 'Covid return to Sun 6 Dec → Rebuild from Mon 7 Dec → Goal Build from Mon 4 Jan · breathing + knee gate on next-morning response',
   gateHeading: 'Gate — next-morning response (hamstring or knee)',
   daily: PAUL_DAILY,
-  readiness: ['Next-AM soreness 1–10', 'Hamstring', 'Knee', 'Swelling', 'Sleep (h)', 'Bodyweight', 'Notes'],
+  readiness: ['Next-AM soreness 1–10', 'Hamstring', 'Knee', 'Swelling', 'Breathing', 'Resting HR / HRV', 'Sleep (h)', 'Bodyweight', 'Notes'],
   gate: [
     gate(GREEN_C, 'GREEN', 'No next-morning soreness or swelling — hamstring AND knee · movement pain-free', 'Progress as written — add load / range'),
     gate(AMBER_C, 'AMBER', 'Mild next-AM soreness that settles by midday · no swelling', 'Hold. Repeat that week, do not progress'),
@@ -1689,13 +2010,23 @@ const PAUL_PLAN = {
       weeks: [REC_W1],
     },
     {
-      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Sat 26 Sep – Sun 27 Dec · redo after a fall, then Covid',
-      purpose: 'Restart after illness, then restarted again after a fall cost two weeks of knee rest from mid-October. Weeks 1–2 are banked history; the Sun 1 Nov combined session brought it back, then Covid took most of November. A graded return week from Mon 23 Nov, then the four-week build-up runs from Mon 30 Nov, knee and breathing on watch. Movement is the spine — rings, crawls, flows, carries, get-ups, deep ranges — with one small static anchor on each strength day and the paired work run as supersets for time. Progression is reps → holds → load. Functional and strong, then Hyrox.',
+      id: 'reboot', tag: 'Reboot', title: 'Functional Reboot', dates: 'Sat 26 Sep – Sun 6 Dec · a fall, then Covid',
+      purpose: 'Restart after illness, then restarted again after a fall cost two weeks of knee rest from mid-October. Weeks 1–2 are banked history; the Sun 1 Nov combined session brought it back, then Covid took most of November. Two graded return weeks from Mon 23 Nov (Phase 0) close the block with knee and breathing on watch; the Rebuild takes its movement work — rings, crawls, flows, carries, get-ups — forward from Mon 7 Dec.',
       weeks: PAUL_REBOOT_WEEKS,
     },
     {
-      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Mon 28 Dec – Sun 24 Jan',
-      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Runs Tue + Sun, VO2 on Thursday machines, cardio always before the lift. Enters from the gentle end (3×800m) — the Reboot builds the base, the runs rebuild here.',
+      id: 'rebuild', tag: 'Rebuild', title: 'Rebuild — Phase 1', dates: 'Mon 7 Dec – Sun 3 Jan 2027',
+      purpose: 'The long-term tracks start here: ' + PAUL_GOALS + '. Four weeks at RPE 6 — the Reboot’s movement work plus bench, chin-up, trap bar and squat tracks at moderate loads, zone 2 cardio only. Left leg sets the dose, one new stressor a week, markers logged in week 4.',
+      weeks: PAUL_REBUILD_WEEKS,
+    },
+    {
+      id: 'goal', tag: 'Build', title: 'Goal Build — Phase 2', dates: 'Mon 4 Jan – Sun 31 Jan 2027',
+      purpose: 'Progressive overload on every track: ' + PAUL_GOALS + '. Row and ski intervals arrive, the squat climbs its stages when the knee allows, and week 4 runs the return-to-run test. ' + RUN_GATE,
+      weeks: PAUL_GOAL_WEEKS,
+    },
+    {
+      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Parked — after the run gate, dates TBC',
+      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Parked: it runs from week 1, so it waits for the return-to-run test and an event date. The Goal Build carries the Hyrox stations (sled, carries, wall balls) until then.',
       weeks: HYROX_WEEKS,
     },
   ],
