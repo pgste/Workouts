@@ -7,9 +7,15 @@ the standing context any Claude session needs to continue the work.
 ## The people
 
 - **Paul** (the user) — recovering from knee surgery + hamstring rehab, twice
-  restarted after illness and a fall. Currently: Functional Reboot redo
-  (movement-first: rings, crawls, flows, carries, get-ups; one static anchor
-  per strength day; supersets run for time), then Hyrox Training. Hard rules:
+  restarted after illness and a fall. Currently (from 23 Nov 2026): Phase 0
+  Covid return (two graded weeks, breathing is a gate) → Phase 1 Rebuild
+  (Mon 7 Dec, four weeks, RPE 6, zone 2 only) → Phase 2 Goal Build (Mon 4 Jan
+  2027, intervals + squat stages + return-to-run test). Hyrox Training is
+  parked until the run gate passes and there is an event date. Long-term
+  tracks: 6k row/ski, bench 80 kg, 8–10 strict chins, trap bar 140 kg, back
+  squat 100 kg and 10k run (both knee-gated). Weekly shape: Mon lower · Tue
+  upper · Wed zone 2 · Thu movement · Fri rest · Sat functional + engine ·
+  Sun long easy. Markers logged every 4 weeks. Hard rules:
   hamstring capped at RPE 7; the recovering leg/knee "sets the dose" — one
   clean set is a pass, never chase listed sets through a wobbling limb; gate
   on NEXT-MORNING soreness/swelling (hamstring AND knee); tempo RDL is
@@ -45,7 +51,7 @@ the standing context any Claude session needs to continue the work.
   `[name, load, scheme, rest]`. **Exercise names key history lookups — keep
   them identical across weeks.** Day labels like `'Mon 2 Nov'` must parse via
   `planDate()` (undated labels return null and are skipped by today-links and
-  the API). Day ids must be globally unique per athlete (logging is keyed on
+  the API; labels outside 2026 carry their year, e.g. `'Mon 4 Jan 2027'`). Day ids must be globally unique per athlete (logging is keyed on
   them) — reuse a builder with fresh week numbers rather than re-dating used
   ids.
 - Verification before every push: `npm run build`, plus a node simulation
