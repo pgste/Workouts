@@ -11,9 +11,13 @@ the standing context any Claude session needs to continue the work.
   Covid return (two graded weeks, breathing is a gate) → Phase 1 Rebuild
   (Mon 7 Dec, four weeks, RPE 6, zone 2 only) → Phase 2 Goal Build (Mon 4 Jan
   2027, intervals + squat stages + return-to-run test). Hyrox Training is
-  parked until the run gate passes and there is an event date. Long-term
-  tracks: 6k row/ski, bench 80 kg, 8–10 strict chins, trap bar 140 kg, back
-  squat 100 kg and 10k run (both knee-gated). Weekly shape: Mon lower · Tue
+  parked until the run gate passes and there is an event date. Goals
+  (hybrid all-rounder; targets get raised when beaten, past bests are context
+  only): primary a 2k erg race, sub-7:00 inside 12 months; Hyrox doubles with
+  Pamela (~mid-2027) then solo; bench 80 kg, 8–10 dips + bar chins then ring
+  chins, trap bar 140 kg; knee-gated: back squat 100 kg, power clean, 45-min
+  10k; bodyweight ~90 kg. Monthly erg test rotates 500/1k/2k/3k/6k; first
+  baselines in Rebuild week 4. Asthmatic — inhaler to hand. Weekly shape: Mon lower · Tue
   upper · Wed zone 2 · Thu movement · Fri rest · Sat functional + engine ·
   Sun long easy. Markers logged every 4 weeks. Hard rules:
   hamstring capped at RPE 7; the recovering leg/knee "sets the dose" — one

@@ -1306,8 +1306,8 @@ const RB_COVID_RETURN = {
     { label: 'Next', value: 'Return week 2 — Mon 30 Nov' },
   ],
   rules: {
-    do: ['Stay where you can talk in full sentences', 'Stop a session early if breathing tightens', 'Check next morning: energy, breathing, knee', 'Back Insurance most evenings'],
-    dont: ['Intervals, sled, anything that makes you gasp', 'Making up for lost weeks', 'Trusting a green recovery score over how the chest feels'],
+    do: ['Stay where you can talk in full sentences', 'Stop a session early if breathing tightens', 'Inhaler to hand', 'Check next morning: energy, breathing, knee', 'Back Insurance most evenings'],
+    dont: ['Intervals, sled, anything that makes you gasp', 'Max tests of any kind', 'Making up for lost weeks', 'Trusting a green recovery score over how the chest feels'],
     note: 'Progress only if you felt normal the next morning. Symptoms back or unusual fatigue = repeat the previous day. Chest pain, palpitations, breathless at rest or faint = stop and call the GP / 111.',
   },
   days: [
@@ -1318,7 +1318,7 @@ const RB_COVID_RETURN = {
     rbDay('rbc_tue', 'Tue 24 Nov', 'Easy spin + knee basics', [
       { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 3, conversational', '1 × 15min', '—']] },
       RB_KNEE_BASICS,
-    ], { summary: 'Short spin, then wake the left leg up gently.' }),
+    ], { summary: 'Short spin, then wake the left leg up gently.', notes: ['Markers from the day (24 Nov): step-down clean at one yoga block — at two the left collapses. Left single-leg calf raise fades at about 5 reps. Spanish squat 3 × 30s fine. Zone 2 row ≈ 2:30/500. Knee stiff, no swelling.'] }),
     rbDay('rbc_wed', 'Wed 25 Nov', 'Walk + mobility', [
       { id: 'cardio', title: 'Walk — easy', ex: [['Walk — easy', 'Nose-breathing pace', '1 × 30min', '—']] },
       RB_RECOVERY[1],
@@ -1369,8 +1369,8 @@ const RB_COVID_RETURN_2 = {
     { label: 'Next', value: 'Rebuild — Mon 7 Dec' },
   ],
   rules: {
-    do: ['Stay where you can talk in full sentences', 'Check next morning: energy, breathing, knee', 'Watch resting HR + HRV drift back to baseline', 'Back Insurance most evenings'],
-    dont: ['Intervals, sled, heavy lifts', 'Making up for lost weeks', 'Trusting a green recovery score over how the chest feels'],
+    do: ['Stay where you can talk in full sentences', 'Inhaler to hand', 'Check next morning: energy, breathing, knee', 'Watch resting HR + HRV drift back to baseline', 'Back Insurance most evenings'],
+    dont: ['Intervals, sled, heavy lifts', 'Max tests of any kind', 'Making up for lost weeks', 'Trusting a green recovery score over how the chest feels'],
     note: 'Gate to the Rebuild: 7+ days symptom-free, no next-day crash, resting HR / HRV back at baseline. Not there by Sunday = this week repeats, tell me. Chest pain, palpitations, disproportionate breathlessness = stop and call the GP / 111.',
   },
   days: [
@@ -1415,8 +1415,9 @@ const RB_COVID_RETURN_2 = {
 // the run are criteria-gated on the left knee; everything else runs on double
 // progression. Exercise names stay fixed so every track reads as one history.
 // ─────────────────────────────────────────────────────────────────────────────
-const PAUL_GOALS = '6k row + 6k ski erg strong · bench 80 kg for reps · 8–10 strict chin-ups · trap bar 140 kg for reps · back squat 100 kg for reps (knee-gated) · 10k run (knee-gated)';
-const TRACK_MARKERS = 'Markers this week — log them: left step-down height, trap bar load, bench load, chin-ups per set, 20-min row pace + HR, bodyweight.';
+const PAUL_GOALS = '2k row race, sub-7:00 inside 12 months (primary) · Hyrox doubles with Pamela, then solo · bench 80 kg for reps · 8–10 dips + 8–10 bar chin-ups, then ring chin-ups from a dead hang · trap bar 140 kg for reps · back squat 100 kg for reps, power clean and a 45-min 10k (all knee-gated) · bodyweight ~90 kg';
+const ERG_TARGETS = 'Row targets, baseline → 3 months → 12 months: 500m 1:42 → 1:36 → sub-1:30 · 1k 3:40 → 3:25 → 3:15 · 2k ~7:45 → ~7:20 → sub-7:00 · 3k 11:30 → 10:55 → 10:15 · 6k 24:00 → 23:00 → 21:30. Ski erg ≈ row + 7s/500 until the first ski tests replace the guess.';
+const TRACK_MARKERS = 'Markers this week — log them: step-down height, single-leg calf raise L vs R, bench, dips, chin-ups, trap bar, the erg test, bodyweight.';
 const SQUAT_GATE = 'Squat track: Spanish squat → goblet box squat → front squat to box → back squat. Move up a stage only with no swelling 24 h later, pain 2/10 or less, and clean left-leg control. Patellar-tendon graft: front-of-knee tendon ache up to 2/10 that is gone by next morning is expected and fine; anything sharper or lingering = stay at the stage.';
 const RUN_GATE = 'Running stays locked until the return-to-run test passes: single-leg symmetry ~80%+, clean single-leg squats, no swelling. Then walk-run to 30 min continuous, then distance.';
 
@@ -1445,7 +1446,7 @@ const lowerDay = (o) => [
     ['ATG split squat', 'Hold support if needed — L first', '2 × 5 each', '90s'],
     ['Tempo RDL', 'Light, 4s eccentric — medicine, not training', '2 × 8', '90s'],
     ['Monkey-foot leg curl', 'RPE 7 cap', '2 × 8 each', '60s'],
-    ['Single-leg calf raise', 'Full range off a step', '2 × 10 each', '45s'],
+    ['Single-leg calf raise', 'L first — it fades around 5 for now. R only matches what L did', '2 × 10 each', '45s'],
   ] },
 ];
 
@@ -1454,32 +1455,40 @@ const upperDay = (o) => [
   { id: 'bench', title: 'Bench track', summary: 'Goal: 80 kg for reps. Double progression — top reps on every set, then +2.5 kg.', ex: [
     ['Bench press', o.bench, o.benchScheme, '2min'],
   ] },
-  { id: 'chin', title: 'Chin-up track — day 1', summary: 'Goal: 8–10 strict. ' + o.chinSummary, ex: o.chin },
+  { id: 'chin', title: 'Chin-up + dip track — day 1', summary: 'Goal: 8–10 bar chin-ups and 8–10 dips. ' + o.chinSummary, ex: [
+    ...o.chin,
+    ['Dips', o.dipsCue || 'Bars or bench — full range, 2 reps in reserve', o.dips, '90s'],
+  ] },
   { id: 'press', title: 'Overhead + pull', ex: [
     ['Push press', o.press, '3 × 5', '2min'],
     ['Ring row', 'Feet forward to load', o.rowScheme, '60s'],
   ] },
-  trackCore,
 ];
 
-const zone2Day = (row, ski, rowCue) => [
-  { id: 'cardio', title: 'Zone 2 — row + ski', summary: 'Engine track: 6k row and 6k ski erg. Full sentences the whole way — if you cannot talk, slow down.', ex: [
-    ['Row — easy', rowCue || 'Zone 2, short slide', '1 × ' + row + 'min', '—'],
+const zone2Day = (row, ski, rowCue, test) => [
+  { id: 'cardio', title: 'Zone 2 — row + ski', summary: 'Engine track: the base under the 2k. Full sentences the whole way — if you cannot talk, slow down. Zone 2 pace drifts from ~2:30/500 toward ~2:15 over the months; it is never forced.', ex: [
+    ['Row — easy', rowCue || 'Zone 2 — around 2:30/500 for now, short slide', '1 × ' + row + 'min', '—'],
     ['Ski erg — easy', 'Zone 2, tall and relaxed', '1 × ' + ski + 'min', '—'],
   ] },
+  ...(test ? [test] : []),
   RB_RECOVERY[1],
+  trackCore,
 ];
 
 const movementDay = (chin) => [
   rbWarm('Bike', 10),
   RB_FLOW_B[1],
   RB_MOVE_A[1],
-  { id: 'chin', title: 'Chin-up track — day 2', summary: 'Fresh, crisp, well short of failure. Volume, not a test.', ex: chin },
+  { id: 'chin', title: 'Chin-up + dip track — day 2', summary: 'Fresh, crisp, well short of failure. Volume, not a test. Bar dips carry the volume; the ring dip above stays a skill.', ex: [
+    ...chin,
+    ['Dips', 'Volume — smooth, well short of failure', '2 × 5', '90s'],
+  ] },
   RB_MOVE_A[2],
 ];
 
 const functionalDay = (o) => [
   rbWarm('Row', 10),
+  ...(o.engineFirst ? [o.engine] : []),
   { id: 'sled', title: 'Sled + carries — functional strong', ex: [
     ['Sled push', 'Moderate, smooth', o.sled + ' × 20m', '90s'],
     ['Backward sled drag', '', '4 × 20m', '90s'],
@@ -1487,8 +1496,13 @@ const functionalDay = (o) => [
     ['Suitcase carry', '', '3 × 20m each', '60s'],
     ['Wall balls', 'Both legs share it — no offloading right', '3 × 10', '60s'],
   ] },
-  o.engine,
+  ...(o.engineFirst ? [] : [o.engine]),
 ];
+
+const ergTest = (name, title, summary) => ({ id: 'test', title, summary: summary + ' Inhaler to hand — breathing or chest feels wrong, stop and it becomes zone 2.', ex: [
+  [name, 'Even pace — log time + average split', '1 × 1', '—'],
+  ['Bike — easy', 'Cool-down, legs loose', '1 × 5min', '—'],
+] });
 
 const longDay = (bike, row) => [
   { id: 'cardio', title: 'Cardio — long easy', ex: [
@@ -1534,8 +1548,9 @@ const PAUL_REBUILD_WEEKS = [
     sub: 'Find the loads', progression: 'RPE 6 — everything in the tank',
     purpose: 'First week of the new shape. The only job is to find starting loads that feel easy and log them — every track builds from these numbers.',
     meta: p1Meta('Find starting loads', 'Week 2'), rules: p1Rules(),
-    lower: { dl: 'Start 40–45 kg — the bar moves fast', dlCap: 'RPE 6 this week.', squatStage: 'stage 1: Spanish squat', squat: P1_SQUAT, stepDown: 'L leg, 4s down — clean or stop' },
+    lower: { dl: 'Start 40–45 kg — the bar moves fast', dlCap: 'RPE 6 this week.', squatStage: 'stage 1: Spanish squat', squat: P1_SQUAT, stepDown: 'One yoga block, L leg, 4s down — clean or stop' },
     upper: {
+      dips: '3 × 4',
       bench: 'Start 40–50 kg — whatever feels like you could do 10. Log it', benchScheme: '3 × 6',
       chinSummary: 'Slow negatives and band volume build the pull before the full reps come.',
       chin: [['Chin-up negative', 'Jump or step up, 5s down', '3 × 2', '90s'], ['Band-assisted chin-up', 'Full range, chin over', '3 × 5', '90s']],
@@ -1552,8 +1567,9 @@ const PAUL_REBUILD_WEEKS = [
     sub: 'Add reps', progression: 'Reps before load',
     purpose: 'Same loads, more reps. Bench works toward 3 × 8, chin-up volume grows by a rep a set. Trap bar goes up 5 kg only if last week was crisp.',
     meta: p1Meta('Reps before load', 'Week 3'), rules: p1Rules(),
-    lower: { dl: '+5 kg if last week was crisp, else repeat', dlCap: 'RPE 6–7.', squatStage: 'stage 1: Spanish squat', squat: P1_SQUAT, stepDown: 'L leg, 4s down — clean or stop' },
+    lower: { dl: '+5 kg if last week was crisp, else repeat', dlCap: 'RPE 6–7.', squatStage: 'stage 1: Spanish squat', squat: P1_SQUAT, stepDown: 'One yoga block, L leg, 4s down — clean or stop' },
     upper: {
+      dips: '3 × 5',
       bench: 'Same load as last week — more reps', benchScheme: '3 × 6–8',
       chinSummary: 'One more negative, one more rep on the band.',
       chin: [['Chin-up negative', '5s down', '3 × 3', '90s'], ['Band-assisted chin-up', 'Full range, chin over', '3 × 6', '90s']],
@@ -1569,8 +1585,9 @@ const PAUL_REBUILD_WEEKS = [
     sub: 'Add load', progression: 'Small jumps where the reps are there',
     purpose: 'Christmas week. Loads move where the top reps were hit: bench +2.5 kg, trap bar +5 kg, push press +2.5 kg. Miss a day for family and nothing is lost — tell me and I reshuffle.',
     meta: p1Meta('Load where reps are there', 'Week 4'), rules: p1Rules(),
-    lower: { dl: '+5 kg if 3 × 5 was crisp', dlCap: 'RPE 7 cap.', squatStage: 'stage 1: Spanish squat', squat: [['Spanish squat hold', 'Longer hold, same depth', '3 × 40s', '60s']], stepDown: 'L leg, 4s down — add a light DB if clean' },
+    lower: { dl: '+5 kg if 3 × 5 was crisp', dlCap: 'RPE 7 cap.', squatStage: 'stage 1: Spanish squat', squat: [['Spanish squat hold', 'Longer hold, same depth', '3 × 40s', '60s']], stepDown: 'One yoga block, 4s down — add a light DB if clean. Two blocks waits' },
     upper: {
+      dips: '3 × 6',
       bench: '+2.5 kg if you hit 3 × 8, back to 6s', benchScheme: '3 × 6–8',
       chinSummary: 'First unassisted reps go in — singles, fresh.',
       chin: [['Chin-up', 'Strict singles, full hang to chin over', '4 × 1', '90s'], ['Band-assisted chin-up', 'Full range', '3 × 6', '90s']],
@@ -1589,16 +1606,19 @@ const PAUL_REBUILD_WEEKS = [
     lower: { dl: 'Same as last week — own it', dlCap: 'RPE 7 cap.', squatStage: 'stage 1: Spanish squat', squat: [['Spanish squat hold', 'Longer hold, same depth', '3 × 40s', '60s']], stepDown: 'MARKER — highest step where the lowering is clean' },
     monNotes: [TRACK_MARKERS],
     upper: {
+      dips: '1 × 1–8', dipsCue: 'MARKER — one fresh set, one rep in reserve',
       bench: 'Same load — all sets to the top of the range', benchScheme: '3 × 6–8',
       chinSummary: 'MARKER: one fresh strict set, stop a rep short of failure. Log it.',
       chin: [['Chin-up', 'MARKER — one fresh set, one rep in reserve', '1 × 1–5', '3min'], ['Band-assisted chin-up', 'Full range', '3 × 6', '90s']],
       press: 'Same load — crisp', rowScheme: '3 × 10',
     },
-    zone2: [20, 20, 'MARKER — steady zone 2 for 20 min, log average pace + HR'],
+    zone2: [20, 10, 'MARKER — steady zone 2 for 20 min, log average pace + HR',
+      ergTest('Ski erg — 1k test', 'Erg baseline — ski 1k', 'First ski baseline — controlled hard, RPE 8, not a race. The guess is ~3:54 (1:57/500); this replaces the guess.')],
     wedNotes: [TRACK_MARKERS],
     chin2: [['Chin-up negative', '5s down', '3 × 3', '90s']],
-    satTitle: 'Hyrox functional — sled, carries + easy engine',
-    functional: { sled: 6, farmer: 4, engine: P1_ENGINE(15) },
+    satTitle: 'Erg baseline — 2k row, then light sled',
+    functional: { sled: 3, farmer: 3, engineFirst: true, engine: ergTest('Row — 2k test', 'Erg baseline — 2k row', 'The first 2k — a baseline, not a race. Even splits, RPE 8, finish knowing there were 10 seconds more. Expect around 7:45 (1:56/500).') },
+    satNotes: ['The 2k is the primary goal: sub-7:00 inside 12 months. Today only sets the starting line. ' + ERG_TARGETS],
     long: [25, 30],
   }),
 ];
@@ -1624,6 +1644,7 @@ const PAUL_GOAL_WEEKS = [
     lower: { dl: '+5 kg when 3 × 5 is crisp', dlCap: 'RPE 7–8 cap.', squatStage: 'stage 2: goblet box squat', squat: P2_GOBLET, stepDown: 'Load before height — light DB' },
     monNotes: [SQUAT_GATE],
     upper: {
+      dips: '4 × 5',
       bench: 'Top reps on all sets → +2.5 kg', benchScheme: '4 × 5–8',
       chinSummary: 'Total-rep target: 12 strict reps in as many small sets as it takes.',
       chin: [['Chin-up', '12 total — sets of 2, never to failure', '6 × 2', '90s']],
@@ -1642,6 +1663,7 @@ const PAUL_GOAL_WEEKS = [
     meta: p2Meta('Volume up', 'Goblet box squat', 'Week 3'), rules: p2Rules(),
     lower: { dl: '+5 kg when 3 × 5 is crisp', dlCap: 'RPE 7–8 cap.', squatStage: 'stage 2: goblet box squat', squat: P2_GOBLET, stepDown: 'Load before height — light DB' },
     upper: {
+      dips: '4 × 6',
       bench: 'Top reps on all sets → +2.5 kg', benchScheme: '4 × 5–8',
       chinSummary: 'Total-rep target: 15.',
       chin: [['Chin-up', '15 total — sets of 3, never to failure', '5 × 3', '90s']],
@@ -1660,6 +1682,7 @@ const PAUL_GOAL_WEEKS = [
     lower: { dl: '+5 kg when 3 × 5 is crisp', dlCap: 'RPE 7–8 cap.', squatStage: 'stage 3: front squat to box', squat: P2_FRONT, stepDown: 'Load before height — light DB' },
     monNotes: [SQUAT_GATE],
     upper: {
+      dips: '4 × 6',
       bench: 'Top reps on all sets → +2.5 kg', benchScheme: '4 × 5–8',
       chinSummary: 'Total-rep target: 18.',
       chin: [['Chin-up', '18 total — sets of 3, never to failure', '6 × 3', '90s']],
@@ -1678,16 +1701,19 @@ const PAUL_GOAL_WEEKS = [
     lower: { dl: 'Same as last week — own it', dlCap: 'RPE 7–8 cap.', squatStage: 'stage 3: front squat to box', squat: P2_FRONT, stepDown: 'MARKER — highest step where the lowering is clean' },
     monNotes: [TRACK_MARKERS, RUN_GATE],
     upper: {
+      dips: '1 × 1–10', dipsCue: 'MARKER — one fresh set, one rep in reserve',
       bench: 'Same load — all sets to the top of the range', benchScheme: '4 × 5–8',
       chinSummary: 'MARKER: one fresh strict set, one rep in reserve. Log it.',
       chin: [['Chin-up', 'MARKER — one fresh set, one rep in reserve', '1 × 1–8', '3min']],
       press: 'Same load — crisp', rowScheme: '3 × 10',
     },
-    zone2: [20, 20, 'MARKER — same zone 2 HR as 30 Dec for 20 min, log average pace + HR'],
+    zone2: [20, 10, 'MARKER — same zone 2 HR as 30 Dec for 20 min, log average pace + HR',
+      ergTest('Ski erg — 500m test', 'Erg test — ski 500m', 'Short and sharp. Row-based guess is 1:49; the 3-month target is 1:43.')],
     wedNotes: [TRACK_MARKERS],
     chin2: [['Band-assisted chin-up', 'Full range', '2 × 8', '90s']],
-    satTitle: 'Hyrox functional + ski intervals',
-    functional: { sled: 4, farmer: 3, engine: P2_INTERVALS('Ski erg intervals', 5) },
+    satTitle: 'Erg test — 1k row, then light sled',
+    functional: { sled: 3, farmer: 3, engineFirst: true, engine: ergTest('Row — 1k test', 'Erg test — 1k row', 'Monthly test, rotating 500 / 1k / 2k / 3k / 6k. Baseline 3:40 (1:50/500); 3-month target 3:25.') },
+    satNotes: ['Easier week: the test replaces the intervals. ' + ERG_TARGETS],
     long: [30, 30],
   }),
 ];
@@ -2016,17 +2042,17 @@ const PAUL_PLAN = {
     },
     {
       id: 'rebuild', tag: 'Rebuild', title: 'Rebuild — Phase 1', dates: 'Mon 7 Dec – Sun 3 Jan 2027',
-      purpose: 'The long-term tracks start here: ' + PAUL_GOALS + '. Old bests, from before the knee injury two years ago: squat 100 kg × 8, bench 90 kg × 3, deadlift 140 kg × 2. Two surgeries and a fall since — a long road back, taken in small steps, but they have been done before. Four weeks at RPE 6 — the Reboot’s movement work plus bench, chin-up, trap bar and squat tracks at moderate loads, zone 2 cardio only. Left leg sets the dose, one new stressor a week, markers logged in week 4.',
+      purpose: 'The long-term tracks start here — a hybrid all-rounder, ready for anything with something in the tank: ' + PAUL_GOALS + '. Past bests are context, not targets: every track starts from today’s ability, and a target gets raised when it is beaten. Four weeks at RPE 6 — the Reboot’s movement and calisthenics work plus bench, dip, chin-up, trap bar and squat tracks at moderate loads, zone 2 row and ski only. Week 4 logs the markers and the first erg baselines, including the 2k.',
       weeks: PAUL_REBUILD_WEEKS,
     },
     {
       id: 'goal', tag: 'Build', title: 'Goal Build — Phase 2', dates: 'Mon 4 Jan – Sun 31 Jan 2027',
-      purpose: 'Progressive overload on every track: ' + PAUL_GOALS + '. Row and ski intervals arrive, the squat climbs its stages when the knee allows, and week 4 runs the return-to-run test. ' + RUN_GATE,
+      purpose: 'Main focus: the engine under the 2k. Progressive overload continues on every other track (' + PAUL_GOALS + '). Intensity builds, it does not jump: zone 2 base → 4–6 × 4 min threshold (this block) → 8 × 1 min VO2 → the all-out 10 × 20s sprint sets, each stage earned when the last feels controlled. The squat climbs its stages when the knee allows; light hang power cleans wait for month 3–4. Week 4 is the easier week: erg tests, markers and the return-to-run test. ' + RUN_GATE,
       weeks: PAUL_GOAL_WEEKS,
     },
     {
-      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Parked — after the run gate, dates TBC',
-      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Parked: it runs from week 1, so it waits for the return-to-run test and an event date. The Goal Build carries the Hyrox stations (sled, carries, wall balls) until then.',
+      id: 'hyrox', tag: 'Training', title: 'Hyrox Training', dates: 'Parked — doubles ~mid-2027, dates TBC',
+      purpose: 'Integrated Program v2 — Hyrox conditioning + skills + Oly + shape. Parked: it runs from week 1, so it waits for the return-to-run test. The aim is doubles with Pamela in roughly 6–8 months and solo around autumn 2027 — event dates get confirmed, then this is planned backwards from them. The 8 × 1 km of running is the limiter; the Goal Build carries the stations (sled, carries, wall balls) until then.',
       weeks: HYROX_WEEKS,
     },
   ],
