@@ -1323,14 +1323,15 @@ const RB_COVID_RETURN = {
       { id: 'cardio', title: 'Walk — easy', ex: [['Walk — easy', 'Nose-breathing pace', '1 × 30min', '—']] },
       RB_RECOVERY[1],
     ], { summary: 'Easy day between the two machine days.' }),
-    rbDay('rbc_thu', 'Thu 26 Nov', 'Machines + ground basics', [
+    // Rest day and the machines day swapped: Thursday morning off, session on Friday.
+    rbRest('rbc_fri', 'Thu 26 Nov'),
+    rbDay('rbc_thu', 'Fri 27 Nov', 'Machines + ground basics', [
       { id: 'cardio', title: 'Cardio — easy', ex: [
         ['Bike — easy', 'RPE 3–4', '1 × 15min', '—'],
         ['Row — easy', 'Short slide, drive the left leg straight', '1 × 10min', '—'],
       ] },
       RB_COVID_GROUND,
-    ], { summary: 'A little longer on the machines, then the floor. Crawls stay short — breathing decides, not the distance.' }),
-    rbRest('rbc_fri', 'Fri 27 Nov'),
+    ], { summary: 'A little longer on the machines, then the floor. Crawls stay short — breathing decides, not the distance. Swapped with the rest day — Thursday morning was taken off.' }),
     rbDay('rbc_sat', 'Sat 28 Nov', 'Spin + light circuit', [
       { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 4, conversational', '1 × 20min', '—']] },
       { id: 'circuit', title: 'Light circuit — everything easy', ex: [
