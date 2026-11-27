@@ -1323,15 +1323,15 @@ const RB_COVID_RETURN = {
       { id: 'cardio', title: 'Walk — easy', ex: [['Walk — easy', 'Nose-breathing pace', '1 × 30min', '—']] },
       RB_RECOVERY[1],
     ], { summary: 'Easy day between the two machine days.' }),
-    // Rest day and the machines day swapped: Thursday morning off, session on Friday.
+    // Thursday was taken off (swapped with the rest day), then Friday's
+    // machines + ground basics session was missed. Nothing is lost: Sunday
+    // already carries the bike, row and ground basics.
     rbRest('rbc_fri', 'Thu 26 Nov'),
-    rbDay('rbc_thu', 'Fri 27 Nov', 'Machines + ground basics', [
-      { id: 'cardio', title: 'Cardio — easy', ex: [
-        ['Bike — easy', 'RPE 3–4', '1 × 15min', '—'],
-        ['Row — easy', 'Short slide, drive the left leg straight', '1 × 10min', '—'],
-      ] },
-      RB_COVID_GROUND,
-    ], { summary: 'A little longer on the machines, then the floor. Crawls stay short — breathing decides, not the distance. Swapped with the rest day — Thursday morning was taken off.' }),
+    {
+      id: 'rbc_thu', label: 'Fri 27 Nov', title: 'Missed — picked up Sunday', type: 'rest',
+      summary: 'Low-drive morning a week out of Covid. The bike, row and ground basics are all in Sunday’s session; nothing is lost.',
+      items: [['Back Insurance', '8 min', 'PM']],
+    },
     rbDay('rbc_sat', 'Sat 28 Nov', 'Spin + light circuit', [
       { id: 'cardio', title: 'Cardio — easy', ex: [['Bike — easy', 'RPE 4, conversational', '1 × 20min', '—']] },
       { id: 'circuit', title: 'Light circuit — everything easy', ex: [
